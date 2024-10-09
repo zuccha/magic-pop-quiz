@@ -1,11 +1,11 @@
-const cardSearchDirections = ["auto", "asc", "desc"] as const;
+export const cardsSearchDirections = ["auto", "asc", "desc"] as const;
 
-export type CardsSearchDirection = (typeof cardSearchDirections)[number];
+export type CardsSearchDirection = (typeof cardsSearchDirections)[number];
 
 export function isCardsSearchDirection(
   maybeCardSearchDirection: unknown,
 ): maybeCardSearchDirection is CardsSearchDirection {
-  return cardSearchDirections.includes(
+  return cardsSearchDirections.includes(
     maybeCardSearchDirection as CardsSearchDirection,
   );
 }
@@ -18,3 +18,12 @@ export function validateCardsSearchDirection(
     ? maybeCardSearchDirection
     : defaultCardSearchDirection;
 }
+
+export const formattedCardsSearchDirection: Record<
+  CardsSearchDirection,
+  string
+> = {
+  auto: "Auto",
+  asc: "Asc",
+  desc: "Desc",
+};

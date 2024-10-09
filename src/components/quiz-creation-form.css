@@ -9,11 +9,11 @@
   gap: 0.5em;
 }
 
+.QuizCreationForm_Inputs > *:first-child {
+  flex: 1;
+}
+
 .QuizCreationForm_Options {
   display: flex;
   gap: 1.5em;
-}
-
-.QuizCreationForm_Query {
-  flex: 1;
 }

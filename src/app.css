@@ -16,14 +16,14 @@
 }
 
 .App_Header > div {
-  padding: 0 1em;
+  padding: 0 2em;
   height: 3.25em;
   display: flex;
   align-items: center;
 }
 
 .App_Page {
-  padding: 1em;
+  padding: 2em;
 }
 
 .App_Header a,

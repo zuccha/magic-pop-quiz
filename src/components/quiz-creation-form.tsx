@@ -2,6 +2,14 @@ import { forwardRef, useRef, useImperativeHandle } from "react";
 import { CardsQuiz } from "../models/cards-quiz";
 import { msToTime } from "../models/time";
 import "./quiz-creation-form.css";
+import {
+  cardsSearchOrders,
+  formattedCardsSearchOrder as formattedCardsSearchOrders,
+} from "../models/cards-search-order";
+import {
+  cardsSearchDirections,
+  formattedCardsSearchDirection as formattedCardsSearchDirections,
+} from "../models/cards-search-direction";
 
 export type QuizCreationFormRefObject = {
   configureQuiz: (quiz: CardsQuiz) => void;
@@ -41,12 +49,7 @@ export default forwardRef<QuizCreationFormRefObject, QuizCreationFormProps>(
     return (
       <form className="QuizCreationForm" action="/cards-quiz">
         <div className="QuizCreationForm_Inputs">
-          <input
-            className="QuizCreationForm_Query"
-            placeholder="Name"
-            ref={nameRef}
-            required
-          />
+          <input name="name" placeholder="Name" ref={nameRef} required />
 
           <input
             defaultValue={100}
@@ -75,7 +78,6 @@ export default forwardRef<QuizCreationFormRefObject, QuizCreationFormProps>(
 
         <div className="QuizCreationForm_Inputs">
           <input
-            className="QuizCreationForm_Query"
             name="q"
             placeholder="Scryfall query"
             ref={queryRef}
@@ -83,23 +85,19 @@ export default forwardRef<QuizCreationFormRefObject, QuizCreationFormProps>(
           />
 
           <select name="order" ref={orderRef} required>
-            <option value="name">Name</option>
-            <option value="released">Release Date</option>
-            <option value="set">Set/Number</option>
-            <option value="rarity">Rarity</option>
-            <option value="color">Color</option>
-            <option value="usd">Price: USD</option>
-            <option value="tix">Price: TIX</option>
-            <option value="eur">Price: EUR</option>
-            <option value="cmc">Mana Value</option>
-            <option value="power">Power</option>
-            <option value="toughness">Toughness</option>
-            <option value="artist">Artist Name</option>
-            <option value="edhrec">EDHREC Rank</option>
-            <option value="review">Set Review</option>
+            {cardsSearchOrders.map((order) => (
+              <option key={order} value={order}>
+                {formattedCardsSearchOrders[order]}
+              </option>
+            ))}
           </select>
 
           <select name="dir" ref={directionRef} required>
+            {cardsSearchDirections.map((direction) => (
+              <option key={direction} value={direction}>
+                {formattedCardsSearchDirections[direction]}
+              </option>
+            ))}
             <option value="auto">Auto</option>
             <option value="asc">Asc</option>
             <option value="desc">Desc</option>

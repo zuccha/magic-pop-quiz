@@ -1,0 +1,34 @@
+.QuizPage {
+  display: flex;
+  flex-direction: column;
+  gap: 2em;
+}
+
+.QuizPage h1,
+.QuizPage h2 {
+  margin: 0;
+}
+
+.QuizPage h2 {
+  font-family: monospace;
+  font-size: 2em;
+}
+
+.QuizPage_Info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2em;
+}
+
+.QuizPage_Info_Ready,
+.QuizPage_Info_Running,
+.QuizPage_Info_Paused {
+  flex: 1;
+  display: flex;
+  gap: 0.5em;
+}
+
+.QuizPage_Info_Running > *:first-child {
+  flex: 1;
+}

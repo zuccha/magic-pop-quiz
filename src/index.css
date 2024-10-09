@@ -31,11 +31,11 @@ body {
   margin: 0;
 }
 
+h1,
 h2 {
   color: #343242;
   font-weight: 300;
   margin: 0 0 1.25rem 0;
-  outline-color: rgb(52, 50, 66);
 }
 
 button,
