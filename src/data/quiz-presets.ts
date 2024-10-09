@@ -1,20 +1,36 @@
-import { Quiz } from "../models/quiz";
+import { CardsQuiz } from "../models/cards-quiz";
 
-const edhrecTop100Cards = (description: string, condition: string): Quiz => ({
-  description: `EDHREC's Top 100 Cards - ${description}`,
+const minutes = 60 * 1000;
+const seconds = 1000;
+
+const options = { showMana: false, showSet: false };
+
+const edhrecTop100Cards = (
+  description: string,
+  condition: string,
+): CardsQuiz => ({
+  name: `EDHREC's Top 100 Cards - ${description}`,
   query: `format:commander ${condition}`,
   order: "edhrec",
   direction: "auto",
   quantity: 100,
   cards: [],
-  time: 20 * 60 * 1000,
-  options: {
-    showMana: false,
-    showSet: false,
-  },
+  time: 20 * minutes,
+  options,
 });
 
-const quizPresets: Quiz[] = [
+const modernTop30ExpensiveCards = (): CardsQuiz => ({
+  name: `30 Most Expensive Cards in Modern`,
+  query: `format:modern`,
+  order: "usd",
+  direction: "desc",
+  quantity: 30,
+  cards: [],
+  time: 9 * minutes + 59 * seconds,
+  options,
+});
+
+const quizPresets: CardsQuiz[] = [
   edhrecTop100Cards("Colorless", "identity=colorless"),
   edhrecTop100Cards("White", "identity=white"),
   edhrecTop100Cards("Blue", "identity=blue"),
@@ -26,6 +42,7 @@ const quizPresets: Quiz[] = [
   edhrecTop100Cards("Enchantments", "type:enchantment"),
   edhrecTop100Cards("Spells", "type:instant or type:sorcery"),
   edhrecTop100Cards("Lands", "type:land"),
+  modernTop30ExpensiveCards(),
 ];
 
 export default quizPresets;

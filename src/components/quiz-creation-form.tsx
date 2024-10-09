@@ -1,26 +1,19 @@
 import { forwardRef, useRef, useImperativeHandle } from "react";
-import { Quiz } from "../models/quiz";
+import { CardsQuiz } from "../models/cards-quiz";
+import { msToTime } from "../models/time";
 import "./quiz-creation-form.css";
 
 export type QuizCreationFormRefObject = {
-  configureQuiz: (quiz: Quiz) => void;
+  configureQuiz: (quiz: CardsQuiz) => void;
 };
 
 export type QuizCreationFormProps = {
-  onCreateQuiz: (quiz: Quiz) => void;
+  onCreateQuiz: (quiz: CardsQuiz) => void;
 };
-
-function msToTime(ms: number): string {
-  const seconds = (ms % (60 * 1000)) / 1000;
-  const minutes = (ms % (60 * 60 * 1000)) / (60 * 1000);
-  const secondsStr = seconds < 10 ? `0${seconds}` : `${seconds}`;
-  const minutesStr = minutes < 10 ? `0${minutes}` : `${minutes}`;
-  return `${minutesStr}:${secondsStr}`;
-}
 
 export default forwardRef<QuizCreationFormRefObject, QuizCreationFormProps>(
   function QuizCreationForm({}, ref) {
-    const descriptionRef = useRef<HTMLInputElement>(null);
+    const nameRef = useRef<HTMLInputElement>(null);
     const queryRef = useRef<HTMLInputElement>(null);
     const orderRef = useRef<HTMLSelectElement>(null);
     const directionRef = useRef<HTMLSelectElement>(null);
@@ -31,9 +24,8 @@ export default forwardRef<QuizCreationFormRefObject, QuizCreationFormProps>(
     const buttonRef = useRef<HTMLButtonElement>(null);
 
     useImperativeHandle(ref, () => ({
-      configureQuiz: (quiz: Quiz) => {
-        if (descriptionRef.current)
-          descriptionRef.current.value = quiz.description;
+      configureQuiz: (quiz: CardsQuiz) => {
+        if (nameRef.current) nameRef.current.value = quiz.name;
         if (queryRef.current) queryRef.current.value = quiz.query;
         if (orderRef.current) orderRef.current.value = quiz.order;
         if (directionRef.current) directionRef.current.value = quiz.direction;
@@ -47,15 +39,41 @@ export default forwardRef<QuizCreationFormRefObject, QuizCreationFormProps>(
     }));
 
     return (
-      <form className="QuizCreationForm" action="/quiz">
-        <input
-          className="QuizCreationForm_Query"
-          placeholder="Description"
-          ref={descriptionRef}
-          required
-        />
+      <form className="QuizCreationForm" action="/cards-quiz">
+        <div className="QuizCreationForm_Inputs">
+          <input
+            className="QuizCreationForm_Query"
+            placeholder="Name"
+            ref={nameRef}
+            required
+          />
 
-        <div className="QuizCreationForm_Group">
+          <input
+            defaultValue={100}
+            max={300}
+            min={1}
+            name="qty"
+            placeholder="Qty"
+            ref={quantityRef}
+            required
+            size={100}
+            step={1}
+            type="number"
+          />
+
+          <input
+            defaultValue="10:00"
+            max="59:59"
+            min="00:30"
+            name="time"
+            placeholder="Time"
+            required
+            ref={timeRef}
+            type="time"
+          />
+        </div>
+
+        <div className="QuizCreationForm_Inputs">
           <input
             className="QuizCreationForm_Query"
             name="q"
@@ -86,51 +104,27 @@ export default forwardRef<QuizCreationFormRefObject, QuizCreationFormProps>(
             <option value="asc">Asc</option>
             <option value="desc">Desc</option>
           </select>
-
-          <input
-            defaultValue={100}
-            max={300}
-            min={1}
-            name="qty"
-            placeholder="Qty"
-            ref={quantityRef}
-            required
-            size={100}
-            step={1}
-            type="number"
-          />
-
-          <input
-            defaultValue="10:00"
-            max="59:59"
-            min="00:30"
-            name="time"
-            placeholder="Time"
-            required
-            ref={timeRef}
-            type="time"
-          />
         </div>
 
-        <div className="QuizCreationForm_Group">
-          <div className="QuizCreationForm_Option">
+        <div className="QuizCreationForm_Options">
+          <label htmlFor="show-mana">
             <input
               type="checkbox"
               id="show-mana"
               name="show-mana"
               ref={showManaRef}
             />
-            <label htmlFor="show-mana">Show mana</label>
-          </div>
-          <div className="QuizCreationForm_Option">
+            Show mana
+          </label>
+          <label htmlFor="show-set">
             <input
               type="checkbox"
               id="show-set"
               name="show-set"
               ref={showSetRef}
             />
-            <label htmlFor="show-set">Show set</label>
-          </div>
+            Show set
+          </label>
         </div>
 
         <button ref={buttonRef} type="submit">

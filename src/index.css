@@ -1,9 +1,16 @@
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: Lato, "Helvetica Neue", system-ui, Avenir, Helvetica, Arial,
+    sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
-  color-scheme: light dark;
+  --color-primary-1: #551a8b;
+  --color-primary-2: #3b1260;
+  --color-neutral-1: #fdfdfd;
+  --color-neutral-1: #fefefe;
+  --color-neutral-3: #aeaeae;
+
+  /* color-scheme: light dark; */
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -15,20 +22,135 @@
   box-sizing: border-box;
 }
 
-body {
-  margin: 0;
-  min-width: 20em;
+html {
+  background-color: var(--color-neutral-1);
 }
 
-kbd {
-  background-color: var(--color-background-1);
-  padding: 0.2em 0.4em;
-  border-radius: 0.2em;
+body {
+  margin: 0;
+}
+
+h2 {
+  color: #343242;
+  font-weight: 300;
+  margin: 0 0 1.25rem 0;
+  outline-color: rgb(52, 50, 66);
 }
 
 button,
 input,
 select {
   font-size: 1em;
-  padding: 0.2em 0.4em;
+  padding: 0.5em 0.625em;
+  border-radius: 0.125em;
+  border: 1px solid var(--color-neutral-3);
+  background-color: var(--color-neutral-2);
+}
+
+input:focus,
+select:focus {
+  box-shadow: 0px 0px 3px var(--color-neutral-3);
+  background-color: white;
+  border-color: var(--color-primary-1);
+  outline: none;
+}
+
+button,
+input[type="checkbox"],
+select {
+  cursor: pointer;
+}
+
+button {
+  font-weight: bold;
+  background-color: #f9f7f5;
+  border: 1px solid var(--color-primary-1);
+  color: var(--color-primary-1);
+  font-size: 0.9375em;
+}
+
+button:focus,
+button:hover {
+  background-color: white;
+}
+
+button:focus {
+  outline: none;
+}
+
+select {
+  appearance: none;
+  padding-right: 1.875em;
+  background-image: url(https://scryfall.com/assets/icons/chevron-down-07650cfb6fb5a3e0c65f37dfae2458435e3614f3b8d7c8bd6b7565876a0a0524.svg);
+  background-position: right 0.5rem top 0.75rem;
+  background-repeat: no-repeat;
+  background-size: auto 40%;
+}
+
+input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  height: 1.625em;
+  width: 1.625em;
+  margin: 0;
+  padding: 0;
+  color: var(--color-primary-1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+input[type="checkbox"]:checked::before {
+  font-size: 1.25em;
+  content: "✓";
+}
+
+label {
+  display: flex;
+  align-items: center;
+  font-size: 0.9375em;
+  gap: 0.5em;
+}
+
+label:has(input[type="checkbox"]) {
+  cursor: pointer;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+}
+
+tbody {
+  cursor: pointer;
+}
+
+tbody > tr:hover {
+  background-color: rgba(101, 82, 0, 0.075);
+}
+
+tr {
+  border-bottom: 1px solid #e0dee3;
+}
+
+tr:nth-child(even) {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+th,
+td {
+  color: #16161d;
+  padding: 0.3125em 0.375em;
+}
+
+th {
+  font-size: 0.75em;
+  font-weight: bold;
+  text-align: left;
+  text-transform: uppercase;
+}
+
+td {
+  font-size: 100%;
 }

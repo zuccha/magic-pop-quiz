@@ -4,15 +4,16 @@
   gap: 0.5em;
 }
 
-.QuizCreationForm_Group {
+.QuizCreationForm_Inputs {
   display: flex;
   gap: 0.5em;
 }
 
-.QuizCreationForm_Query {
-  flex: 1;
+.QuizCreationForm_Options {
+  display: flex;
+  gap: 1.5em;
 }
 
-.QuizCreationForm_Option {
-  font-size: 1em;
+.QuizCreationForm_Query {
+  flex: 1;
 }
