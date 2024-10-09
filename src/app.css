@@ -1,5 +1,40 @@
 .App {
-  max-width: 50em;
+  display: flex;
+  flex-direction: column;
+}
+
+.App_Header {
+  background-color: var(--color-primary-3);
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.App_Header > div,
+.App_Page {
+  width: 100%;
+  max-width: 62.5em;
   margin: auto;
+}
+
+.App_Header > div {
+  padding: 0 1em;
+  height: 3.25em;
+  display: flex;
+  align-items: center;
+}
+
+.App_Page {
   padding: 1em;
+}
+
+.App_Header a,
+.App_Header a:active {
+  color: rgba(255, 255, 255, 0.75);
+  text-decoration: none;
+}
+
+.App_Header a:focus,
+.App_Header a:hover {
+  color: white;
+  outline: none;
+  text-decoration: underline;
 }
