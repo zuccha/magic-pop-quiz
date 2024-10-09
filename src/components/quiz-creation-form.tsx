@@ -66,13 +66,13 @@ export default forwardRef<QuizCreationFormRefObject, QuizCreationFormProps>(
 
           <input
             defaultValue="10:00"
-            max="59:59"
-            min="00:30"
             name="time"
+            pattern="[0-5]?\d:[0-5]?\d"
             placeholder="Time"
             required
             ref={timeRef}
-            type="time"
+            size={5}
+            title="mm:ss"
           />
         </div>
 
