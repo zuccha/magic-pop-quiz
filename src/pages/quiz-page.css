@@ -42,29 +42,26 @@
   display: flex;
   align-items: stretch;
   border: 1px solid var(--color-neutral-3);
+  break-inside: avoid;
 }
 
 .QuizPage_Answers > div:not(:first-child) {
   margin-top: -1px;
 }
 
-.QuizPage_Answer_Cost,
-.QuizPage_Answer_Name {
+.QuizPage_Answer_Name,
+.QuizPage_Answer_Text {
   padding: 0.1em 0.5em;
 }
 
-.QuizPage_Answer_Cost {
+.QuizPage_Answer_Name {
+  flex: 1;
+}
+
+.QuizPage_Answer_Text {
   display: flex;
   align-items: center;
   justify-content: flex-end;
   border-right: 1px solid var(--color-neutral-3);
   background-color: #f9f7f5;
-}
-
-.QuizPage_Answer_Colors {
-  /* border-right: 1px solid var(--color-neutral-3); */
-}
-
-.QuizPage_Answer_Name {
-  flex: 1;
 }

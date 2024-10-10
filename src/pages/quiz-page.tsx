@@ -1,6 +1,9 @@
 import { ScryfallList } from "@scryfall/api-types";
 import { useLayoutEffect, useMemo, useState } from "react";
-import answerPresets from "../data/answer-presets";
+import CardColorsIndicator from "../components/card-colors-indicator";
+import CardCostIndicator from "../components/card-cost-indicator";
+import CardPriceIndicator from "../components/card-price-indicator";
+// import answerPresets from "../data/answer-presets";
 import useTimer, { TimerStatus } from "../hooks/use-timer";
 import {
   formattedCardsSearchDirection,
@@ -12,8 +15,6 @@ import {
 } from "../models/cards-search-order";
 import { msToTime, timeToMs } from "../models/time";
 import "./quiz-page.css";
-import CardSymbol from "../components/card-symbol";
-import CardColorIndicator from "../components/card-color-indicator";
 
 export type Answer = {
   id: string;
@@ -21,14 +22,20 @@ export type Answer = {
   simpleName: string;
   set: string;
   cost: string[];
+  identity: string[];
   colors: string[];
-  image: string;
   type: string;
+  image: string;
+  price: {
+    usd: string;
+    eur: string;
+    tix: string;
+  };
   guessed: boolean;
 };
 
 export default function QuizPage() {
-  const [answers, setAnswers] = useState<Answer[]>(answerPresets);
+  const [answers, setAnswers] = useState<Answer[]>([]);
 
   const params = new URLSearchParams(document.location.search);
   const name = params.get("name") ?? "";
@@ -38,8 +45,12 @@ export default function QuizPage() {
   const quantity = parseInt(params.get("qty") ?? "0") || 0;
   const time = timeToMs(params.get("time") ?? "10:00");
   const showCost = params.has("show-cost") ?? false;
-  const showColor = params.has("show-color") ?? false;
+  const showColors = params.has("show-colors") ?? false;
+  const showIdentity = params.has("show-identity") ?? false;
   // const showTypes = params.has("show-types") ?? false;
+  const showUsd = params.has("show-usd") ?? false;
+  const showEur = params.has("show-eur") ?? false;
+  const showTix = params.has("show-tix") ?? false;
 
   const formattedOrder = formattedCardsSearchOrder[order];
   const formattedDirection = formattedCardsSearchDirection[direction];
@@ -61,6 +72,26 @@ export default function QuizPage() {
     [answers],
   );
 
+  const maxIdentityLength = useMemo(
+    () => Math.max(...answers.map((answer) => answer.identity.length)),
+    [answers],
+  );
+
+  const maxUsdLength = useMemo(
+    () => Math.max(...answers.map((answer) => answer.price.usd.length)) + 1,
+    [answers],
+  );
+
+  const maxEurLength = useMemo(
+    () => Math.max(...answers.map((answer) => answer.price.eur.length)) + 1,
+    [answers],
+  );
+
+  const maxTixLength = useMemo(
+    () => Math.max(...answers.map((answer) => answer.price.tix.length)),
+    [answers],
+  );
+
   useLayoutEffect(() => {
     const fetchCards = async () => {
       const url = new URL("https://api.scryfall.com/cards/search");
@@ -76,7 +107,27 @@ export default function QuizPage() {
             name: card.name,
             simpleName: card.name,
             set: card.set_name,
-            cost: (card.mana_cost ?? "").match(/{[^}]+}/g) || [],
+            cost: card.mana_cost
+              ? (card.mana_cost.match(/{[^}]+}|\/\//g) ?? [])
+              : "card_faces" in card
+                ? card.card_faces.flatMap(
+                    (face) => face.mana_cost?.match(/{[^}]+}|\/\//g) ?? [],
+                  )
+                : [],
+            identity: sortColors(card.color_identity),
+            colors: sortColors(
+              "colors" in card && card.colors
+                ? card.colors
+                : "card_faces" in card
+                  ? card.card_faces.flatMap((face) =>
+                      "colors" in face ? face.colors : [],
+                    )
+                  : [],
+            ),
+            type:
+              "card_faces" in card
+                ? (card.card_faces[0]?.type_line.split("-")[0] || "").trim()
+                : (card.type_line.split("-")[0] || "").trim(),
             image:
               "image_uris" in card && card.image_uris
                 ? card.image_uris.normal
@@ -85,19 +136,15 @@ export default function QuizPage() {
                     card.card_faces[0].image_uris
                   ? card.card_faces[0].image_uris.normal
                   : "",
-            colors: sortColors(
-              "colors" in card && card.colors
-                ? card.colors
-                : "card_faces" in card &&
-                    "colors" in card.card_faces[0] &&
-                    card.card_faces[0].colors
-                  ? card.card_faces[0].colors
-                  : [],
-            ),
-            type:
-              "card_faces" in card
-                ? (card.card_faces[0]?.type_line.split("-")[0] || "").trim()
-                : (card.type_line.split("-")[0] || "").trim(),
+            price: {
+              usd:
+                card.prices.usd ??
+                card.prices.usd_foil ??
+                card.prices.usd_etched ??
+                "-",
+              eur: card.prices.eur ?? card.prices.eur_foil ?? "-",
+              tix: card.prices.tix ?? "-",
+            },
             guessed: false,
           };
         }),
@@ -144,23 +191,49 @@ export default function QuizPage() {
       <div className="QuizPage_Answers">
         {answers.map((answer) => (
           <div key={answer.id}>
-            {showCost && (
-              <span
-                className="QuizPage_Answer_Cost"
-                style={{ width: `${maxCostLength + 1}em` }}
-              >
-                {answer.cost.map((symbol, i) => (
-                  <CardSymbol key={i} symbol={symbol} />
-                ))}
-              </span>
+            {showUsd && (
+              <div className="QuizPage_Answer_Text">
+                <CardPriceIndicator
+                  currency="$"
+                  price={answer.price.usd}
+                  size={maxUsdLength}
+                />
+              </div>
             )}
-            {showColor && (
-              <span
-                className="QuizPage_Answer_Colors"
-                style={{ width: `${maxColorsLength * 0.5}em` }}
-              >
-                <CardColorIndicator colors={answer.colors} />
-              </span>
+            {showEur && (
+              <div className="QuizPage_Answer_Text">
+                <CardPriceIndicator
+                  currency="€"
+                  price={answer.price.eur}
+                  size={maxEurLength}
+                />
+              </div>
+            )}
+            {showTix && (
+              <div className="QuizPage_Answer_Text">
+                <CardPriceIndicator
+                  currency=""
+                  price={answer.price.tix}
+                  size={maxTixLength}
+                />
+              </div>
+            )}
+            {showCost && (
+              <div className="QuizPage_Answer_Text">
+                <CardCostIndicator cost={answer.cost} size={maxCostLength} />
+              </div>
+            )}
+            {showColors && (
+              <CardColorsIndicator
+                colors={answer.colors}
+                size={maxColorsLength}
+              />
+            )}
+            {showIdentity && (
+              <CardColorsIndicator
+                colors={answer.identity}
+                size={maxIdentityLength}
+              />
             )}
             <span className="QuizPage_Answer_Name">{answer.name}</span>
           </div>
@@ -179,7 +252,7 @@ const colorSortingScore: Record<string, number> = {
 };
 
 function sortColors(colors: string[]): string[] {
-  return colors.sort((c1, c2) => {
+  return [...new Set(colors)].sort((c1, c2) => {
     const score1 = colorSortingScore[c1] ?? 0;
     const score2 = colorSortingScore[c2] ?? 0;
     if (score1 > score2) return -1;

@@ -12,7 +12,11 @@ export type CardsQuiz = {
   cards: ScryfallCard.Any[];
   hints: {
     showCost: boolean;
-    showColor: boolean;
+    showColors: boolean;
+    showIdentity: boolean;
     showTypes: boolean;
+    showUsd: boolean;
+    showEur: boolean;
+    showTix: boolean;
   };
 };

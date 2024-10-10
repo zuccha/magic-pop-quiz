@@ -28,8 +28,12 @@ export default forwardRef<QuizCreationFormRefObject, QuizCreationFormProps>(
     const quantityRef = useRef<HTMLInputElement>(null);
     const timeRef = useRef<HTMLInputElement>(null);
     const showCostRef = useRef<HTMLInputElement>(null);
-    const showColorRef = useRef<HTMLInputElement>(null);
+    const showColorsRef = useRef<HTMLInputElement>(null);
+    const showIdentityRef = useRef<HTMLInputElement>(null);
     const showTypesRef = useRef<HTMLInputElement>(null);
+    const showUsdRef = useRef<HTMLInputElement>(null);
+    const showEurRef = useRef<HTMLInputElement>(null);
+    const showTixRef = useRef<HTMLInputElement>(null);
     const buttonRef = useRef<HTMLButtonElement>(null);
 
     useImperativeHandle(ref, () => ({
@@ -42,10 +46,15 @@ export default forwardRef<QuizCreationFormRefObject, QuizCreationFormProps>(
         if (timeRef.current) timeRef.current.value = msToTime(quiz.time);
         if (showCostRef.current)
           showCostRef.current.checked = quiz.hints.showCost;
-        if (showColorRef.current)
-          showColorRef.current.checked = quiz.hints.showColor;
+        if (showColorsRef.current)
+          showColorsRef.current.checked = quiz.hints.showColors;
+        if (showIdentityRef.current)
+          showIdentityRef.current.checked = quiz.hints.showIdentity;
         if (showTypesRef.current)
           showTypesRef.current.checked = quiz.hints.showTypes;
+        if (showUsdRef.current) showUsdRef.current.checked = quiz.hints.showUsd;
+        if (showEurRef.current) showEurRef.current.checked = quiz.hints.showEur;
+        if (showTixRef.current) showTixRef.current.checked = quiz.hints.showTix;
       },
     }));
 
@@ -108,6 +117,8 @@ export default forwardRef<QuizCreationFormRefObject, QuizCreationFormProps>(
         </div>
 
         <div className="QuizCreationForm_Options">
+          <span>Hints:</span>
+
           <label htmlFor="show-cost">
             <input
               type="checkbox"
@@ -115,16 +126,25 @@ export default forwardRef<QuizCreationFormRefObject, QuizCreationFormProps>(
               name="show-cost"
               ref={showCostRef}
             />
-            Show cost
+            Cost
           </label>
-          <label htmlFor="show-color">
+          <label htmlFor="show-colors">
             <input
               type="checkbox"
-              id="show-color"
-              name="show-color"
-              ref={showColorRef}
+              id="show-colors"
+              name="show-colors"
+              ref={showColorsRef}
             />
-            Show color
+            Colors
+          </label>
+          <label htmlFor="show-identity">
+            <input
+              type="checkbox"
+              id="show-identity"
+              name="show-identity"
+              ref={showIdentityRef}
+            />
+            Identity
           </label>
           <label htmlFor="show-types">
             <input
@@ -133,7 +153,34 @@ export default forwardRef<QuizCreationFormRefObject, QuizCreationFormProps>(
               name="show-types"
               ref={showTypesRef}
             />
-            Show types
+            Types
+          </label>
+          <label htmlFor="show-usd">
+            <input
+              type="checkbox"
+              id="show-usd"
+              name="show-usd"
+              ref={showUsdRef}
+            />
+            Price (USD)
+          </label>
+          <label htmlFor="show-eur">
+            <input
+              type="checkbox"
+              id="show-eur"
+              name="show-eur"
+              ref={showEurRef}
+            />
+            Price (EUR)
+          </label>
+          <label htmlFor="show-tix">
+            <input
+              type="checkbox"
+              id="show-tix"
+              name="show-tix"
+              ref={showTixRef}
+            />
+            Price (TIX)
           </label>
         </div>
 

@@ -37,7 +37,11 @@ export default function QuizPresets({ onSelectQuizPreset }: QuizPresetsProps) {
 function formatHints(hints: CardsQuiz["hints"]): string {
   const formattedHints: string[] = [];
   if (hints.showCost) formattedHints.push("cost");
-  if (hints.showColor) formattedHints.push("color");
+  if (hints.showColors) formattedHints.push("color");
+  if (hints.showIdentity) formattedHints.push("identity");
   if (hints.showTypes) formattedHints.push("types");
+  if (hints.showUsd) formattedHints.push("usd");
+  if (hints.showEur) formattedHints.push("eur");
+  if (hints.showTix) formattedHints.push("tix");
   return formattedHints.length > 0 ? formattedHints.join(", ") : "none";
 }

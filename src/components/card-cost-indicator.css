@@ -1,0 +1,10 @@
+.CardCostIndicator {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.CardCostIndicator_Divider {
+  width: 1em;
+  text-align: center;
+}

@@ -3,7 +3,15 @@ import { CardsQuiz } from "../models/cards-quiz";
 const minutes = 60 * 1000;
 const seconds = 1000;
 
-const hints = { showCost: true, showColor: false, showTypes: false };
+const hints = {
+  showCost: false,
+  showColors: false,
+  showIdentity: false,
+  showTypes: false,
+  showUsd: false,
+  showEur: false,
+  showTix: false,
+};
 
 const edhrecTop100Cards = (
   description: string,
@@ -18,7 +26,7 @@ const edhrecTop100Cards = (
   quantity: 100,
   cards: [],
   time: 20 * minutes,
-  hints,
+  hints: { ...hints, showCost: true },
 });
 
 const modernTop30ExpensiveCards = (): CardsQuiz => ({
@@ -29,7 +37,7 @@ const modernTop30ExpensiveCards = (): CardsQuiz => ({
   quantity: 30,
   cards: [],
   time: 9 * minutes + 59 * seconds,
-  hints,
+  hints: { ...hints, showUsd: true },
 });
 
 const quizPresets: CardsQuiz[] = [
