@@ -1,7 +1,8 @@
+import CardPreview from "./components/card-preview";
+import useCardSymbolInfos from "./data-hooks/use-card-symbol-infos";
 import HomePage from "./pages/home-page";
 import QuizPage from "./pages/quiz-page";
 import "./app.css";
-import useCardSymbolInfos from "./data-hooks/use-card-symbol-infos";
 
 const pages: Record<string, () => JSX.Element> = {
   "/cards-quiz": QuizPage,
@@ -26,6 +27,8 @@ export default function App() {
       <div className="App_Page">
         <Page />
       </div>
+
+      <CardPreview />
     </div>
   );
 }

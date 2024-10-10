@@ -9,6 +9,11 @@
   margin: 0;
 }
 
+.CardsQuiz h1.error,
+.CardsQuiz h2.error {
+  color: var(--color-danger-1);
+}
+
 .CardsQuiz h2 {
   font-family: monospace;
   font-size: 2em;
@@ -41,8 +46,9 @@
 }
 
 .CardsQuiz_Answers {
-  columns: auto 15em;
+  columns: auto 20em;
   column-gap: 0.5em;
+  font-size: 0.9em;
 }
 
 .CardsQuiz_Answers > div {

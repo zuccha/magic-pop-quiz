@@ -4,6 +4,7 @@ import { CardsQuizAnswer } from "../models/cards-quiz-answer";
 import { msToTime } from "../models/time";
 import CardColorsIndicator from "./card-colors-indicator";
 import CardCostIndicator from "./card-cost-indicator";
+import { updateCardPreview } from "./card-preview";
 import CardPriceIndicator from "./card-price-indicator";
 import "./cards-quiz.css";
 
@@ -199,13 +200,22 @@ export default function CardsQuiz({
 
               {guessed.has(answer.id) ? (
                 <span className="CardsQuiz_Answer_Name success">
-                  <a href={answer.url} target="_blank">
+                  <a
+                    {...updateCardPreview(answer.image)}
+                    href={answer.url}
+                    target="_blank"
+                  >
                     {answer.name}
                   </a>
                 </span>
               ) : timer.status === TimerStatus.Stopped ? (
                 <span className="CardsQuiz_Answer_Name failure">
-                  <a className="error" href={answer.url} target="_blank">
+                  <a
+                    {...updateCardPreview(answer.image)}
+                    className="error"
+                    href={answer.url}
+                    target="_blank"
+                  >
                     {answer.name}
                   </a>
                 </span>
