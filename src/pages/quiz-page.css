@@ -41,6 +41,7 @@
 .QuizPage_Answers > div {
   display: flex;
   align-items: stretch;
+  border: 1px solid var(--color-neutral-3);
 }
 
 .QuizPage_Answers > div:not(:first-child) {
@@ -50,15 +51,18 @@
 .QuizPage_Answer_Cost,
 .QuizPage_Answer_Name {
   padding: 0.1em 0.5em;
-  border: 1px solid var(--color-neutral-3);
 }
 
 .QuizPage_Answer_Cost {
   display: flex;
   align-items: center;
   justify-content: flex-end;
+  border-right: 1px solid var(--color-neutral-3);
   background-color: #f9f7f5;
-  border-right: none;
+}
+
+.QuizPage_Answer_Colors {
+  /* border-right: 1px solid var(--color-neutral-3); */
 }
 
 .QuizPage_Answer_Name {

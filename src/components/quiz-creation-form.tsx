@@ -131,7 +131,7 @@ export default forwardRef<QuizCreationFormRefObject, QuizCreationFormProps>(
               type="checkbox"
               id="show-types"
               name="show-types"
-              ref={showColorRef}
+              ref={showTypesRef}
             />
             Show types
           </label>

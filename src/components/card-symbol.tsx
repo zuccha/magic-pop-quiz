@@ -1,6 +1,5 @@
 import { useMemo } from "react";
-import cardSymbolInfos from "../data/card-symbol-infos";
-// import useCardSymbolInfos from "../data-hooks/use-card-symbol-infos";
+import useCardSymbolInfos from "../data-hooks/use-card-symbol-infos";
 import "./card-symbol.css";
 
 export type CardSymbolProps = {
@@ -8,9 +7,9 @@ export type CardSymbolProps = {
 };
 
 export default function CardSymbol({ symbol }: CardSymbolProps) {
-  // const cardSymbolInfos = useCardSymbolInfos();
-  // if (cardSymbolInfos.status !== "success")
-  //   return <abbr className="CardSymbol">{symbol}</abbr>;
+  const cardSymbolInfos = useCardSymbolInfos();
+  if (cardSymbolInfos.status !== "success")
+    return <abbr className="CardSymbol">{symbol}</abbr>;
 
   const [title, style] = useMemo(() => {
     const info =
@@ -22,7 +21,7 @@ export default function CardSymbol({ symbol }: CardSymbolProps) {
 
   return (
     <abbr className="CardSymbol" style={style} title={title}>
-      {symbol || "_"}
+      {symbol}
     </abbr>
   );
 }

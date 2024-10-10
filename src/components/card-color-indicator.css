@@ -1,0 +1,34 @@
+.CardColorIndicator {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: stretch;
+  height: 100%;
+}
+
+.CardColorIndicator > .W,
+.CardColorIndicator > .U,
+.CardColorIndicator > .B,
+.CardColorIndicator > .R,
+.CardColorIndicator > .G {
+  width: 0.5em;
+}
+
+.CardColorIndicator > .W {
+  background-color: #fcfcc0;
+}
+
+.CardColorIndicator > .U {
+  background-color: #abdff8;
+}
+
+.CardColorIndicator > .B {
+  background-color: #cbc2bf;
+}
+
+.CardColorIndicator > .R {
+  background-color: #faab8f;
+}
+
+.CardColorIndicator > .G {
+  background-color: #9bd3ae;
+}

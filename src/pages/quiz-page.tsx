@@ -1,5 +1,5 @@
 import { ScryfallList } from "@scryfall/api-types";
-import { useLayoutEffect, useState } from "react";
+import { useLayoutEffect, useMemo, useState } from "react";
 import answerPresets from "../data/answer-presets";
 import useTimer, { TimerStatus } from "../hooks/use-timer";
 import {
@@ -13,6 +13,7 @@ import {
 import { msToTime, timeToMs } from "../models/time";
 import "./quiz-page.css";
 import CardSymbol from "../components/card-symbol";
+import CardColorIndicator from "../components/card-color-indicator";
 
 export type Answer = {
   id: string;
@@ -20,6 +21,7 @@ export type Answer = {
   simpleName: string;
   set: string;
   cost: string[];
+  colors: string[];
   image: string;
   type: string;
   guessed: boolean;
@@ -36,7 +38,7 @@ export default function QuizPage() {
   const quantity = parseInt(params.get("qty") ?? "0") || 0;
   const time = timeToMs(params.get("time") ?? "10:00");
   const showCost = params.has("show-cost") ?? false;
-  // const showColor = params.has("show-color") ?? false;
+  const showColor = params.has("show-color") ?? false;
   // const showTypes = params.has("show-types") ?? false;
 
   const formattedOrder = formattedCardsSearchOrder[order];
@@ -44,13 +46,20 @@ export default function QuizPage() {
 
   const timer = useTimer(time);
 
-  const guessedCount = answers.reduce(
-    (count, answer) => count + Number(answer.guessed),
-    0,
+  const guessedCount = useMemo(
+    () => answers.reduce((count, answer) => count + Number(answer.guessed), 0),
+    [answers],
   );
 
-  const maxCostLength = Math.max(...answers.map((a) => a.cost.length));
-  const costWidth = `${maxCostLength + 1}em`;
+  const maxCostLength = useMemo(
+    () => Math.max(...answers.map((answer) => answer.cost.length)),
+    [answers],
+  );
+
+  const maxColorsLength = useMemo(
+    () => Math.max(...answers.map((answer) => answer.colors.length)),
+    [answers],
+  );
 
   useLayoutEffect(() => {
     const fetchCards = async () => {
@@ -69,11 +78,22 @@ export default function QuizPage() {
             set: card.set_name,
             cost: (card.mana_cost ?? "").match(/{[^}]+}/g) || [],
             image:
-              "card_faces" in card && "image_uris" in card.card_faces[0]
-                ? card.card_faces[0].image_uris?.normal || ""
-                : "image_uris" in card
-                  ? card.image_uris?.normal || ""
+              "image_uris" in card && card.image_uris
+                ? card.image_uris.normal
+                : "card_faces" in card &&
+                    "image_uris" in card.card_faces[0] &&
+                    card.card_faces[0].image_uris
+                  ? card.card_faces[0].image_uris.normal
                   : "",
+            colors: sortColors(
+              "colors" in card && card.colors
+                ? card.colors
+                : "card_faces" in card &&
+                    "colors" in card.card_faces[0] &&
+                    card.card_faces[0].colors
+                  ? card.card_faces[0].colors
+                  : [],
+            ),
             type:
               "card_faces" in card
                 ? (card.card_faces[0]?.type_line.split("-")[0] || "").trim()
@@ -127,11 +147,19 @@ export default function QuizPage() {
             {showCost && (
               <span
                 className="QuizPage_Answer_Cost"
-                style={{ width: costWidth }}
+                style={{ width: `${maxCostLength + 1}em` }}
               >
                 {answer.cost.map((symbol, i) => (
                   <CardSymbol key={i} symbol={symbol} />
                 ))}
+              </span>
+            )}
+            {showColor && (
+              <span
+                className="QuizPage_Answer_Colors"
+                style={{ width: `${maxColorsLength * 0.5}em` }}
+              >
+                <CardColorIndicator colors={answer.colors} />
               </span>
             )}
             <span className="QuizPage_Answer_Name">{answer.name}</span>
@@ -140,4 +168,22 @@ export default function QuizPage() {
       </div>
     </div>
   );
+}
+
+const colorSortingScore: Record<string, number> = {
+  W: 5,
+  U: 4,
+  B: 3,
+  R: 2,
+  G: 1,
+};
+
+function sortColors(colors: string[]): string[] {
+  return colors.sort((c1, c2) => {
+    const score1 = colorSortingScore[c1] ?? 0;
+    const score2 = colorSortingScore[c2] ?? 0;
+    if (score1 > score2) return -1;
+    if (score1 < score2) return 1;
+    return 0;
+  });
 }
