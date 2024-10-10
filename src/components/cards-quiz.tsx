@@ -109,16 +109,21 @@ export default function CardsQuiz({
               onChange={checkGuess}
               placeholder="Answer"
               ref={inputRef}
+              spellCheck={false}
             />
             <button onClick={timer.pause}>Pause</button>
-            <button onClick={timer.stop}>Give Up</button>
+            <button onClick={timer.stop} className="danger">
+              Give Up
+            </button>
           </div>
         )}
 
         {timer.status === TimerStatus.Paused && (
           <div className="CardsQuiz_Info_Paused">
             <button onClick={timer.resume}>Resume</button>
-            <button onClick={timer.stop}>Give Up</button>
+            <button onClick={timer.stop} className="danger">
+              Give Up
+            </button>
           </div>
         )}
 
@@ -186,9 +191,17 @@ export default function CardsQuiz({
             )}
 
             {guessed.has(answer.id) ? (
-              <span className="CardsQuiz_Answer_Name">{answer.name}</span>
+              <span className="CardsQuiz_Answer_Name success">
+                <a href={answer.url} target="_blank">
+                  {answer.name}
+                </a>
+              </span>
             ) : timer.status === TimerStatus.Stopped ? (
-              <span className="CardsQuiz_Answer_Name error">{answer.name}</span>
+              <span className="CardsQuiz_Answer_Name failure">
+                <a className="error" href={answer.url} target="_blank">
+                  {answer.name}
+                </a>
+              </span>
             ) : (
               <span className="CardsQuiz_Answer_Name">&nbsp;</span>
             )}

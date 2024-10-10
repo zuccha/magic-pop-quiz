@@ -8,6 +8,7 @@ export type CardsQuizAnswer = {
   colors: string[];
   type: string;
   image: string;
+  url: string;
   price: {
     usd: string;
     eur: string;

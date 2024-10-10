@@ -11,6 +11,8 @@
   --color-neutral-1: #fefefe;
   --color-neutral-3: #aeaeae;
   --color-danger-1: #a71f2a;
+  --color-danger-2: #a71f2a10;
+  --color-success-2: #1fa73320;
 
   /* color-scheme: light dark; */
   font-synthesis: none;
@@ -70,6 +72,11 @@ button {
   font-size: 0.9375em;
 }
 
+button.danger {
+  color: var(--color-danger-1);
+  border-color: var(--color-danger-1);
+}
+
 button:focus,
 button:hover {
   background-color: white;
@@ -115,6 +122,22 @@ label {
 
 label:has(input[type="checkbox"]) {
   cursor: pointer;
+}
+
+a,
+a:visited {
+  color: var(--color-primary-1);
+  text-decoration: none;
+}
+
+a:focus,
+a:hover {
+  text-decoration: underline;
+}
+
+a:focus {
+  color: black;
+  outline: none;
 }
 
 .error {

@@ -2,6 +2,7 @@
   display: flex;
   align-items: center;
   justify-content: flex-end;
+  gap: 1px;
 }
 
 .CardCostIndicator_Divider {

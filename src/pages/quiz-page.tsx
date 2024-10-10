@@ -1,7 +1,7 @@
 import { ScryfallList } from "@scryfall/api-types";
 import { useLayoutEffect, useState } from "react";
-// import answerPresets from "../data/answer-presets";
 import CardsQuiz from "../components/cards-quiz";
+import { CardsQuizAnswer } from "../models/cards-quiz-answer";
 import {
   formattedCardsSearchDirection,
   validateCardsSearchDirection,
@@ -10,32 +10,17 @@ import {
   formattedCardsSearchOrder,
   validateCardsSearchOrder,
 } from "../models/cards-search-order";
+import { formatHints } from "../models/hints";
 import { timeToMs } from "../models/time";
 import "./quiz-page.css";
 
-export type Answer = {
-  id: string;
-  name: string;
-  simpleName: string;
-  set: string;
-  cost: string[];
-  identity: string[];
-  colors: string[];
-  type: string;
-  image: string;
-  price: {
-    usd: string;
-    eur: string;
-    tix: string;
-  };
-  guessed: boolean;
-};
-
 export default function QuizPage() {
-  const [answers, setAnswers] = useState<Answer[] | undefined>(undefined);
+  const [answers, setAnswers] = useState<CardsQuizAnswer[] | undefined>(
+    undefined,
+  );
 
   const params = new URLSearchParams(document.location.search);
-  const name = params.get("name") ?? "";
+  const name = params.get("name") ?? "Unnamed";
   const query = params.get("q") ?? "";
   const order = validateCardsSearchOrder(params.get("order"));
   const direction = validateCardsSearchDirection(params.get("dir"));
@@ -44,13 +29,22 @@ export default function QuizPage() {
   const showCost = params.has("show-cost") ?? false;
   const showColors = params.has("show-colors") ?? false;
   const showIdentity = params.has("show-identity") ?? false;
-  // const showTypes = params.has("show-types") ?? false;
+  const showTypes = params.has("show-types") ?? false;
   const showUsd = params.has("show-usd") ?? false;
   const showEur = params.has("show-eur") ?? false;
   const showTix = params.has("show-tix") ?? false;
 
   const formattedOrder = formattedCardsSearchOrder[order];
   const formattedDirection = formattedCardsSearchDirection[direction];
+  const formattedHints = formatHints({
+    showColors,
+    showCost,
+    showEur,
+    showIdentity,
+    showTix,
+    showTypes,
+    showUsd,
+  });
 
   useLayoutEffect(() => {
     const fetchCards = async () => {
@@ -99,6 +93,7 @@ export default function QuizPage() {
                     card.card_faces[0].image_uris
                   ? card.card_faces[0].image_uris.normal
                   : "",
+            url: card.scryfall_uri,
             price: {
               usd:
                 card.prices.usd ??
@@ -121,7 +116,7 @@ export default function QuizPage() {
       <div>
         <h1>{name}</h1>
         <span>
-          <i>{`${query} | ${formattedOrder}, ${formattedDirection}`}</i>
+          <i>{`${query} | Order: ${formattedOrder}, ${formattedDirection} | Hints: ${formattedHints}`}</i>
         </span>
       </div>
 

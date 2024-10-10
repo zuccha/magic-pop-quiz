@@ -1,6 +1,7 @@
 import { ScryfallCard } from "@scryfall/api-types";
 import { CardsSearchDirection } from "./cards-search-direction";
 import { CardsSearchOrder } from "./cards-search-order";
+import { Hints } from "./hints";
 
 export type CardsQuiz = {
   name: string;
@@ -10,13 +11,5 @@ export type CardsQuiz = {
   quantity: number;
   time: number;
   cards: ScryfallCard.Any[];
-  hints: {
-    showCost: boolean;
-    showColors: boolean;
-    showIdentity: boolean;
-    showTypes: boolean;
-    showUsd: boolean;
-    showEur: boolean;
-    showTix: boolean;
-  };
+  hints: Hints;
 };

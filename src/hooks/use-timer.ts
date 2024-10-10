@@ -64,7 +64,7 @@ export default function useTimer(duration: number): Timer {
       } else {
         setElapsed(nextElapsed);
       }
-    }, 1000);
+    }, 500);
 
     setStatus(TimerStatus.Running);
   }, [duration, stop]);

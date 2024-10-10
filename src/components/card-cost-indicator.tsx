@@ -10,7 +10,7 @@ export default function CardCostIndicator({
   cost,
   size,
 }: CardCostIndicatorProps) {
-  const style = size ? { width: `${size}em` } : undefined;
+  const style = size ? { width: `calc(${size}em + ${size - 1}px)` } : undefined;
   return (
     <div className="CardCostIndicator" style={style}>
       {cost.map((symbol, i) =>
