@@ -35,8 +35,9 @@ export default function QuizPage() {
   const direction = validateCardsSearchDirection(params.get("dir"));
   const quantity = parseInt(params.get("qty") ?? "0") || 0;
   const time = timeToMs(params.get("time") ?? "10:00");
-  const showMana = params.has("show-mana") ?? false;
-  // const showSet = params.has("show-set") ?? false;
+  const showCost = params.has("show-cost") ?? false;
+  // const showColor = params.has("show-color") ?? false;
+  // const showTypes = params.has("show-types") ?? false;
 
   const formattedOrder = formattedCardsSearchOrder[order];
   const formattedDirection = formattedCardsSearchDirection[direction];
@@ -123,7 +124,7 @@ export default function QuizPage() {
       <div className="QuizPage_Answers">
         {answers.map((answer) => (
           <div key={answer.id}>
-            {showMana && (
+            {showCost && (
               <span
                 className="QuizPage_Answer_Cost"
                 style={{ width: costWidth }}

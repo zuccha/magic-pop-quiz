@@ -27,8 +27,9 @@ export default forwardRef<QuizCreationFormRefObject, QuizCreationFormProps>(
     const directionRef = useRef<HTMLSelectElement>(null);
     const quantityRef = useRef<HTMLInputElement>(null);
     const timeRef = useRef<HTMLInputElement>(null);
-    const showManaRef = useRef<HTMLInputElement>(null);
-    const showSetRef = useRef<HTMLInputElement>(null);
+    const showCostRef = useRef<HTMLInputElement>(null);
+    const showColorRef = useRef<HTMLInputElement>(null);
+    const showTypesRef = useRef<HTMLInputElement>(null);
     const buttonRef = useRef<HTMLButtonElement>(null);
 
     useImperativeHandle(ref, () => ({
@@ -39,10 +40,12 @@ export default forwardRef<QuizCreationFormRefObject, QuizCreationFormProps>(
         if (directionRef.current) directionRef.current.value = quiz.direction;
         if (quantityRef.current) quantityRef.current.value = `${quiz.quantity}`;
         if (timeRef.current) timeRef.current.value = msToTime(quiz.time);
-        if (showManaRef.current)
-          showManaRef.current.checked = quiz.options.showMana;
-        if (showSetRef.current)
-          showSetRef.current.checked = quiz.options.showSet;
+        if (showCostRef.current)
+          showCostRef.current.checked = quiz.hints.showCost;
+        if (showColorRef.current)
+          showColorRef.current.checked = quiz.hints.showColor;
+        if (showTypesRef.current)
+          showTypesRef.current.checked = quiz.hints.showTypes;
       },
     }));
 
@@ -105,23 +108,32 @@ export default forwardRef<QuizCreationFormRefObject, QuizCreationFormProps>(
         </div>
 
         <div className="QuizCreationForm_Options">
-          <label htmlFor="show-mana">
+          <label htmlFor="show-cost">
             <input
               type="checkbox"
-              id="show-mana"
-              name="show-mana"
-              ref={showManaRef}
+              id="show-cost"
+              name="show-cost"
+              ref={showCostRef}
             />
-            Show mana
+            Show cost
           </label>
-          <label htmlFor="show-set">
+          <label htmlFor="show-color">
             <input
               type="checkbox"
-              id="show-set"
-              name="show-set"
-              ref={showSetRef}
+              id="show-color"
+              name="show-color"
+              ref={showColorRef}
             />
-            Show set
+            Show color
+          </label>
+          <label htmlFor="show-types">
+            <input
+              type="checkbox"
+              id="show-types"
+              name="show-types"
+              ref={showColorRef}
+            />
+            Show types
           </label>
         </div>
 

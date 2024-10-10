@@ -3,7 +3,7 @@ import { CardsQuiz } from "../models/cards-quiz";
 const minutes = 60 * 1000;
 const seconds = 1000;
 
-const options = { showMana: false, showSet: false };
+const hints = { showCost: true, showColor: false, showTypes: false };
 
 const edhrecTop100Cards = (
   description: string,
@@ -18,7 +18,7 @@ const edhrecTop100Cards = (
   quantity: 100,
   cards: [],
   time: 20 * minutes,
-  options,
+  hints,
 });
 
 const modernTop30ExpensiveCards = (): CardsQuiz => ({
@@ -29,7 +29,7 @@ const modernTop30ExpensiveCards = (): CardsQuiz => ({
   quantity: 30,
   cards: [],
   time: 9 * minutes + 59 * seconds,
-  options,
+  hints,
 });
 
 const quizPresets: CardsQuiz[] = [

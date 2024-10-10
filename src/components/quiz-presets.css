@@ -36,3 +36,8 @@
 .QuizPresets td {
   font-size: 100%;
 }
+
+.QuizPresets td.narrow {
+  width: 1%;
+  white-space: nowrap;
+}

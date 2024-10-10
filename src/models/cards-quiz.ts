@@ -10,8 +10,9 @@ export type CardsQuiz = {
   quantity: number;
   time: number;
   cards: ScryfallCard.Any[];
-  options: {
-    showMana: boolean;
-    showSet: boolean;
+  hints: {
+    showCost: boolean;
+    showColor: boolean;
+    showTypes: boolean;
   };
 };
