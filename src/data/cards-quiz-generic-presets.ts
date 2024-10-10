@@ -11,6 +11,7 @@ const hints = {
   showUsd: false,
   showEur: false,
   showTix: false,
+  showStats: false,
 };
 
 const lands = (title: string, type: string): CardsQuiz => ({
@@ -50,7 +51,7 @@ const fatties = (): CardsQuiz => ({
   direction: "asc",
   quantity: 0,
   time: 15 * minutes,
-  hints: { ...hints },
+  hints: { ...hints, showStats: true },
 });
 
 const cardsQuizGenericPresets: CardsQuiz[] = [

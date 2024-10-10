@@ -6,6 +6,7 @@ export type Hints = {
   showUsd: boolean;
   showEur: boolean;
   showTix: boolean;
+  showStats: boolean;
 };
 
 export function formatHints(hints: Hints): string {
@@ -17,5 +18,6 @@ export function formatHints(hints: Hints): string {
   if (hints.showUsd) formattedHints.push("usd");
   if (hints.showEur) formattedHints.push("eur");
   if (hints.showTix) formattedHints.push("tix");
+  if (hints.showStats) formattedHints.push("stats");
   return formattedHints.length > 0 ? formattedHints.join(", ") : "none";
 }

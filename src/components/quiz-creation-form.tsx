@@ -31,6 +31,7 @@ export type QuizCreationFormProps = {
   defaultShowUsd?: boolean;
   defaultShowEur?: boolean;
   defaultShowTix?: boolean;
+  defaultShowStats?: boolean;
 };
 
 export default forwardRef<QuizCreationFormRefObject, QuizCreationFormProps>(
@@ -49,6 +50,7 @@ export default forwardRef<QuizCreationFormRefObject, QuizCreationFormProps>(
       defaultShowUsd = false,
       defaultShowEur = false,
       defaultShowTix = false,
+      defaultShowStats = false,
     },
     ref,
   ) {
@@ -65,6 +67,7 @@ export default forwardRef<QuizCreationFormRefObject, QuizCreationFormProps>(
     const showUsdRef = useRef<HTMLInputElement>(null);
     const showEurRef = useRef<HTMLInputElement>(null);
     const showTixRef = useRef<HTMLInputElement>(null);
+    const showStatsRef = useRef<HTMLInputElement>(null);
 
     useImperativeHandle(ref, () => ({
       configureQuiz: (quiz: CardsQuiz) => {
@@ -85,6 +88,8 @@ export default forwardRef<QuizCreationFormRefObject, QuizCreationFormProps>(
         if (showUsdRef.current) showUsdRef.current.checked = quiz.hints.showUsd;
         if (showEurRef.current) showEurRef.current.checked = quiz.hints.showEur;
         if (showTixRef.current) showTixRef.current.checked = quiz.hints.showTix;
+        if (showStatsRef.current)
+          showStatsRef.current.checked = quiz.hints.showStats;
       },
     }));
 
@@ -235,6 +240,16 @@ export default forwardRef<QuizCreationFormRefObject, QuizCreationFormProps>(
               type="checkbox"
             />
             Price (TIX)
+          </label>
+          <label htmlFor="show-stats">
+            <input
+              defaultChecked={defaultShowStats}
+              id="show-stats"
+              name="show-stats"
+              ref={showStatsRef}
+              type="checkbox"
+            />
+            P/T
           </label>
         </div>
 

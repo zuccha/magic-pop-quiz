@@ -6,6 +6,7 @@ import CardColorsIndicator from "./card-colors-indicator";
 import CardCostIndicator from "./card-cost-indicator";
 import { updateCardPreview } from "./card-preview";
 import CardPriceIndicator from "./card-price-indicator";
+import CardStatsIndicator from "./card-stats-indicator";
 import "./cards-quiz.css";
 
 export type CardsQuizProps = {
@@ -17,6 +18,7 @@ export type CardsQuizProps = {
   showPriceEur?: boolean;
   showPriceTix?: boolean;
   showPriceUsd?: boolean;
+  showStats?: boolean;
 };
 
 export default function CardsQuiz({
@@ -28,6 +30,7 @@ export default function CardsQuiz({
   showPriceEur = false,
   showPriceTix = false,
   showPriceUsd = false,
+  showStats = false,
 }: CardsQuizProps) {
   const [guessed, setGuessed] = useState<Set<string>>(new Set());
   const inputRef = useRef<HTMLInputElement>(null);
@@ -68,6 +71,17 @@ export default function CardsQuiz({
 
   const maxTixLength = useMemo(
     () => Math.max(...answers.map((answer) => answer.price.tix.length)),
+    [answers],
+  );
+
+  const maxStatsLength = useMemo(
+    () =>
+      Math.max(
+        ...answers.map(
+          (answer) =>
+            answer.stats.power.length + answer.stats.toughness.length + 1,
+        ),
+      ),
     [answers],
   );
 
@@ -177,6 +191,15 @@ export default function CardsQuiz({
                     currency=""
                     price={answer.price.tix}
                     size={maxTixLength}
+                  />
+                </div>
+              )}
+              {showStats && (
+                <div className="CardsQuiz_Answer_Text">
+                  <CardStatsIndicator
+                    power={answer.stats.power}
+                    toughness={answer.stats.toughness}
+                    size={maxStatsLength}
                   />
                 </div>
               )}

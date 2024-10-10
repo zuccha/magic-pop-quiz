@@ -7,6 +7,10 @@ export type CardsQuizAnswer = {
   identity: string[];
   colors: string[];
   type: string;
+  stats: {
+    power: string;
+    toughness: string;
+  };
   image: string;
   url: string;
   price: {

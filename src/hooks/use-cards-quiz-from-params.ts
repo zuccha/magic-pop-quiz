@@ -28,6 +28,7 @@ export default function useCardsQuizFromParams(): CardsQuiz {
       showUsd: params.has("show-usd") ?? false,
       showEur: params.has("show-eur") ?? false,
       showTix: params.has("show-tix") ?? false,
+      showStats: params.has("show-stats") ?? false,
     },
   };
 }

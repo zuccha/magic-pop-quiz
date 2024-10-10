@@ -36,6 +36,7 @@ export default function QuizPage() {
     if (quiz.hints.showUsd) url.searchParams.set("show-usd", "on");
     if (quiz.hints.showEur) url.searchParams.set("show-eur", "on");
     if (quiz.hints.showTix) url.searchParams.set("show-tix", "on");
+    if (quiz.hints.showStats) url.searchParams.set("show-stats", "on");
     document.location.href = url.href;
   }, [quiz]);
 
@@ -89,6 +90,16 @@ export default function QuizPage() {
               "card_faces" in card
                 ? (card.card_faces[0]?.type_line.split("-")[0] || "").trim()
                 : (card.type_line.split("-")[0] || "").trim(),
+            stats: {
+              power:
+                "card_faces" in card
+                  ? (card.card_faces[0]?.power ?? "-")
+                  : (card.power ?? "-"),
+              toughness:
+                "card_faces" in card
+                  ? (card.card_faces[0]?.toughness ?? "-")
+                  : (card.toughness ?? "-"),
+            },
             image:
               "image_uris" in card && card.image_uris
                 ? card.image_uris.normal
@@ -142,6 +153,7 @@ export default function QuizPage() {
           showPriceEur={quiz.hints.showEur}
           showPriceTix={quiz.hints.showTix}
           showPriceUsd={quiz.hints.showUsd}
+          showStats={quiz.hints.showStats}
         />
       ) : error ? (
         <div className="QuizPage_Message">

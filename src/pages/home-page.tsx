@@ -15,13 +15,13 @@ import { CardsQuiz } from "../models/cards-quiz";
 import "./home-page.css";
 
 const presets = [
+  { name: "Generic", presets: cardsQuizGenericPresets },
   { name: "Commander", presets: cardsQuizCommanderPresets },
   { name: "Vintage", presets: cardsQuizVintagePresets },
   { name: "Legacy", presets: cardsQuizLegacyPresets },
   { name: "Modern", presets: cardsQuizModernPresets },
   { name: "Pioneer", presets: cardsQuizPioneerPresets },
   { name: "Standard", presets: cardsQuizStandardPresets },
-  { name: "Generic", presets: cardsQuizGenericPresets },
 ] as const;
 
 type Preset = (typeof presets)[number];

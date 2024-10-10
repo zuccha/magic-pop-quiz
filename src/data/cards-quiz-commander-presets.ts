@@ -11,6 +11,7 @@ const hints = {
   showUsd: false,
   showEur: false,
   showTix: false,
+  showStats: false,
 };
 
 const edhrecTop100Cards = (
