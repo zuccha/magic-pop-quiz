@@ -22,7 +22,7 @@ const edhrecTop100Cards = (
     : "EDHREC's Top 100 Cards",
   query: condition ? `format:commander ${condition}` : "format:commander",
   order: "edhrec",
-  direction: "auto",
+  direction: "asc",
   quantity: 100,
   cards: [],
   time: 20 * minutes,

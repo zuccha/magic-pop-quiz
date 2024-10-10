@@ -142,72 +142,76 @@ export default function CardsQuiz({
         )}
       </div>
 
-      <div className="CardsQuiz_Answers">
-        {answers.map((answer) => (
-          <div key={answer.id}>
-            {showPriceUsd && (
-              <div className="CardsQuiz_Answer_Text">
-                <CardPriceIndicator
-                  currency="$"
-                  price={answer.price.usd}
-                  size={maxUsdLength}
+      {timer.status === TimerStatus.Paused ? (
+        <i>Quiz paused</i>
+      ) : (
+        <div className="CardsQuiz_Answers">
+          {answers.map((answer) => (
+            <div key={answer.id}>
+              {showPriceUsd && (
+                <div className="CardsQuiz_Answer_Text">
+                  <CardPriceIndicator
+                    currency="$"
+                    price={answer.price.usd}
+                    size={maxUsdLength}
+                  />
+                </div>
+              )}
+              {showPriceEur && (
+                <div className="CardsQuiz_Answer_Text">
+                  <CardPriceIndicator
+                    currency="€"
+                    price={answer.price.eur}
+                    size={maxEurLength}
+                  />
+                </div>
+              )}
+              {showPriceTix && (
+                <div className="CardsQuiz_Answer_Text">
+                  <CardPriceIndicator
+                    currency=""
+                    price={answer.price.tix}
+                    size={maxTixLength}
+                  />
+                </div>
+              )}
+              {showCost && (
+                <div className="CardsQuiz_Answer_Text">
+                  <CardCostIndicator cost={answer.cost} size={maxCostLength} />
+                </div>
+              )}
+              {showColors && (
+                <CardColorsIndicator
+                  colors={answer.colors}
+                  size={maxColorsLength}
                 />
-              </div>
-            )}
-            {showPriceEur && (
-              <div className="CardsQuiz_Answer_Text">
-                <CardPriceIndicator
-                  currency="€"
-                  price={answer.price.eur}
-                  size={maxEurLength}
+              )}
+              {showIdentity && (
+                <CardColorsIndicator
+                  colors={answer.identity}
+                  size={maxIdentityLength}
                 />
-              </div>
-            )}
-            {showPriceTix && (
-              <div className="CardsQuiz_Answer_Text">
-                <CardPriceIndicator
-                  currency=""
-                  price={answer.price.tix}
-                  size={maxTixLength}
-                />
-              </div>
-            )}
-            {showCost && (
-              <div className="CardsQuiz_Answer_Text">
-                <CardCostIndicator cost={answer.cost} size={maxCostLength} />
-              </div>
-            )}
-            {showColors && (
-              <CardColorsIndicator
-                colors={answer.colors}
-                size={maxColorsLength}
-              />
-            )}
-            {showIdentity && (
-              <CardColorsIndicator
-                colors={answer.identity}
-                size={maxIdentityLength}
-              />
-            )}
+              )}
 
-            {guessed.has(answer.id) ? (
-              <span className="CardsQuiz_Answer_Name success">
-                <a href={answer.url} target="_blank">
-                  {answer.name}
-                </a>
-              </span>
-            ) : timer.status === TimerStatus.Stopped ? (
-              <span className="CardsQuiz_Answer_Name failure">
-                <a className="error" href={answer.url} target="_blank">
-                  {answer.name}
-                </a>
-              </span>
-            ) : (
-              <span className="CardsQuiz_Answer_Name">&nbsp;</span>
-            )}
-          </div>
-        ))}
-      </div>
+              {guessed.has(answer.id) ? (
+                <span className="CardsQuiz_Answer_Name success">
+                  <a href={answer.url} target="_blank">
+                    {answer.name}
+                  </a>
+                </span>
+              ) : timer.status === TimerStatus.Stopped ? (
+                <span className="CardsQuiz_Answer_Name failure">
+                  <a className="error" href={answer.url} target="_blank">
+                    {answer.name}
+                  </a>
+                </span>
+              ) : (
+                <span className="CardsQuiz_Answer_Name">&nbsp;</span>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

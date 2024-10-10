@@ -103,7 +103,6 @@ export default function QuizPage() {
               eur: card.prices.eur ?? card.prices.eur_foil ?? "-",
               tix: card.prices.tix ?? "-",
             },
-            guessed: false,
           };
         }),
       );
@@ -131,9 +130,7 @@ export default function QuizPage() {
           showPriceTix={showTix}
           showPriceUsd={showUsd}
         />
-      ) : (
-        <span>Loading...</span>
-      )}
+      ) : null}
     </div>
   );
 }
