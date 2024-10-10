@@ -1,4 +1,4 @@
-import { ScryfallList } from "@scryfall/api-types";
+import { ScryfallCard } from "@scryfall/api-types";
 import { useCallback, useLayoutEffect, useState } from "react";
 import CardsQuiz from "../components/cards-quiz";
 import useCardsQuizFromParams from "../hooks/use-cards-quiz-from-params";
@@ -10,6 +10,7 @@ import { msToTime } from "../models/time";
 import "./quiz-page.css";
 
 export default function QuizPage() {
+  const [error, setError] = useState("");
   const [answers, setAnswers] = useState<CardsQuizAnswer[] | undefined>(
     undefined,
   );
@@ -44,8 +45,19 @@ export default function QuizPage() {
       url.searchParams.set("q", quiz.query);
       url.searchParams.set("order", quiz.order);
       url.searchParams.set("dir", quiz.direction);
-      const response: ScryfallList.Cards = await (await fetch(url)).json();
-      const cards = response.data;
+      const response = await (await fetch(url)).json();
+      if (response.object === "error") {
+        setError(
+          response.status === 404
+            ? "No cards found for the given query"
+            : "An error occurred",
+        );
+        setAnswers(undefined);
+        return;
+      }
+
+      const cards = response.data as ScryfallCard.Any[];
+      setError("");
       setAnswers(
         cards.slice(0, quiz.quantity || undefined).map((card) => {
           return {
@@ -99,7 +111,10 @@ export default function QuizPage() {
         }),
       );
     };
-    fetchCards();
+
+    fetchCards().catch(() => {
+      setError("An error occurred");
+    });
   }, [quiz.quantity, quiz.query, quiz.order, quiz.direction]);
 
   return (
@@ -128,7 +143,18 @@ export default function QuizPage() {
           showPriceTix={quiz.hints.showTix}
           showPriceUsd={quiz.hints.showUsd}
         />
-      ) : null}
+      ) : error ? (
+        <div className="QuizPage_Message">
+          <h2>{error}</h2>
+          <button className="solid" onClick={edit}>
+            Edit quiz
+          </button>
+        </div>
+      ) : (
+        <div className="QuizPage_Message">
+          <h2>Retrieving cards...</h2>
+        </div>
+      )}
     </div>
   );
 }

@@ -13,3 +13,15 @@
 .QuizPage_Header h1 {
   margin: 0;
 }
+
+.QuizPage_Message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 3em auto 0 auto;
+  gap: 1em;
+}
+
+.QuizPage_Message > button {
+  width: 10em;
+}
