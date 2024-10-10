@@ -1,17 +1,12 @@
 import { ScryfallList } from "@scryfall/api-types";
-import { useLayoutEffect, useState } from "react";
+import { useCallback, useLayoutEffect, useState } from "react";
 import CardsQuiz from "../components/cards-quiz";
+import useCardsQuizFromParams from "../hooks/use-cards-quiz-from-params";
 import { CardsQuizAnswer } from "../models/cards-quiz-answer";
-import {
-  formattedCardsSearchDirection,
-  validateCardsSearchDirection,
-} from "../models/cards-search-direction";
-import {
-  formattedCardsSearchOrder,
-  validateCardsSearchOrder,
-} from "../models/cards-search-order";
+import { formattedCardsSearchDirection } from "../models/cards-search-direction";
+import { formattedCardsSearchOrder } from "../models/cards-search-order";
 import { formatHints } from "../models/hints";
-import { timeToMs } from "../models/time";
+import { msToTime } from "../models/time";
 import "./quiz-page.css";
 
 export default function QuizPage() {
@@ -19,43 +14,40 @@ export default function QuizPage() {
     undefined,
   );
 
-  const params = new URLSearchParams(document.location.search);
-  const name = params.get("name") ?? "Unnamed";
-  const query = params.get("q") ?? "";
-  const order = validateCardsSearchOrder(params.get("order"));
-  const direction = validateCardsSearchDirection(params.get("dir"));
-  const quantity = parseInt(params.get("qty") ?? "0") || 0;
-  const time = timeToMs(params.get("time") ?? "10:00");
-  const showCost = params.has("show-cost") ?? false;
-  const showColors = params.has("show-colors") ?? false;
-  const showIdentity = params.has("show-identity") ?? false;
-  const showTypes = params.has("show-types") ?? false;
-  const showUsd = params.has("show-usd") ?? false;
-  const showEur = params.has("show-eur") ?? false;
-  const showTix = params.has("show-tix") ?? false;
+  const quiz = useCardsQuizFromParams();
 
-  const formattedOrder = formattedCardsSearchOrder[order];
-  const formattedDirection = formattedCardsSearchDirection[direction];
-  const formattedHints = formatHints({
-    showColors,
-    showCost,
-    showEur,
-    showIdentity,
-    showTix,
-    showTypes,
-    showUsd,
-  });
+  const formattedOrder = formattedCardsSearchOrder[quiz.order];
+  const formattedDirection = formattedCardsSearchDirection[quiz.direction];
+  const formattedHints = formatHints(quiz.hints);
+
+  const edit = useCallback(() => {
+    const url = new URL(document.location.origin);
+    url.searchParams.set("name", quiz.name);
+    url.searchParams.set("q", quiz.query);
+    url.searchParams.set("order", quiz.order);
+    url.searchParams.set("dir", quiz.direction);
+    url.searchParams.set("qty", `${quiz.quantity}`);
+    url.searchParams.set("time", msToTime(quiz.time));
+    if (quiz.hints.showCost) url.searchParams.set("show-cost", "on");
+    if (quiz.hints.showColors) url.searchParams.set("show-colors", "on");
+    if (quiz.hints.showIdentity) url.searchParams.set("show-identity", "on");
+    if (quiz.hints.showTypes) url.searchParams.set("show-types", "on");
+    if (quiz.hints.showUsd) url.searchParams.set("show-usd", "on");
+    if (quiz.hints.showEur) url.searchParams.set("show-eur", "on");
+    if (quiz.hints.showTix) url.searchParams.set("show-tix", "on");
+    document.location.href = url.href;
+  }, [quiz]);
 
   useLayoutEffect(() => {
     const fetchCards = async () => {
       const url = new URL("https://api.scryfall.com/cards/search");
-      url.searchParams.set("q", query);
-      url.searchParams.set("order", order);
-      url.searchParams.set("dir", direction);
+      url.searchParams.set("q", quiz.query);
+      url.searchParams.set("order", quiz.order);
+      url.searchParams.set("dir", quiz.direction);
       const response: ScryfallList.Cards = await (await fetch(url)).json();
       const cards = response.data;
       setAnswers(
-        cards.slice(0, quantity || undefined).map((card) => {
+        cards.slice(0, quiz.quantity || undefined).map((card) => {
           return {
             id: card.id,
             name: card.name,
@@ -108,27 +100,33 @@ export default function QuizPage() {
       );
     };
     fetchCards();
-  }, [quantity, query, order, direction]);
+  }, [quiz.quantity, quiz.query, quiz.order, quiz.direction]);
 
   return (
     <div className="QuizPage">
-      <div>
-        <h1>{name}</h1>
-        <span>
-          <i>{`${query} | Order: ${formattedOrder}, ${formattedDirection} | Hints: ${formattedHints}`}</i>
-        </span>
+      <div className="QuizPage_Header">
+        <div>
+          <h1>{quiz.name || "Unnamed"}</h1>
+          <span>
+            <i>{`${quiz.query} | Order: ${formattedOrder}, ${formattedDirection} | Hints: ${formattedHints}`}</i>
+          </span>
+        </div>
+
+        <button className="small" onClick={edit}>
+          Edit
+        </button>
       </div>
 
       {answers ? (
         <CardsQuiz
           answers={answers}
-          duration={time}
-          showColors={showColors}
-          showCost={showCost}
-          showIdentity={showIdentity}
-          showPriceEur={showEur}
-          showPriceTix={showTix}
-          showPriceUsd={showUsd}
+          duration={quiz.time}
+          showColors={quiz.hints.showColors}
+          showCost={quiz.hints.showCost}
+          showIdentity={quiz.hints.showIdentity}
+          showPriceEur={quiz.hints.showEur}
+          showPriceTix={quiz.hints.showTix}
+          showPriceUsd={quiz.hints.showUsd}
         />
       ) : null}
     </div>

@@ -24,7 +24,6 @@ const edhrecTop100Cards = (
   order: "edhrec",
   direction: "asc",
   quantity: 100,
-  cards: [],
   time: 20 * minutes,
   hints: { ...hints, showCost: true },
 });
@@ -35,7 +34,6 @@ const modernTop30ExpensiveCards = (): CardsQuiz => ({
   order: "usd",
   direction: "desc",
   quantity: 30,
-  cards: [],
   time: 9 * minutes + 59 * seconds,
   hints: { ...hints, showUsd: true },
 });

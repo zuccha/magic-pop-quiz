@@ -4,6 +4,12 @@
   gap: 2em;
 }
 
-.QuizPage h1 {
+.QuizPage_Header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.QuizPage_Header h1 {
   margin: 0;
 }

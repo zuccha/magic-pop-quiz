@@ -97,7 +97,9 @@ export default function CardsQuiz({
       <div className="CardsQuiz_Info">
         {timer.status === TimerStatus.Ready && (
           <div className="CardsQuiz_Info_Ready">
-            <button onClick={timer.start}>Start</button>
+            <button className="solid" onClick={timer.start}>
+              Start
+            </button>
           </div>
         )}
 
@@ -129,7 +131,9 @@ export default function CardsQuiz({
 
         {timer.status === TimerStatus.Stopped && (
           <div className="CardsQuiz_Info_Stopped">
-            <button onClick={reset}>Reset</button>
+            <button className="solid" onClick={reset}>
+              Reset
+            </button>
           </div>
         )}
 

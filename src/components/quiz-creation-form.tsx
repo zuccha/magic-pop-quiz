@@ -1,26 +1,57 @@
 import { forwardRef, useRef, useImperativeHandle } from "react";
 import { CardsQuiz } from "../models/cards-quiz";
-import { msToTime } from "../models/time";
-import "./quiz-creation-form.css";
 import {
+  CardsSearchOrder,
   cardsSearchOrders,
   formattedCardsSearchOrder as formattedCardsSearchOrders,
 } from "../models/cards-search-order";
 import {
+  CardsSearchDirection,
   cardsSearchDirections,
   formattedCardsSearchDirection as formattedCardsSearchDirections,
 } from "../models/cards-search-direction";
+import { msToTime } from "../models/time";
+import "./quiz-creation-form.css";
 
 export type QuizCreationFormRefObject = {
   configureQuiz: (quiz: CardsQuiz) => void;
 };
 
 export type QuizCreationFormProps = {
-  onCreateQuiz: (quiz: CardsQuiz) => void;
+  defaultName?: string;
+  defaultQuery?: string;
+  defaultOrder?: CardsSearchOrder;
+  defaultDirection?: CardsSearchDirection;
+  defaultQuantity?: number;
+  defaultTime?: number;
+  defaultShowCost?: boolean;
+  defaultShowColors?: boolean;
+  defaultShowIdentity?: boolean;
+  defaultShowTypes?: boolean;
+  defaultShowUsd?: boolean;
+  defaultShowEur?: boolean;
+  defaultShowTix?: boolean;
 };
 
 export default forwardRef<QuizCreationFormRefObject, QuizCreationFormProps>(
-  function QuizCreationForm({}, ref) {
+  function QuizCreationForm(
+    {
+      defaultName = "",
+      defaultQuery = "",
+      defaultOrder = "name",
+      defaultDirection = "auto",
+      defaultQuantity = 50,
+      defaultTime = 10 * 60 * 1000,
+      defaultShowCost = false,
+      defaultShowColors = false,
+      defaultShowIdentity = false,
+      defaultShowTypes = false,
+      defaultShowUsd = false,
+      defaultShowEur = false,
+      defaultShowTix = false,
+    },
+    ref,
+  ) {
     const nameRef = useRef<HTMLInputElement>(null);
     const queryRef = useRef<HTMLInputElement>(null);
     const orderRef = useRef<HTMLSelectElement>(null);
@@ -34,7 +65,6 @@ export default forwardRef<QuizCreationFormRefObject, QuizCreationFormProps>(
     const showUsdRef = useRef<HTMLInputElement>(null);
     const showEurRef = useRef<HTMLInputElement>(null);
     const showTixRef = useRef<HTMLInputElement>(null);
-    const buttonRef = useRef<HTMLButtonElement>(null);
 
     useImperativeHandle(ref, () => ({
       configureQuiz: (quiz: CardsQuiz) => {
@@ -61,10 +91,16 @@ export default forwardRef<QuizCreationFormRefObject, QuizCreationFormProps>(
     return (
       <form className="QuizCreationForm" action="/cards-quiz">
         <div className="QuizCreationForm_Inputs">
-          <input name="name" placeholder="Name" ref={nameRef} required />
+          <input
+            defaultValue={defaultName}
+            name="name"
+            placeholder="Name"
+            ref={nameRef}
+            required
+          />
 
           <input
-            defaultValue={100}
+            defaultValue={defaultQuantity}
             max={175}
             min={1}
             name="qty"
@@ -77,7 +113,7 @@ export default forwardRef<QuizCreationFormRefObject, QuizCreationFormProps>(
           />
 
           <input
-            defaultValue="10:00"
+            defaultValue={msToTime(defaultTime)}
             name="time"
             pattern="[0-5]?\d:[0-5]?\d"
             placeholder="Time"
@@ -90,13 +126,19 @@ export default forwardRef<QuizCreationFormRefObject, QuizCreationFormProps>(
 
         <div className="QuizCreationForm_Inputs">
           <input
+            defaultValue={defaultQuery}
             name="q"
             placeholder="Scryfall query"
             ref={queryRef}
             required
           />
 
-          <select name="order" ref={orderRef} required>
+          <select
+            defaultValue={defaultOrder}
+            name="order"
+            ref={orderRef}
+            required
+          >
             {cardsSearchOrders.map((order) => (
               <option key={order} value={order}>
                 {formattedCardsSearchOrders[order]}
@@ -104,7 +146,12 @@ export default forwardRef<QuizCreationFormRefObject, QuizCreationFormProps>(
             ))}
           </select>
 
-          <select name="dir" ref={directionRef} required>
+          <select
+            defaultValue={defaultDirection}
+            name="dir"
+            ref={directionRef}
+            required
+          >
             {cardsSearchDirections.map((direction) => (
               <option key={direction} value={direction}>
                 {formattedCardsSearchDirections[direction]}
@@ -116,77 +163,89 @@ export default forwardRef<QuizCreationFormRefObject, QuizCreationFormProps>(
           </select>
         </div>
 
-        <div className="QuizCreationForm_Options">
+        <div className="QuizCreationForm_Hints">
           <span>Hints:</span>
 
           <label htmlFor="show-cost">
             <input
-              type="checkbox"
+              defaultChecked={defaultShowCost}
               id="show-cost"
               name="show-cost"
               ref={showCostRef}
+              type="checkbox"
             />
             Cost
           </label>
           <label htmlFor="show-colors">
             <input
-              type="checkbox"
+              defaultChecked={defaultShowColors}
               id="show-colors"
               name="show-colors"
               ref={showColorsRef}
+              type="checkbox"
             />
             Colors
           </label>
           <label htmlFor="show-identity">
             <input
-              type="checkbox"
+              defaultChecked={defaultShowIdentity}
               id="show-identity"
               name="show-identity"
               ref={showIdentityRef}
+              type="checkbox"
             />
             Identity
           </label>
           <label htmlFor="show-types">
             <input
-              type="checkbox"
+              defaultChecked={defaultShowTypes}
               id="show-types"
               name="show-types"
               ref={showTypesRef}
+              type="checkbox"
             />
             Types
           </label>
           <label htmlFor="show-usd">
             <input
-              type="checkbox"
+              defaultChecked={defaultShowUsd}
               id="show-usd"
               name="show-usd"
               ref={showUsdRef}
+              type="checkbox"
             />
             Price (USD)
           </label>
           <label htmlFor="show-eur">
             <input
-              type="checkbox"
+              defaultChecked={defaultShowEur}
               id="show-eur"
               name="show-eur"
               ref={showEurRef}
+              type="checkbox"
             />
             Price (EUR)
           </label>
           <label htmlFor="show-tix">
             <input
-              type="checkbox"
+              defaultChecked={defaultShowTix}
               id="show-tix"
               name="show-tix"
               ref={showTixRef}
+              type="checkbox"
             />
             Price (TIX)
           </label>
         </div>
 
-        <button ref={buttonRef} type="submit">
-          Create
-        </button>
+        <div className="QuizCreationForm_Buttons">
+          <button className="solid" type="submit">
+            Create
+          </button>
+          <button className="danger" type="reset">
+            Clear
+          </button>
+        </div>
       </form>
     );
   },

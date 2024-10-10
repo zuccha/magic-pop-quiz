@@ -3,13 +3,13 @@ import QuizCreationForm, {
   QuizCreationFormRefObject,
 } from "../components/quiz-creation-form";
 import QuizPresets from "../components/quiz-presets";
+import useCardsQuizFromParams from "../hooks/use-cards-quiz-from-params";
 import { CardsQuiz } from "../models/cards-quiz";
 import "./home-page.css";
 
 export default function HomePage() {
   const quizCreationFormRef = useRef<QuizCreationFormRefObject>(null);
-
-  const createQuiz = useCallback((quiz: CardsQuiz) => console.log(quiz), []);
+  const quiz = useCardsQuizFromParams();
 
   const selectQuizPreset = useCallback(
     (quiz: CardsQuiz) => quizCreationFormRef.current?.configureQuiz(quiz),
@@ -20,7 +20,22 @@ export default function HomePage() {
     <div className="HomePage">
       <div>
         <h2>Create a quiz</h2>
-        <QuizCreationForm onCreateQuiz={createQuiz} ref={quizCreationFormRef} />
+        <QuizCreationForm
+          defaultName={quiz.name}
+          defaultQuery={quiz.query}
+          defaultOrder={quiz.order}
+          defaultDirection={quiz.direction}
+          defaultQuantity={quiz.quantity}
+          defaultTime={quiz.time}
+          defaultShowCost={quiz.hints.showCost}
+          defaultShowColors={quiz.hints.showColors}
+          defaultShowIdentity={quiz.hints.showIdentity}
+          defaultShowTypes={quiz.hints.showTypes}
+          defaultShowUsd={quiz.hints.showUsd}
+          defaultShowEur={quiz.hints.showEur}
+          defaultShowTix={quiz.hints.showTix}
+          ref={quizCreationFormRef}
+        />
       </div>
 
       <div>

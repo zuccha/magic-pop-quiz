@@ -13,9 +13,19 @@
   flex: 1;
 }
 
-.QuizCreationForm_Options {
+.QuizCreationForm_Hints {
   display: flex;
   flex-wrap: wrap;
   column-gap: 1.5em;
   row-gap: 0.2em;
+}
+
+.QuizCreationForm_Buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5em;
+}
+
+.QuizCreationForm_Buttons > button {
+  min-width: 10em;
 }
