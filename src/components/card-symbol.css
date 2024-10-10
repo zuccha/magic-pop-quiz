@@ -1,0 +1,8 @@
+.CardSymbol {
+  color: transparent;
+  cursor: help;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: flex;
+  width: 1em;
+}

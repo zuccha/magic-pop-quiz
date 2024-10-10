@@ -9,7 +9,7 @@ export type QuizPresetsProps = {
 
 export default function QuizPresets({ onSelectQuizPreset }: QuizPresetsProps) {
   return (
-    <table>
+    <table className="QuizPresets">
       <thead>
         <tr>
           <th>Name</th>

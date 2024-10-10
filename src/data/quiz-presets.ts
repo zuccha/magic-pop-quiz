@@ -9,8 +9,10 @@ const edhrecTop100Cards = (
   description: string,
   condition: string,
 ): CardsQuiz => ({
-  name: `EDHREC's Top 100 Cards - ${description}`,
-  query: `format:commander ${condition}`,
+  name: description
+    ? `EDHREC's Top 100 Cards - ${description}`
+    : "EDHREC's Top 100 Cards",
+  query: condition ? `format:commander ${condition}` : "format:commander",
   order: "edhrec",
   direction: "auto",
   quantity: 100,
@@ -31,6 +33,7 @@ const modernTop30ExpensiveCards = (): CardsQuiz => ({
 });
 
 const quizPresets: CardsQuiz[] = [
+  edhrecTop100Cards("", ""),
   edhrecTop100Cards("Colorless", "identity=colorless"),
   edhrecTop100Cards("White", "identity=white"),
   edhrecTop100Cards("Blue", "identity=blue"),

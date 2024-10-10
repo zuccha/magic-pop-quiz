@@ -1,0 +1,38 @@
+.QuizPresets {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+}
+
+.QuizPresets tbody {
+  cursor: pointer;
+}
+
+.QuizPresets tbody > tr:hover {
+  background-color: rgba(101, 82, 0, 0.075);
+}
+
+.QuizPresets tr {
+  border-bottom: 1px solid #e0dee3;
+}
+
+.QuizPresets tr:nth-child(even) {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.QuizPresets th,
+.QuizPresets td {
+  color: #16161d;
+  padding: 0.3125em 0.375em;
+}
+
+.QuizPresets th {
+  font-size: 0.75em;
+  font-weight: bold;
+  text-align: left;
+  text-transform: uppercase;
+}
+
+.QuizPresets td {
+  font-size: 100%;
+}

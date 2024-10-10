@@ -32,3 +32,35 @@
 .QuizPage_Info_Running > *:first-child {
   flex: 1;
 }
+
+.QuizPage_Answers {
+  columns: auto 15em;
+  column-gap: 0.5em;
+}
+
+.QuizPage_Answers > div {
+  display: flex;
+  align-items: stretch;
+}
+
+.QuizPage_Answers > div:not(:first-child) {
+  margin-top: -1px;
+}
+
+.QuizPage_Answer_Cost,
+.QuizPage_Answer_Name {
+  padding: 0.1em 0.5em;
+  border: 1px solid var(--color-neutral-3);
+}
+
+.QuizPage_Answer_Cost {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  background-color: #f9f7f5;
+  border-right: none;
+}
+
+.QuizPage_Answer_Name {
+  flex: 1;
+}

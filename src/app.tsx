@@ -1,12 +1,17 @@
 import HomePage from "./pages/home-page";
 import QuizPage from "./pages/quiz-page";
 import "./app.css";
+import useCardSymbolInfos from "./data-hooks/use-card-symbol-infos";
 
 const pages: Record<string, () => JSX.Element> = {
   "/cards-quiz": QuizPage,
 };
 
 export default function App() {
+  const cardSymbolInfos = useCardSymbolInfos();
+
+  if (cardSymbolInfos.status !== "success") return null;
+
   const Page = pages[document.location.pathname] ?? HomePage;
 
   return (
