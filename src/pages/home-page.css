@@ -3,3 +3,32 @@
   flex-direction: column;
   gap: 2em;
 }
+
+.HomePage_Title {
+  margin-bottom: 1.25rem;
+}
+
+.HomePage_Presets {
+  display: flex;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  column-gap: 1em;
+  margin-bottom: 1.25rem;
+}
+
+.HomePage_Presets > span {
+  font-size: 1.2em;
+  color: var(--color-primary-3);
+}
+
+.HomePage_Presets > span:not(.selected) {
+  cursor: pointer;
+}
+
+.HomePage_Presets > span:not(.selected):hover {
+  text-decoration: underline;
+}
+
+.HomePage_Presets > span.selected {
+  color: black;
+}

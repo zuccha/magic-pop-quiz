@@ -1,4 +1,3 @@
-import quizPresets from "../data/quiz-presets";
 import { CardsQuiz } from "../models/cards-quiz";
 import { formatHints } from "../models/hints";
 import { msToTime } from "../models/time";
@@ -6,9 +5,13 @@ import "./quiz-presets.css";
 
 export type QuizPresetsProps = {
   onSelectQuizPreset: (quiz: CardsQuiz) => void;
+  presets: CardsQuiz[];
 };
 
-export default function QuizPresets({ onSelectQuizPreset }: QuizPresetsProps) {
+export default function QuizPresets({
+  onSelectQuizPreset,
+  presets,
+}: QuizPresetsProps) {
   return (
     <table className="QuizPresets">
       <thead>
@@ -20,7 +23,7 @@ export default function QuizPresets({ onSelectQuizPreset }: QuizPresetsProps) {
         </tr>
       </thead>
       <tbody>
-        {quizPresets.map((quiz) => (
+        {presets.map((quiz) => (
           <tr onClick={() => onSelectQuizPreset(quiz)} key={quiz.name}>
             <td>
               <b>{quiz.name}</b>

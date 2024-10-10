@@ -14,7 +14,7 @@ export default function useCardsQuizFromParams(): CardsQuiz {
     query: params.get("q") ?? "",
     order: validateCardsSearchOrder(params.get("order")),
     direction: validateCardsSearchDirection(params.get("dir")),
-    quantity: clamp(parseInt(params.get("qty") ?? "50") || 50, 1, 175),
+    quantity: clamp(parseInt(params.get("qty") ?? "50"), 0, 175),
     time: clamp(
       timeToMs(params.get("time") ?? "10:00"),
       1 * seconds,

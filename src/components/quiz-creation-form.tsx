@@ -102,7 +102,7 @@ export default forwardRef<QuizCreationFormRefObject, QuizCreationFormProps>(
           <input
             defaultValue={defaultQuantity}
             max={175}
-            min={1}
+            min={0}
             name="qty"
             placeholder="Qty"
             ref={quantityRef}
