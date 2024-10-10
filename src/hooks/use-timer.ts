@@ -4,6 +4,7 @@ export enum TimerStatus {
   Ready,
   Running,
   Paused,
+  Stopped,
 }
 
 export type Timer = {
@@ -14,6 +15,7 @@ export type Timer = {
   pause: () => void;
   reset: () => void;
   resume: () => void;
+  stop: () => void;
 };
 
 export default function useTimer(duration: number): Timer {
@@ -34,6 +36,13 @@ export default function useTimer(duration: number): Timer {
     setStatus(TimerStatus.Ready);
   }, [duration]);
 
+  const stop = useCallback(() => {
+    pauseTimeRef.current = Date.now();
+    if (intervalRef.current) clearInterval(intervalRef.current);
+    intervalRef.current = undefined;
+    setStatus(TimerStatus.Stopped);
+  }, [duration]);
+
   const pause = useCallback(() => {
     pauseTimeRef.current = Date.now();
     if (intervalRef.current) clearInterval(intervalRef.current);
@@ -51,15 +60,14 @@ export default function useTimer(duration: number): Timer {
       const nextElapsed = Date.now() - startTimeRef.current;
       if (nextElapsed >= duration) {
         setElapsed(duration);
-        clearInterval(intervalRef.current);
-        intervalRef.current = undefined;
+        stop();
       } else {
         setElapsed(nextElapsed);
       }
     }, 1000);
 
     setStatus(TimerStatus.Running);
-  }, [duration]);
+  }, [duration, stop]);
 
   const start = useCallback(() => {
     reset();
@@ -68,5 +76,5 @@ export default function useTimer(duration: number): Timer {
 
   useLayoutEffect(() => reset(), [reset]);
 
-  return { elapsed, remaining, status, start, pause, reset, resume };
+  return { elapsed, remaining, status, start, stop, pause, reset, resume };
 }

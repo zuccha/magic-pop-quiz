@@ -10,9 +10,9 @@
   --color-neutral-1: #fdfdfd;
   --color-neutral-1: #fefefe;
   --color-neutral-3: #aeaeae;
+  --color-danger-1: #a71f2a;
 
   /* color-scheme: light dark; */
-
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -115,4 +115,8 @@ label {
 
 label:has(input[type="checkbox"]) {
   cursor: pointer;
+}
+
+.error {
+  color: var(--color-danger-1);
 }

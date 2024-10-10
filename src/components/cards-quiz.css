@@ -1,0 +1,74 @@
+.CardsQuiz {
+  display: flex;
+  flex-direction: column;
+  gap: 2em;
+}
+
+.CardsQuiz h1,
+.CardsQuiz h2 {
+  margin: 0;
+}
+
+.CardsQuiz h2 {
+  font-family: monospace;
+  font-size: 2em;
+}
+
+.CardsQuiz_Info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2em;
+}
+
+.CardsQuiz_Info_Ready,
+.CardsQuiz_Info_Running,
+.CardsQuiz_Info_Paused,
+.CardsQuiz_Info_Stopped {
+  flex: 1;
+  display: flex;
+  gap: 0.5em;
+}
+
+.CardsQuiz_Info_Ready > button,
+.CardsQuiz_Info_Paused > button,
+.CardsQuiz_Info_Stopped > button {
+  min-width: 10em;
+}
+
+.CardsQuiz_Info_Running > *:first-child {
+  flex: 1;
+}
+
+.CardsQuiz_Answers {
+  columns: auto 15em;
+  column-gap: 0.5em;
+}
+
+.CardsQuiz_Answers > div {
+  display: flex;
+  align-items: stretch;
+  border: 1px solid var(--color-neutral-3);
+  break-inside: avoid;
+}
+
+.CardsQuiz_Answers > div:not(:first-child) {
+  margin-top: -1px;
+}
+
+.CardsQuiz_Answer_Name,
+.CardsQuiz_Answer_Text {
+  padding: 0.1em 0.5em;
+}
+
+.CardsQuiz_Answer_Name {
+  flex: 1;
+}
+
+.CardsQuiz_Answer_Text {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  border-right: 1px solid var(--color-neutral-3);
+  background-color: #f9f7f5;
+}

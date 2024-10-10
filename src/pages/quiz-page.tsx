@@ -1,10 +1,7 @@
 import { ScryfallList } from "@scryfall/api-types";
-import { useLayoutEffect, useMemo, useState } from "react";
-import CardColorsIndicator from "../components/card-colors-indicator";
-import CardCostIndicator from "../components/card-cost-indicator";
-import CardPriceIndicator from "../components/card-price-indicator";
+import { useLayoutEffect, useState } from "react";
 // import answerPresets from "../data/answer-presets";
-import useTimer, { TimerStatus } from "../hooks/use-timer";
+import CardsQuiz from "../components/cards-quiz";
 import {
   formattedCardsSearchDirection,
   validateCardsSearchDirection,
@@ -13,7 +10,7 @@ import {
   formattedCardsSearchOrder,
   validateCardsSearchOrder,
 } from "../models/cards-search-order";
-import { msToTime, timeToMs } from "../models/time";
+import { timeToMs } from "../models/time";
 import "./quiz-page.css";
 
 export type Answer = {
@@ -35,7 +32,7 @@ export type Answer = {
 };
 
 export default function QuizPage() {
-  const [answers, setAnswers] = useState<Answer[]>([]);
+  const [answers, setAnswers] = useState<Answer[] | undefined>(undefined);
 
   const params = new URLSearchParams(document.location.search);
   const name = params.get("name") ?? "";
@@ -55,43 +52,6 @@ export default function QuizPage() {
   const formattedOrder = formattedCardsSearchOrder[order];
   const formattedDirection = formattedCardsSearchDirection[direction];
 
-  const timer = useTimer(time);
-
-  const guessedCount = useMemo(
-    () => answers.reduce((count, answer) => count + Number(answer.guessed), 0),
-    [answers],
-  );
-
-  const maxCostLength = useMemo(
-    () => Math.max(...answers.map((answer) => answer.cost.length)),
-    [answers],
-  );
-
-  const maxColorsLength = useMemo(
-    () => Math.max(...answers.map((answer) => answer.colors.length)),
-    [answers],
-  );
-
-  const maxIdentityLength = useMemo(
-    () => Math.max(...answers.map((answer) => answer.identity.length)),
-    [answers],
-  );
-
-  const maxUsdLength = useMemo(
-    () => Math.max(...answers.map((answer) => answer.price.usd.length)) + 1,
-    [answers],
-  );
-
-  const maxEurLength = useMemo(
-    () => Math.max(...answers.map((answer) => answer.price.eur.length)) + 1,
-    [answers],
-  );
-
-  const maxTixLength = useMemo(
-    () => Math.max(...answers.map((answer) => answer.price.tix.length)),
-    [answers],
-  );
-
   useLayoutEffect(() => {
     const fetchCards = async () => {
       const url = new URL("https://api.scryfall.com/cards/search");
@@ -105,7 +65,10 @@ export default function QuizPage() {
           return {
             id: card.id,
             name: card.name,
-            simpleName: card.name,
+            simpleName: card.name
+              .normalize("NFD")
+              .replace(/[^a-zA-Z0-9]/g, "")
+              .toLowerCase(),
             set: card.set_name,
             cost: card.mana_cost
               ? (card.mana_cost.match(/{[^}]+}|\/\//g) ?? [])
@@ -162,83 +125,20 @@ export default function QuizPage() {
         </span>
       </div>
 
-      <div className="QuizPage_Info">
-        {timer.status === TimerStatus.Ready && (
-          <div className="QuizPage_Info_Ready">
-            <button onClick={timer.start}>Start</button>
-          </div>
-        )}
-
-        {timer.status === TimerStatus.Running && (
-          <div className="QuizPage_Info_Running">
-            <input autoFocus name="q" placeholder="Answer" />
-            <button onClick={timer.pause}>Pause</button>
-            <button onClick={timer.reset}>Give Up</button>
-          </div>
-        )}
-
-        {timer.status === TimerStatus.Paused && (
-          <div className="QuizPage_Info_Paused">
-            <button onClick={timer.resume}>Resume</button>
-            <button onClick={timer.reset}>Give Up</button>
-          </div>
-        )}
-
-        <h2>{`${guessedCount}/${quantity}`}</h2>
-        <h2>{msToTime(timer.remaining)}</h2>
-      </div>
-
-      <div className="QuizPage_Answers">
-        {answers.map((answer) => (
-          <div key={answer.id}>
-            {showUsd && (
-              <div className="QuizPage_Answer_Text">
-                <CardPriceIndicator
-                  currency="$"
-                  price={answer.price.usd}
-                  size={maxUsdLength}
-                />
-              </div>
-            )}
-            {showEur && (
-              <div className="QuizPage_Answer_Text">
-                <CardPriceIndicator
-                  currency="€"
-                  price={answer.price.eur}
-                  size={maxEurLength}
-                />
-              </div>
-            )}
-            {showTix && (
-              <div className="QuizPage_Answer_Text">
-                <CardPriceIndicator
-                  currency=""
-                  price={answer.price.tix}
-                  size={maxTixLength}
-                />
-              </div>
-            )}
-            {showCost && (
-              <div className="QuizPage_Answer_Text">
-                <CardCostIndicator cost={answer.cost} size={maxCostLength} />
-              </div>
-            )}
-            {showColors && (
-              <CardColorsIndicator
-                colors={answer.colors}
-                size={maxColorsLength}
-              />
-            )}
-            {showIdentity && (
-              <CardColorsIndicator
-                colors={answer.identity}
-                size={maxIdentityLength}
-              />
-            )}
-            <span className="QuizPage_Answer_Name">{answer.name}</span>
-          </div>
-        ))}
-      </div>
+      {answers ? (
+        <CardsQuiz
+          answers={answers}
+          duration={time}
+          showColors={showColors}
+          showCost={showCost}
+          showIdentity={showIdentity}
+          showPriceEur={showEur}
+          showPriceTix={showTix}
+          showPriceUsd={showUsd}
+        />
+      ) : (
+        <span>Loading...</span>
+      )}
     </div>
   );
 }
