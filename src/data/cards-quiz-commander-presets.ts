@@ -14,6 +14,16 @@ const hints = {
   showStats: false,
 };
 
+const bannedCards = (): CardsQuiz => ({
+  name: `Banned Cards in Commander`,
+  query: `banned:commander -is:extra -type:conspiracy -oracle:ante`,
+  order: "name",
+  direction: "asc",
+  quantity: 0,
+  time: 15 * minutes,
+  hints: { ...hints, showCost: true },
+});
+
 const edhrecTop100Cards = (
   description: string,
   condition: string,
@@ -30,6 +40,7 @@ const edhrecTop100Cards = (
 });
 
 const cardsQuizCommanderPresets: CardsQuiz[] = [
+  bannedCards(),
   edhrecTop100Cards("", ""),
   edhrecTop100Cards("Colorless (nonland)", "identity=colorless -type:land"),
   edhrecTop100Cards("White", "identity=white"),

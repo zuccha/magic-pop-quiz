@@ -1,5 +1,4 @@
 import { CardsQuiz } from "../models/cards-quiz";
-import { CardsSearchOrder } from "../models/cards-search-order";
 
 const seconds = 1000;
 const minutes = 60 * seconds;
@@ -15,14 +14,14 @@ const hints = {
   showStats: false,
 };
 
-const top30ExpensiveCards = (currency: CardsSearchOrder): CardsQuiz => ({
+const top30ExpensiveCards = (currency: "eur" | "usd"): CardsQuiz => ({
   name: `30 Most Expensive Cards in Standard (${currency.toUpperCase()})`,
   query: `format:standard`,
   order: currency,
   direction: "desc",
   quantity: 30,
   time: 10 * minutes,
-  hints: { ...hints, showUsd: true },
+  hints: { ...hints, showUsd: currency === "usd", showEur: currency === "eur" },
 });
 
 const bannedCards = (): CardsQuiz => ({

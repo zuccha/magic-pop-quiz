@@ -39,7 +39,7 @@ export default function HomePage() {
   return (
     <div className="HomePage">
       <div>
-        <h2 className="HomePage_Title">Create a quiz</h2>
+        <h2 className="HomePage_Title">Setup Quiz:</h2>
         <QuizCreationForm
           defaultName={quiz.name}
           defaultQuery={quiz.query}

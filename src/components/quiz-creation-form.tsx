@@ -255,7 +255,7 @@ export default forwardRef<QuizCreationFormRefObject, QuizCreationFormProps>(
 
         <div className="QuizCreationForm_Buttons">
           <button className="solid" type="submit">
-            Create
+            Play
           </button>
           <button className="danger" type="reset">
             Clear
