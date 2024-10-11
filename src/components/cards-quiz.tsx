@@ -8,6 +8,7 @@ import { updateCardPreview } from "./card-preview";
 import CardPriceIndicator from "./card-price-indicator";
 import CardStatsIndicator from "./card-stats-indicator";
 import "./cards-quiz.css";
+import CardTypesIndicator from "./card-types-indicator";
 
 export type CardsQuizProps = {
   answers: CardsQuizAnswer[];
@@ -19,6 +20,7 @@ export type CardsQuizProps = {
   showPriceTix?: boolean;
   showPriceUsd?: boolean;
   showStats?: boolean;
+  showTypes?: boolean;
 };
 
 export default function CardsQuiz({
@@ -31,6 +33,7 @@ export default function CardsQuiz({
   showPriceTix = false,
   showPriceUsd = false,
   showStats = false,
+  showTypes = false,
 }: CardsQuizProps) {
   const [guessed, setGuessed] = useState<Set<string>>(new Set());
   const inputRef = useRef<HTMLInputElement>(null);
@@ -56,6 +59,11 @@ export default function CardsQuiz({
 
   const maxIdentityLength = useMemo(
     () => Math.max(...answers.map((answer) => answer.identity.length)),
+    [answers],
+  );
+
+  const maxTypesLength = useMemo(
+    () => Math.max(...answers.map((answer) => answer.types.length)),
     [answers],
   );
 
@@ -194,6 +202,35 @@ export default function CardsQuiz({
                   />
                 </div>
               )}
+              {showCost && (
+                <div className="CardsQuiz_Answer_Text">
+                  <CardCostIndicator cost={answer.cost} size={maxCostLength} />
+                </div>
+              )}
+              {showColors && (
+                <div className="CardsQuiz_Answer_Box">
+                  <CardColorsIndicator
+                    colors={answer.colors}
+                    size={maxColorsLength}
+                  />
+                </div>
+              )}
+              {showIdentity && (
+                <div className="CardsQuiz_Answer_Box">
+                  <CardColorsIndicator
+                    colors={answer.identity}
+                    size={maxIdentityLength}
+                  />
+                </div>
+              )}
+              {showTypes && (
+                <div className="CardsQuiz_Answer_Text">
+                  <CardTypesIndicator
+                    types={answer.types}
+                    size={maxTypesLength}
+                  />
+                </div>
+              )}
               {showStats && (
                 <div className="CardsQuiz_Answer_Text">
                   <CardStatsIndicator
@@ -202,23 +239,6 @@ export default function CardsQuiz({
                     size={maxStatsLength}
                   />
                 </div>
-              )}
-              {showCost && (
-                <div className="CardsQuiz_Answer_Text">
-                  <CardCostIndicator cost={answer.cost} size={maxCostLength} />
-                </div>
-              )}
-              {showColors && (
-                <CardColorsIndicator
-                  colors={answer.colors}
-                  size={maxColorsLength}
-                />
-              )}
-              {showIdentity && (
-                <CardColorsIndicator
-                  colors={answer.identity}
-                  size={maxIdentityLength}
-                />
               )}
 
               {guessed.has(answer.id) ? (

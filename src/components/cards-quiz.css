@@ -79,10 +79,15 @@
   background-color: var(--color-danger-2);
 }
 
+.CardsQuiz_Answer_Box,
 .CardsQuiz_Answer_Text {
   display: flex;
   align-items: center;
   justify-content: flex-end;
   border-right: 1px solid var(--color-neutral-3);
   background-color: #f9f7f5;
+}
+
+.CardsQuiz_Answer_Box > * {
+  height: 100%;
 }

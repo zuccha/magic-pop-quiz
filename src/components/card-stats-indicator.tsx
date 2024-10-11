@@ -1,18 +1,18 @@
-import "./card-price-indicator.css";
+import "./card-stats-indicator.css";
 
-export type CardPriceIndicatorProps = {
+export type CardStatsIndicatorProps = {
   power: string;
   toughness: string;
   size?: number;
 };
 
-export default function CardPriceIndicator({
+export default function CardStatsIndicator({
   power,
   toughness,
   size,
-}: CardPriceIndicatorProps) {
+}: CardStatsIndicatorProps) {
   return (
-    <div className="CardPriceIndicator">
+    <div className="CardStatsIndicator">
       {size ? padL(`${power}/${toughness}`, size) : `${power}/${toughness}`}
     </div>
   );

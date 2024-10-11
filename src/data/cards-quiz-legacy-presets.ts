@@ -27,7 +27,7 @@ const top30ExpensiveCards = (currency: CardsSearchOrder): CardsQuiz => ({
 
 const bannedCards = (): CardsQuiz => ({
   name: `Banned Cards in Legacy`,
-  query: `banned:legacy`,
+  query: `banned:legacy -banned:vintage`,
   order: "name",
   direction: "asc",
   quantity: 0,

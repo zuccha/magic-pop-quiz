@@ -1,6 +1,7 @@
 import { ScryfallCard } from "@scryfall/api-types";
 import { useCallback, useLayoutEffect, useState } from "react";
 import CardsQuiz from "../components/cards-quiz";
+import { typeInfos } from "../components/card-types-indicator";
 import useCardsQuizFromParams from "../hooks/use-cards-quiz-from-params";
 import { CardsQuizAnswer } from "../models/cards-quiz-answer";
 import { formattedCardsSearchDirection } from "../models/cards-search-direction";
@@ -86,10 +87,10 @@ export default function QuizPage() {
                     )
                   : [],
             ),
-            type:
+            types:
               "card_faces" in card
-                ? (card.card_faces[0]?.type_line.split("-")[0] || "").trim()
-                : (card.type_line.split("-")[0] || "").trim(),
+                ? splitTypes(card.card_faces[0]?.type_line)
+                : splitTypes(card.type_line),
             stats: {
               power:
                 "card_faces" in card
@@ -154,6 +155,7 @@ export default function QuizPage() {
           showPriceTix={quiz.hints.showTix}
           showPriceUsd={quiz.hints.showUsd}
           showStats={quiz.hints.showStats}
+          showTypes={quiz.hints.showTypes}
         />
       ) : error ? (
         <div className="QuizPage_Message">
@@ -187,4 +189,12 @@ function sortColors(colors: string[]): string[] {
     if (score1 < score2) return 1;
     return 0;
   });
+}
+
+function splitTypes(typeLine: string): string[] {
+  return (typeLine.split("-")[0] || "")
+    .trim()
+    .split(" ")
+    .filter((type) => typeInfos[type])
+    .sort();
 }

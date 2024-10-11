@@ -6,7 +6,7 @@ export type CardsQuizAnswer = {
   cost: string[];
   identity: string[];
   colors: string[];
-  type: string;
+  types: string[];
   stats: {
     power: string;
     toughness: string;

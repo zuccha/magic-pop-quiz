@@ -1,0 +1,7 @@
+.CardTypesIndicator {
+  font-family: monospace;
+  white-space: pre;
+  display: flex;
+  gap: 1ch;
+  cursor: help;
+}
