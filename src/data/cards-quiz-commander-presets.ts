@@ -1,35 +1,31 @@
-import { CardsQuiz } from "../models/cards-quiz";
-import { defaultHints } from "../models/hints";
+import { CardsQuiz, cardsQuizFromValues } from "../models/cards-quiz";
 
 const seconds = 1000;
 const minutes = 60 * seconds;
 
-const hints = defaultHints;
+const bannedCards = (): CardsQuiz =>
+  cardsQuizFromValues({
+    name: `Banned Cards in Commander`,
+    query: `banned:commander -is:extra -type:conspiracy -oracle:ante`,
+    order: "name",
+    direction: "asc",
+    quantity: 0,
+    time: 15 * minutes,
+    hints: { showCost: true },
+  });
 
-const bannedCards = (): CardsQuiz => ({
-  name: `Banned Cards in Commander`,
-  query: `banned:commander -is:extra -type:conspiracy -oracle:ante`,
-  order: "name",
-  direction: "asc",
-  quantity: 0,
-  time: 15 * minutes,
-  hints: { ...hints, showCost: true },
-});
-
-const edhrecTop100Cards = (
-  description: string,
-  condition: string,
-): CardsQuiz => ({
-  name: description
-    ? `EDHREC's Top 100 Cards - ${description}`
-    : "EDHREC's Top 100 Cards",
-  query: condition ? `format:commander ${condition}` : "format:commander",
-  order: "edhrec",
-  direction: "asc",
-  quantity: 100,
-  time: 20 * minutes,
-  hints: { ...hints, showCost: true },
-});
+const edhrecTop100Cards = (description: string, condition: string): CardsQuiz =>
+  cardsQuizFromValues({
+    name: description
+      ? `EDHREC's Top 100 Cards - ${description}`
+      : "EDHREC's Top 100 Cards",
+    query: condition ? `format:commander ${condition}` : "format:commander",
+    order: "edhrec",
+    direction: "asc",
+    quantity: 100,
+    time: 20 * minutes,
+    hints: { showCost: true },
+  });
 
 const cardsQuizCommanderPresets: CardsQuiz[] = [
   bannedCards(),

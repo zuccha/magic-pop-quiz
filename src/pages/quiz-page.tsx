@@ -2,6 +2,7 @@ import { ScryfallCard } from "@scryfall/api-types";
 import { useCallback, useLayoutEffect, useState } from "react";
 import CardsQuiz from "../components/cards-quiz";
 import { typeInfos } from "../components/card-types-indicator";
+import { useCardsQuizIsFavorite } from "../hooks/use-cards-quiz";
 import {
   loadCardsQuizFromParams,
   saveCardsQuizToParams,
@@ -19,6 +20,7 @@ export default function QuizPage() {
   );
 
   const quiz = loadCardsQuizFromParams();
+  const [isFavorite, toggleIsFavorite] = useCardsQuizIsFavorite(quiz);
 
   const formattedOrder = formattedCardsSearchOrder[quiz.order];
   const formattedDirection = formattedCardsSearchDirection[quiz.direction];
@@ -126,10 +128,23 @@ export default function QuizPage() {
           </span>
         </div>
 
-        <button className="small" onClick={edit}>
-          <i className="fa-solid fa-pen" />
-          Edit
-        </button>
+        <div className="QuizPage_Header_Actions">
+          <button className="small" onClick={edit}>
+            <i className="fa-solid fa-pen" />
+            Edit
+          </button>
+
+          <button className="small icon" onClick={toggleIsFavorite}>
+            <abbr
+              className={
+                isFavorite
+                  ? "fa-solid fa-heart fa-xl"
+                  : "fa-regular fa-heart fa-xl"
+              }
+              title={isFavorite ? "Remove favorite" : "Save favorite"}
+            />
+          </button>
+        </div>
       </div>
 
       {answers ? (

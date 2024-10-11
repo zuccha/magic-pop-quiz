@@ -1,3 +1,4 @@
+import { padL } from "../utils";
 import "./card-price-indicator.css";
 
 export type CardPriceIndicatorProps = {
@@ -16,8 +17,4 @@ export default function CardPriceIndicator({
       {size ? padL(`${currency}${price}`, size) : `${currency}${price}`}
     </div>
   );
-}
-
-function padL(text: string, size: number): string {
-  return `${" ".repeat(Math.max(size - text.length, 0))}${text}`;
 }

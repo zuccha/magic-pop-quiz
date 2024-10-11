@@ -1,15 +1,21 @@
+import { clamp, padL } from "../utils";
 import {
   CardsSearchDirection,
+  cardsSearchDirectionDecodings,
+  cardsSearchDirectionEncodings,
   validateCardsSearchDirection,
 } from "./cards-search-direction";
 import {
   CardsSearchOrder,
+  cardsSearchOrderDecodings,
+  cardsSearchOrderEncodings,
   validateCardsSearchOrder,
 } from "./cards-search-order";
-import { Hints } from "./hints";
+import { decodeHints, encodeHints, Hints } from "./hints";
 import { timeToMs, seconds, minutes, msToTime } from "./time";
 
 export type CardsQuiz = {
+  id: string;
   name: string;
   query: string;
   order: CardsSearchOrder;
@@ -22,7 +28,7 @@ export type CardsQuiz = {
 export function loadCardsQuizFromParams(): CardsQuiz {
   const params = new URLSearchParams(document.location.search);
 
-  return {
+  return cardsQuizFromValues({
     name: params.get("name") ?? "",
     query: params.get("q") ?? "",
     order: validateCardsSearchOrder(params.get("order")),
@@ -43,7 +49,7 @@ export function loadCardsQuizFromParams(): CardsQuiz {
       showStats: params.has("show-stats") ?? false,
       showTypes: params.has("show-types") ?? false,
     },
-  };
+  });
 }
 
 export function saveCardsQuizToParams(quiz: CardsQuiz): void {
@@ -65,6 +71,27 @@ export function saveCardsQuizToParams(quiz: CardsQuiz): void {
   document.location.href = url.href;
 }
 
-function clamp(value: number, min: number, max: number): number {
-  return Math.max(Math.min(value, max), min);
+export function cardsQuizFromValues(quiz: Omit<CardsQuiz, "id">): CardsQuiz {
+  const order = cardsSearchOrderEncodings[quiz.order];
+  const direction = cardsSearchDirectionEncodings[quiz.direction];
+  const quantity = padL(`${quiz.quantity}`, 3, "0");
+  const time = msToTime(quiz.time);
+  const hints = encodeHints(quiz.hints);
+  const id = `cs0000${order}${direction}${quantity}${time}${hints}${quiz.query}`;
+  return { ...quiz, id };
+}
+
+export function cardsQuizFromId(id: string, name: string): CardsQuiz {
+  const order = id.slice(6, 8) as keyof typeof cardsSearchOrderDecodings;
+  const dir = id.slice(8, 9) as keyof typeof cardsSearchDirectionDecodings;
+  return {
+    id,
+    name,
+    order: cardsSearchOrderDecodings[order] ?? "name",
+    direction: cardsSearchDirectionDecodings[dir] ?? "auto",
+    quantity: parseInt(id.slice(9, 12)) || 0,
+    time: timeToMs(id.slice(12, 17)),
+    hints: decodeHints(id.slice(17, 33)),
+    query: id.slice(33),
+  };
 }

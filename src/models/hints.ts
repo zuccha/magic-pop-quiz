@@ -1,23 +1,12 @@
 export type Hints = {
-  showColors: boolean;
-  showCost: boolean;
-  showIdentity: boolean;
-  showPriceEur: boolean;
-  showPriceTix: boolean;
-  showPriceUsd: boolean;
-  showStats: boolean;
-  showTypes: boolean;
-};
-
-export const defaultHints = {
-  showColors: false,
-  showCost: false,
-  showIdentity: false,
-  showPriceEur: false,
-  showPriceTix: false,
-  showPriceUsd: false,
-  showStats: false,
-  showTypes: false,
+  showColors?: boolean;
+  showCost?: boolean;
+  showIdentity?: boolean;
+  showPriceEur?: boolean;
+  showPriceTix?: boolean;
+  showPriceUsd?: boolean;
+  showStats?: boolean;
+  showTypes?: boolean;
 };
 
 export function formatHints(hints: Hints): string {
@@ -31,4 +20,40 @@ export function formatHints(hints: Hints): string {
   if (hints.showStats) formattedHints.push("stats");
   if (hints.showTypes) formattedHints.push("types");
   return formattedHints.length > 0 ? formattedHints.join(", ") : "none";
+}
+
+export function encodeHints(hints: Hints): string {
+  return [
+    hints.showColors,
+    hints.showCost,
+    hints.showIdentity,
+    hints.showPriceEur,
+    hints.showPriceTix,
+    hints.showPriceUsd,
+    hints.showStats,
+    hints.showTypes,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+  ]
+    .map((hint) => (hint ? "t" : "f"))
+    .join("");
+}
+
+export function decodeHints(encoded: string): Hints {
+  const hints: Hints = {};
+  if (encoded.charAt(0) === "t") hints.showColors = true;
+  if (encoded.charAt(1) === "t") hints.showCost = true;
+  if (encoded.charAt(2) === "t") hints.showIdentity = true;
+  if (encoded.charAt(3) === "t") hints.showPriceEur = true;
+  if (encoded.charAt(4) === "t") hints.showPriceTix = true;
+  if (encoded.charAt(5) === "t") hints.showPriceUsd = true;
+  if (encoded.charAt(6) === "t") hints.showStats = true;
+  if (encoded.charAt(7) === "t") hints.showTypes = true;
+  return hints;
 }

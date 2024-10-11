@@ -1,34 +1,30 @@
-import { CardsQuiz } from "../models/cards-quiz";
-import { defaultHints } from "../models/hints";
+import { CardsQuiz, cardsQuizFromValues } from "../models/cards-quiz";
+import { minutes } from "../models/time";
 
-const seconds = 1000;
-const minutes = 60 * seconds;
+const top30ExpensiveCards = (currency: "eur" | "usd"): CardsQuiz =>
+  cardsQuizFromValues({
+    name: `30 Most Expensive Cards in Pioneer (${currency.toUpperCase()})`,
+    query: `format:pioneer`,
+    order: currency,
+    direction: "desc",
+    quantity: 30,
+    time: 10 * minutes,
+    hints: {
+      showPriceEur: currency === "eur",
+      showPriceUsd: currency === "usd",
+    },
+  });
 
-const hints = defaultHints;
-
-const top30ExpensiveCards = (currency: "eur" | "usd"): CardsQuiz => ({
-  name: `30 Most Expensive Cards in Pioneer (${currency.toUpperCase()})`,
-  query: `format:pioneer`,
-  order: currency,
-  direction: "desc",
-  quantity: 30,
-  time: 10 * minutes,
-  hints: {
-    ...hints,
-    showPriceEur: currency === "eur",
-    showPriceUsd: currency === "usd",
-  },
-});
-
-const bannedCards = (): CardsQuiz => ({
-  name: `Banned Cards in Pioneer`,
-  query: `banned:pioneer`,
-  order: "name",
-  direction: "asc",
-  quantity: 0,
-  time: 15 * minutes,
-  hints: { ...hints, showCost: true },
-});
+const bannedCards = (): CardsQuiz =>
+  cardsQuizFromValues({
+    name: `Banned Cards in Pioneer`,
+    query: `banned:pioneer`,
+    order: "name",
+    direction: "asc",
+    quantity: 0,
+    time: 15 * minutes,
+    hints: { showCost: true },
+  });
 
 const cardsQuizPioneerPresets: CardsQuiz[] = [
   top30ExpensiveCards("usd"),

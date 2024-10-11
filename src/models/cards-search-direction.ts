@@ -27,3 +27,15 @@ export const formattedCardsSearchDirection: Record<
   asc: "Asc",
   desc: "Desc",
 };
+
+export const cardsSearchDirectionEncodings = {
+  auto: "0",
+  asc: "1",
+  desc: "2",
+} as const;
+
+export const cardsSearchDirectionDecodings = {
+  "0": "auto",
+  "1": "asc",
+  "2": "desc",
+} as const;

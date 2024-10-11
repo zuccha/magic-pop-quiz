@@ -48,3 +48,37 @@ export const formattedCardsSearchOrder: Record<CardsSearchOrder, string> = {
   edhrec: "EDHREC Rank",
   review: "Set Review",
 };
+
+export const cardsSearchOrderEncodings = {
+  name: "00",
+  released: "01",
+  set: "02",
+  rarity: "03",
+  color: "05",
+  usd: "06",
+  tix: "07",
+  eur: "08",
+  cmc: "09",
+  power: "10",
+  toughness: "11",
+  artist: "12",
+  edhrec: "13",
+  review: "14",
+} as const;
+
+export const cardsSearchOrderDecodings = {
+  "00": "name",
+  "01": "released",
+  "02": "set",
+  "03": "rarity",
+  "05": "color",
+  "06": "usd",
+  "07": "tix",
+  "08": "eur",
+  "09": "cmc",
+  "10": "power",
+  "11": "toughness",
+  "12": "artist",
+  "13": "edhrec",
+  "14": "review",
+} as const;

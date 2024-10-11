@@ -78,21 +78,21 @@ export default forwardRef<QuizCreationFormRefObject, QuizCreationFormProps>(
         if (quantityRef.current) quantityRef.current.value = `${quiz.quantity}`;
         if (timeRef.current) timeRef.current.value = msToTime(quiz.time);
         if (showCostRef.current)
-          showCostRef.current.checked = quiz.hints.showCost;
+          showCostRef.current.checked = Boolean(quiz.hints.showCost);
         if (showColorsRef.current)
-          showColorsRef.current.checked = quiz.hints.showColors;
+          showColorsRef.current.checked = Boolean(quiz.hints.showColors);
         if (showIdentityRef.current)
-          showIdentityRef.current.checked = quiz.hints.showIdentity;
+          showIdentityRef.current.checked = Boolean(quiz.hints.showIdentity);
         if (showTypesRef.current)
-          showTypesRef.current.checked = quiz.hints.showTypes;
+          showTypesRef.current.checked = Boolean(quiz.hints.showTypes);
         if (showUsdRef.current)
-          showUsdRef.current.checked = quiz.hints.showPriceUsd;
+          showUsdRef.current.checked = Boolean(quiz.hints.showPriceUsd);
         if (showEurRef.current)
-          showEurRef.current.checked = quiz.hints.showPriceEur;
+          showEurRef.current.checked = Boolean(quiz.hints.showPriceEur);
         if (showTixRef.current)
-          showTixRef.current.checked = quiz.hints.showPriceTix;
+          showTixRef.current.checked = Boolean(quiz.hints.showPriceTix);
         if (showStatsRef.current)
-          showStatsRef.current.checked = quiz.hints.showStats;
+          showStatsRef.current.checked = Boolean(quiz.hints.showStats);
       },
     }));
 

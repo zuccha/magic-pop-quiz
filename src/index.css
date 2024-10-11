@@ -104,6 +104,19 @@ button.solid {
   background-color: var(--color-primary-2);
 }
 
+button.icon {
+  border-color: transparent;
+  background-color: transparent;
+}
+
+button.icon:hover {
+  color: var(--color-primary-1);
+}
+
+button.icon abbr[title] {
+  text-decoration: none;
+}
+
 button:focus,
 button:hover {
   background-color: white;

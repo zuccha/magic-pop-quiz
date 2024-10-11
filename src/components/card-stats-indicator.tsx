@@ -1,3 +1,4 @@
+import { padL } from "../utils";
 import "./card-stats-indicator.css";
 
 export type CardStatsIndicatorProps = {
@@ -16,8 +17,4 @@ export default function CardStatsIndicator({
       {size ? padL(`${power}/${toughness}`, size) : `${power}/${toughness}`}
     </div>
   );
-}
-
-function padL(text: string, size: number): string {
-  return `${" ".repeat(Math.max(size - text.length, 0))}${text}`;
 }
