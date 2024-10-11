@@ -142,6 +142,7 @@ export default function QuizPage() {
         </div>
 
         <button className="small" onClick={edit}>
+          <i className="fa-solid fa-pen" />
           Edit
         </button>
       </div>

@@ -20,6 +20,7 @@ export default function App() {
       <div className="App_Header">
         <div>
           <a className="App_Header_Title" href="/">
+            <i className="fa-solid fa-house fa-sm" />
             <b>Home</b>
           </a>
         </div>

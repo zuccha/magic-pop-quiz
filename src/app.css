@@ -34,7 +34,13 @@
 
 .App_Header a:focus,
 .App_Header a:hover {
-  color: white;
+  color: white !important;
   outline: none;
-  text-decoration: underline;
+  text-decoration: none;
+}
+
+.App_Header_Title {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
 }
