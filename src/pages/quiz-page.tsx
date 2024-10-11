@@ -2,7 +2,11 @@ import { ScryfallCard } from "@scryfall/api-types";
 import { useCallback, useLayoutEffect, useState } from "react";
 import CardsQuiz from "../components/cards-quiz";
 import { typeInfos } from "../components/card-types-indicator";
-import { useCardsQuizIsFavorite } from "../hooks/use-cards-quiz";
+import QuizProgress from "../components/quiz-progress";
+import {
+  useCardsQuizIsFavorite,
+  useCardsQuizPB,
+} from "../hooks/use-cards-quiz";
 import {
   loadCardsQuizFromParams,
   saveCardsQuizToParams,
@@ -20,6 +24,7 @@ export default function QuizPage() {
   );
 
   const quiz = loadCardsQuizFromParams();
+  const [pb, setPB] = useCardsQuizPB(quiz);
   const [isFavorite, toggleIsFavorite] = useCardsQuizIsFavorite(quiz);
 
   const formattedOrder = formattedCardsSearchOrder[quiz.order];
@@ -128,22 +133,35 @@ export default function QuizPage() {
           </span>
         </div>
 
-        <div className="QuizPage_Header_Actions">
-          <button className="small" onClick={edit}>
-            <i className="fa-solid fa-pen" />
-            Edit
-          </button>
+        <div className="QuizPage_Header_ActionsAndPB">
+          <div className="QuizPage_Header_Actions">
+            <button className="small" onClick={edit}>
+              <i className="fa-solid fa-pen" />
+              Edit
+            </button>
 
-          <button className="small icon" onClick={toggleIsFavorite}>
-            <abbr
-              className={
-                isFavorite
-                  ? "fa-solid fa-heart fa-xl"
-                  : "fa-regular fa-heart fa-xl"
-              }
-              title={isFavorite ? "Remove favorite" : "Save favorite"}
-            />
-          </button>
+            <button className="small icon" onClick={toggleIsFavorite}>
+              <abbr
+                className={
+                  isFavorite
+                    ? "fa-solid fa-heart fa-xl"
+                    : "fa-regular fa-heart fa-xl"
+                }
+                title={isFavorite ? "Remove favorite" : "Save favorite"}
+              />
+            </button>
+          </div>
+
+          {pb && answers && (
+            <div className="QuizPage_Header_PB">
+              <span>Record:</span>
+              <QuizProgress
+                guessed={pb.answersGuessed}
+                time={pb.timeRemaining}
+                total={answers.length}
+              />
+            </div>
+          )}
         </div>
       </div>
 
@@ -151,6 +169,7 @@ export default function QuizPage() {
         <CardsQuiz
           answers={answers}
           duration={quiz.time}
+          onDone={setPB}
           showColors={quiz.hints.showColors}
           showCost={quiz.hints.showCost}
           showIdentity={quiz.hints.showIdentity}

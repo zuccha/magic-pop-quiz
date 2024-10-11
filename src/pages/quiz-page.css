@@ -6,7 +6,6 @@
 
 .QuizPage_Header {
   display: flex;
-  align-items: flex-start;
   justify-content: space-between;
 }
 
@@ -14,9 +13,24 @@
   margin: 0;
 }
 
+.QuizPage_Header_ActionsAndPB {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1em;
+}
+
 .QuizPage_Header_Actions {
   display: flex;
   gap: 0.5em;
+}
+
+.QuizPage_Header_PB {
+  display: flex;
+  gap: 1em;
+  font-family: monospace;
+  font-size: 1.2em;
 }
 
 .QuizPage_Message {

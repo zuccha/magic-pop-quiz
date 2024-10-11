@@ -1,0 +1,12 @@
+.QuizProgress {
+  display: flex;
+  gap: 1em;
+}
+
+.QuizProgress span {
+  font-family: monospace;
+}
+
+.QuizProgress .danger {
+  color: var(--color-danger-1);
+}

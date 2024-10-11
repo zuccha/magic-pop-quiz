@@ -4,21 +4,6 @@
   gap: 2em;
 }
 
-.CardsQuiz h1,
-.CardsQuiz h2 {
-  margin: 0;
-}
-
-.CardsQuiz h1.error,
-.CardsQuiz h2.error {
-  color: var(--color-danger-1);
-}
-
-.CardsQuiz h2 {
-  font-family: monospace;
-  font-size: 2em;
-}
-
 .CardsQuiz_Info {
   display: flex;
   align-items: center;
@@ -43,6 +28,10 @@
 
 .CardsQuiz_Info_Running > *:first-child {
   flex: 1;
+}
+
+.CardsQuiz_Info .QuizProgress {
+  font-size: 2em;
 }
 
 .CardsQuiz_Answers {

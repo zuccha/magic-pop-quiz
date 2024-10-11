@@ -1,18 +1,20 @@
-import { useCallback, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import useTimer, { TimerStatus } from "../hooks/use-timer";
 import { CardsQuizAnswer } from "../models/cards-quiz-answer";
-import { msToTime } from "../models/time";
+import { CardsQuizPB } from "../models/cards-quiz-pb";
 import CardColorsIndicator from "./card-colors-indicator";
 import CardCostIndicator from "./card-cost-indicator";
 import { updateCardPreview } from "./card-preview";
 import CardPriceIndicator from "./card-price-indicator";
 import CardStatsIndicator from "./card-stats-indicator";
-import "./cards-quiz.css";
 import CardTypesIndicator from "./card-types-indicator";
+import QuizProgress from "./quiz-progress";
+import "./cards-quiz.css";
 
 export type CardsQuizProps = {
   answers: CardsQuizAnswer[];
   duration: number;
+  onDone: (pb: CardsQuizPB) => void;
   showColors?: boolean;
   showCost?: boolean;
   showIdentity?: boolean;
@@ -26,6 +28,7 @@ export type CardsQuizProps = {
 export default function CardsQuiz({
   answers,
   duration,
+  onDone,
   showColors = false,
   showCost = false,
   showIdentity = false,
@@ -39,8 +42,6 @@ export default function CardsQuiz({
   const inputRef = useRef<HTMLInputElement>(null);
 
   const timer = useTimer(duration);
-
-  const score = Math.floor((100 * guessed.size) / answers.length);
 
   const reset = useCallback(() => {
     timer.reset();
@@ -120,6 +121,16 @@ export default function CardsQuiz({
     [answers, timer.stop],
   );
 
+  useEffect(() => {
+    if (timer.status === TimerStatus.Stopped) {
+      onDone({
+        answersGuessed: guessed.size,
+        timeRemaining: timer.remaining,
+        date: new Date(),
+      });
+    }
+  }, [guessed.size, timer.remaining, timer.status, timer.stop]);
+
   return (
     <div className="CardsQuiz">
       <div className="CardsQuiz_Info">
@@ -165,13 +176,12 @@ export default function CardsQuiz({
           </div>
         )}
 
-        <h2>{`${guessed.size}/${answers.length}`}</h2>
-        <h2>{`${score}%`}</h2>
-        {timer.remaining < 15 * 1000 ? (
-          <h2 className="error">{msToTime(timer.remaining)}</h2>
-        ) : (
-          <h2>{msToTime(timer.remaining)}</h2>
-        )}
+        <QuizProgress
+          dangerThreshold={15 * 1000}
+          guessed={guessed.size}
+          time={timer.remaining}
+          total={answers.length}
+        />
       </div>
 
       {timer.status === TimerStatus.Paused ? (
