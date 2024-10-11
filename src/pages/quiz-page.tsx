@@ -65,10 +65,12 @@ export default function QuizPage() {
           return {
             id: card.id,
             name: card.name,
-            simpleName: card.name
-              .normalize("NFD")
-              .replace(/[^a-zA-Z0-9]/g, "")
-              .toLowerCase(),
+            simpleName: normalize(card.name),
+            simpleNames: card.name.split("//").map(normalize),
+            simpleShortName: normalize(card.name.split(",")[0]),
+            simpleShortNames: card.name
+              .split("//")
+              .map((name) => normalize(name.split(",")[0])),
             set: card.set_name,
             cost: card.mana_cost
               ? (card.mana_cost.match(/{[^}]+}|\/\//g) ?? [])
@@ -197,4 +199,12 @@ function splitTypes(typeLine: string): string[] {
     .split(" ")
     .filter((type) => typeInfos[type])
     .sort();
+}
+
+function normalize(text: string): string {
+  return text
+    .normalize("NFD")
+    .replace(/[^a-zA-Z0-9]/g, "")
+    .toLowerCase()
+    .trim();
 }

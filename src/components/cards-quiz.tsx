@@ -98,11 +98,16 @@ export default function CardsQuiz({
       const guess = e.currentTarget.value
         .normalize("NFD")
         .replace(/[^a-zA-Z0-9]/g, "")
-        .toLowerCase();
+        .toLowerCase()
+        .trim();
       setGuessed((prevGuessed) => {
         const newGuessedAnswers = answers.filter(
           (answer) =>
-            answer.simpleName === guess && !prevGuessed.has(answer.id),
+            !prevGuessed.has(answer.id) &&
+            (answer.simpleName === guess ||
+              answer.simpleShortName === guess ||
+              answer.simpleNames.some((name) => name === guess) ||
+              answer.simpleShortNames.some((name) => name === guess)),
         );
         if (newGuessedAnswers.length === 0) return prevGuessed;
         if (inputRef.current) inputRef.current.value = "";
