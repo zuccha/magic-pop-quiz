@@ -29,7 +29,7 @@ export default function CardTypesIndicator({
   return (
     <div className="CardTypesIndicator">
       {types.map((type) => (
-        <abbr className="CardTypesIndicator_Chip" title={type}>
+        <abbr className="CardTypesIndicator_Chip" key={type} title={type}>
           {typeInfos[type] ?? "????"}
         </abbr>
       ))}
