@@ -85,9 +85,12 @@ export default forwardRef<QuizCreationFormRefObject, QuizCreationFormProps>(
           showIdentityRef.current.checked = quiz.hints.showIdentity;
         if (showTypesRef.current)
           showTypesRef.current.checked = quiz.hints.showTypes;
-        if (showUsdRef.current) showUsdRef.current.checked = quiz.hints.showUsd;
-        if (showEurRef.current) showEurRef.current.checked = quiz.hints.showEur;
-        if (showTixRef.current) showTixRef.current.checked = quiz.hints.showTix;
+        if (showUsdRef.current)
+          showUsdRef.current.checked = quiz.hints.showPriceUsd;
+        if (showEurRef.current)
+          showEurRef.current.checked = quiz.hints.showPriceEur;
+        if (showTixRef.current)
+          showTixRef.current.checked = quiz.hints.showPriceTix;
         if (showStatsRef.current)
           showStatsRef.current.checked = quiz.hints.showStats;
       },
@@ -211,31 +214,31 @@ export default forwardRef<QuizCreationFormRefObject, QuizCreationFormProps>(
             />
             Types
           </label>
-          <label htmlFor="show-usd">
+          <label htmlFor="show-price-usd">
             <input
               defaultChecked={defaultShowUsd}
-              id="show-usd"
-              name="show-usd"
+              id="show-price-usd"
+              name="show-price-usd"
               ref={showUsdRef}
               type="checkbox"
             />
             Price (USD)
           </label>
-          <label htmlFor="show-eur">
+          <label htmlFor="show-price-eur">
             <input
               defaultChecked={defaultShowEur}
-              id="show-eur"
-              name="show-eur"
+              id="show-price-eur"
+              name="show-price-eur"
               ref={showEurRef}
               type="checkbox"
             />
             Price (EUR)
           </label>
-          <label htmlFor="show-tix">
+          <label htmlFor="show-price-tix">
             <input
               defaultChecked={defaultShowTix}
-              id="show-tix"
-              name="show-tix"
+              id="show-price-tix"
+              name="show-price-tix"
               ref={showTixRef}
               type="checkbox"
             />

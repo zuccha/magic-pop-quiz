@@ -1,18 +1,10 @@
 import { CardsQuiz } from "../models/cards-quiz";
+import { defaultHints } from "../models/hints";
 
 const seconds = 1000;
 const minutes = 60 * seconds;
 
-const hints = {
-  showCost: false,
-  showColors: false,
-  showIdentity: false,
-  showTypes: false,
-  showUsd: false,
-  showEur: false,
-  showTix: false,
-  showStats: false,
-};
+const hints = defaultHints;
 
 const lands = (title: string, type: string): CardsQuiz => ({
   name: title,

@@ -10,8 +10,7 @@ import cardsQuizModernPresets from "../data/cards-quiz-modern-presets";
 import cardsQuizPioneerPresets from "../data/cards-quiz-pioneer-presets";
 import cardsQuizStandardPresets from "../data/cards-quiz-standard-presets";
 import cardsQuizVintagePresets from "../data/cards-quiz-vintage-presets";
-import useCardsQuizFromParams from "../hooks/use-cards-quiz-from-params";
-import { CardsQuiz } from "../models/cards-quiz";
+import { CardsQuiz, loadCardsQuizFromParams } from "../models/cards-quiz";
 import "./home-page.css";
 
 const presets = [
@@ -29,7 +28,7 @@ type Preset = (typeof presets)[number];
 export default function HomePage() {
   const [selectedPreset, setSelectedPreset] = useState<Preset>(presets[0]);
   const quizCreationFormRef = useRef<QuizCreationFormRefObject>(null);
-  const quiz = useCardsQuizFromParams();
+  const quiz = loadCardsQuizFromParams();
 
   const selectQuizPreset = useCallback(
     (quiz: CardsQuiz) => quizCreationFormRef.current?.configureQuiz(quiz),
@@ -51,9 +50,9 @@ export default function HomePage() {
           defaultShowColors={quiz.hints.showColors}
           defaultShowIdentity={quiz.hints.showIdentity}
           defaultShowTypes={quiz.hints.showTypes}
-          defaultShowUsd={quiz.hints.showUsd}
-          defaultShowEur={quiz.hints.showEur}
-          defaultShowTix={quiz.hints.showTix}
+          defaultShowUsd={quiz.hints.showPriceUsd}
+          defaultShowEur={quiz.hints.showPriceEur}
+          defaultShowTix={quiz.hints.showPriceTix}
           ref={quizCreationFormRef}
         />
       </div>

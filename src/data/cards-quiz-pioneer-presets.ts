@@ -1,18 +1,10 @@
 import { CardsQuiz } from "../models/cards-quiz";
+import { defaultHints } from "../models/hints";
 
 const seconds = 1000;
 const minutes = 60 * seconds;
 
-const hints = {
-  showCost: false,
-  showColors: false,
-  showIdentity: false,
-  showTypes: false,
-  showUsd: false,
-  showEur: false,
-  showTix: false,
-  showStats: false,
-};
+const hints = defaultHints;
 
 const top30ExpensiveCards = (currency: "eur" | "usd"): CardsQuiz => ({
   name: `30 Most Expensive Cards in Pioneer (${currency.toUpperCase()})`,
@@ -21,7 +13,11 @@ const top30ExpensiveCards = (currency: "eur" | "usd"): CardsQuiz => ({
   direction: "desc",
   quantity: 30,
   time: 10 * minutes,
-  hints: { ...hints, showUsd: currency === "usd", showEur: currency === "eur" },
+  hints: {
+    ...hints,
+    showPriceEur: currency === "eur",
+    showPriceUsd: currency === "usd",
+  },
 });
 
 const bannedCards = (): CardsQuiz => ({
