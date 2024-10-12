@@ -32,6 +32,10 @@ export default function QuizPage() {
   const formattedHints = formatHints(quiz.hints);
 
   const edit = useCallback(() => saveCardsQuizToParams(quiz), [quiz]);
+  // const copy = useCallback(
+  //   () => navigator.clipboard.writeText(document.location.href),
+  //   [],
+  // );
 
   useLayoutEffect(() => {
     const fetchCards = async () => {
@@ -140,15 +144,13 @@ export default function QuizPage() {
               Edit
             </button>
 
+            {/* <button className="small" onClick={copy}>
+              <i className="fa-solid fa-share" />
+              Share
+            </button> */}
+
             <button className="small icon" onClick={toggleIsFavorite}>
-              <abbr
-                className={
-                  isFavorite
-                    ? "fa-solid fa-heart fa-xl"
-                    : "fa-regular fa-heart fa-xl"
-                }
-                title={isFavorite ? "Remove favorite" : "Save favorite"}
-              />
+              <abbr {...favoriteIcon(isFavorite)} />
             </button>
           </div>
 
@@ -227,4 +229,11 @@ function normalize(text: string): string {
     .replace(/[^a-zA-Z0-9]/g, "")
     .toLowerCase()
     .trim();
+}
+
+function favoriteIcon(active: boolean): { className: string; title: string } {
+  return {
+    className: active ? `fa-solid fa-heart fa-xl` : `fa-regular fa-heart fa-xl`,
+    title: active ? "Remove favorite" : "Save favorite",
+  };
 }

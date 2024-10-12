@@ -28,7 +28,10 @@ type Preset = (typeof presets)[number];
 export default function HomePage() {
   const [selectedPreset, setSelectedPreset] = useState<Preset>(presets[0]);
   const quizCreationFormRef = useRef<QuizCreationFormRefObject>(null);
-  const quiz = loadCardsQuizFromParams();
+  const quiz =
+    document.location.search.length > 0
+      ? loadCardsQuizFromParams()
+      : cardsQuizCommanderPresets[0];
 
   const selectQuizPreset = useCallback(
     (quiz: CardsQuiz) => quizCreationFormRef.current?.configureQuiz(quiz),
