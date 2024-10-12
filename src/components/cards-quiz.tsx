@@ -3,7 +3,7 @@ import useTimer, { TimerStatus } from "../hooks/use-timer";
 import { CardsQuizAnswer } from "../models/cards-quiz-answer";
 import { CardsQuizPB } from "../models/cards-quiz-pb";
 import CardColorsIndicator from "./card-colors-indicator";
-import CardCostIndicator from "./card-cost-indicator";
+import CardCostsIndicator from "./card-costs-indicator";
 import { updateCardPreview } from "./card-preview";
 import CardPriceIndicator from "./card-price-indicator";
 import CardStatsIndicator from "./card-stats-indicator";
@@ -49,7 +49,15 @@ export default function CardsQuiz({
   }, [timer.reset]);
 
   const maxCostLength = useMemo(
-    () => Math.max(...answers.map((answer) => answer.cost.length)),
+    () =>
+      Math.max(
+        ...answers.map(
+          (answer) =>
+            answer.costs.reduce((sum, c) => sum + c.length, 0) +
+            answer.costs.length -
+            1,
+        ),
+      ),
     [answers],
   );
 
@@ -220,7 +228,10 @@ export default function CardsQuiz({
               )}
               {showCost && (
                 <div className="CardsQuiz_Answer_Text">
-                  <CardCostIndicator cost={answer.cost} size={maxCostLength} />
+                  <CardCostsIndicator
+                    costs={answer.costs}
+                    size={maxCostLength}
+                  />
                 </div>
               )}
               {showColors && (

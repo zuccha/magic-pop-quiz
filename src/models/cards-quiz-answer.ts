@@ -6,7 +6,7 @@ export type CardsQuizAnswer = {
   simpleShortName: string;
   simpleShortNames: string[];
   set: string;
-  cost: string[];
+  costs: string[][];
   identity: string[];
   colors: string[];
   types: string[];

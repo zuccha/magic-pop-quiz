@@ -66,12 +66,10 @@ export default function QuizPage() {
               .split("//")
               .map((name) => normalize(name.split(",")[0])),
             set: card.set_name,
-            cost: card.mana_cost
-              ? (card.mana_cost.match(/{[^}]+}|\/\//g) ?? [])
+            costs: card.mana_cost
+              ? splitCosts(card.mana_cost)
               : "card_faces" in card
-                ? card.card_faces.flatMap(
-                    (face) => face.mana_cost?.match(/{[^}]+}|\/\//g) ?? [],
-                  )
+                ? card.card_faces.flatMap((face) => splitCosts(face.mana_cost))
                 : [],
             identity: sortColors(card.color_identity),
             colors: sortColors(
@@ -219,6 +217,12 @@ function splitTypes(typeLine: string): string[] {
     .split(" ")
     .filter((type) => typeInfos[type])
     .sort();
+}
+
+function splitCosts(cost?: string): string[][] {
+  return cost
+    ? cost.split("//").map((symbol) => symbol.match(/{[^}]+}/g) ?? [])
+    : [];
 }
 
 function normalize(text: string): string {
