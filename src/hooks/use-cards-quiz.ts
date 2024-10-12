@@ -21,12 +21,8 @@ const pbId = (id: string) => `${pbPrefix}${id}`;
 const favId = (id: string) => `${favPrefix}${id}`;
 const nameId = (id: string) => `${namePrefix}${id}`;
 
-export function useCardsQuizFromParams(defaultQuiz?: CardsQuiz): CardsQuiz {
-  return useMemo(() => {
-    return document.location.search.length > 0 || !defaultQuiz
-      ? loadCardsQuizFromParams()
-      : defaultQuiz;
-  }, [defaultQuiz]);
+export function useCardsQuizFromParams(): CardsQuiz {
+  return useMemo(() => loadCardsQuizFromParams(), []);
 }
 
 export function useFavoriteCardsQuizzes(): CardsQuiz[] {

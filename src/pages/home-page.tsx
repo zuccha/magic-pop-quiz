@@ -1,4 +1,5 @@
-import { useRef, useCallback } from "react";
+import { useRef, useCallback, useMemo } from "react";
+import { z } from "zod";
 import QuizCreationForm, {
   QuizCreationFormRefObject,
 } from "../components/quiz-creation-form";
@@ -18,7 +19,6 @@ import {
 import useStore from "../hooks/use-store";
 import { CardsQuiz } from "../models/cards-quiz";
 import "./home-page.css";
-import { z } from "zod";
 
 const presetNames = [
   "Generic",
@@ -56,12 +56,17 @@ export default function HomePage() {
 
   const quizCreationFormRef = useRef<QuizCreationFormRefObject>(null);
 
-  const quiz = useCardsQuizFromParams(cardsQuizCommanderPresets[0]);
+  const quiz = useCardsQuizFromParams();
 
   const configureQuiz = useCallback(
     (quiz: CardsQuiz) => quizCreationFormRef.current?.configureQuiz(quiz),
     [],
   );
+
+  const openQuiz = useCallback((quiz: CardsQuiz) => {
+    quizCreationFormRef.current?.configureQuiz(quiz);
+    quizCreationFormRef.current?.createQuiz();
+  }, []);
 
   const favoriteQuizzes = useFavoriteCardsQuizzes();
   const recentQuizzes = useRecentCardsQuizzes(10);
@@ -72,10 +77,29 @@ export default function HomePage() {
     Recent: recentQuizzes,
   }[selectedCategoryName];
 
+  const Tab = useCallback(
+    ({ name }: { name: CategoryName }) => {
+      return (
+        <span
+          className={selectedCategoryName === name ? "selected" : undefined}
+          onClick={() => setSelectedCategoryName(name)}
+        >
+          {name}
+        </span>
+      );
+    },
+    [selectedCategoryName, setSelectedCategoryName],
+  );
+
+  const actions = useMemo(
+    () => [{ icon: "pen", name: "Edit", onClick: configureQuiz }],
+    [configureQuiz],
+  );
+
   return (
     <div className="HomePage">
       <div>
-        <h2 className="HomePage_Title">Setup Quiz:</h2>
+        <h2 className="HomePage_Title">New Quiz:</h2>
         <QuizCreationForm
           defaultName={quiz.name}
           defaultQuery={quiz.query}
@@ -95,47 +119,26 @@ export default function HomePage() {
       </div>
 
       <div>
-        <h2>{"Presets: "}</h2>
+        <h2>Quizzes:</h2>
         <div className="HomePage_Presets">
           {favoriteQuizzes.length > 0 && (
             <>
-              <span
-                className={
-                  selectedCategoryName === "Favorites" ? "selected" : undefined
-                }
-                onClick={() => setSelectedCategoryName("Favorites")}
-              >
-                Favorites
-              </span>
-              |
+              <Tab name="Favorites" />|
             </>
           )}
 
           {recentQuizzes.length > 0 && (
             <>
-              <span
-                className={
-                  selectedCategoryName === "Recent" ? "selected" : undefined
-                }
-                onClick={() => setSelectedCategoryName("Recent")}
-              >
-                Recent
-              </span>
-              |
+              <Tab name="Recent" />|
             </>
           )}
 
           {presetNames.map((name) => (
-            <span
-              className={selectedCategoryName === name ? "selected" : undefined}
-              key={name}
-              onClick={() => setSelectedCategoryName(name)}
-            >
-              {name}
-            </span>
+            <Tab key={name} name={name} />
           ))}
         </div>
-        <QuizList onSelectQuiz={configureQuiz} quizzes={quizzes} />
+
+        <QuizList actions={actions} onSelectQuiz={openQuiz} quizzes={quizzes} />
       </div>
     </div>
   );

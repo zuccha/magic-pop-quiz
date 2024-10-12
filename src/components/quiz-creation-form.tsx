@@ -15,6 +15,7 @@ import "./quiz-creation-form.css";
 
 export type QuizCreationFormRefObject = {
   configureQuiz: (quiz: CardsQuiz) => void;
+  createQuiz: () => void;
 };
 
 export type QuizCreationFormProps = {
@@ -54,6 +55,7 @@ export default forwardRef<QuizCreationFormRefObject, QuizCreationFormProps>(
     },
     ref,
   ) {
+    const formRef = useRef<HTMLFormElement>(null);
     const nameRef = useRef<HTMLInputElement>(null);
     const queryRef = useRef<HTMLInputElement>(null);
     const orderRef = useRef<HTMLSelectElement>(null);
@@ -94,10 +96,11 @@ export default forwardRef<QuizCreationFormRefObject, QuizCreationFormProps>(
         if (showStatsRef.current)
           showStatsRef.current.checked = Boolean(quiz.hints.showStats);
       },
+      createQuiz: () => formRef.current?.submit(),
     }));
 
     return (
-      <form className="QuizCreationForm" action="/cards-quiz">
+      <form action="/cards-quiz" className="QuizCreationForm" ref={formRef}>
         <div className="QuizCreationForm_Inputs">
           <input
             defaultValue={defaultName}
