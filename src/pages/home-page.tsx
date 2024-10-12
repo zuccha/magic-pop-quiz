@@ -1,4 +1,4 @@
-import { useRef, useCallback, useState } from "react";
+import { useRef, useCallback } from "react";
 import QuizCreationForm, {
   QuizCreationFormRefObject,
 } from "../components/quiz-creation-form";
@@ -10,30 +10,53 @@ import cardsQuizModernPresets from "../data/cards-quiz-modern-presets";
 import cardsQuizPioneerPresets from "../data/cards-quiz-pioneer-presets";
 import cardsQuizStandardPresets from "../data/cards-quiz-standard-presets";
 import cardsQuizVintagePresets from "../data/cards-quiz-vintage-presets";
+import useStore from "../hooks/use-store";
 import { CardsQuiz, loadCardsQuizFromParams } from "../models/cards-quiz";
 import "./home-page.css";
+import { z } from "zod";
 
-const presets = [
-  { name: "Generic", presets: cardsQuizGenericPresets },
-  { name: "Commander", presets: cardsQuizCommanderPresets },
-  { name: "Vintage", presets: cardsQuizVintagePresets },
-  { name: "Legacy", presets: cardsQuizLegacyPresets },
-  { name: "Modern", presets: cardsQuizModernPresets },
-  { name: "Pioneer", presets: cardsQuizPioneerPresets },
-  { name: "Standard", presets: cardsQuizStandardPresets },
+const presetNames = [
+  "Favorites",
+  "Recent",
+  "Generic",
+  "Commander",
+  "Vintage",
+  "Legacy",
+  "Modern",
+  "Pioneer",
+  "Standard",
 ] as const;
 
-type Preset = (typeof presets)[number];
+const PresetNameScheme = z.enum(presetNames);
+type PresetName = z.infer<typeof PresetNameScheme>;
+
+const presets: Record<PresetName, CardsQuiz[]> = {
+  Favorites: [],
+  Recent: [],
+  Generic: cardsQuizGenericPresets,
+  Commander: cardsQuizCommanderPresets,
+  Vintage: cardsQuizVintagePresets,
+  Legacy: cardsQuizLegacyPresets,
+  Modern: cardsQuizModernPresets,
+  Pioneer: cardsQuizPioneerPresets,
+  Standard: cardsQuizStandardPresets,
+} as const;
 
 export default function HomePage() {
-  const [selectedPreset, setSelectedPreset] = useState<Preset>(presets[0]);
+  const [selectedPresetName, setSelectedPresetName] = useStore<PresetName>(
+    "preset-name",
+    "Generic",
+    PresetNameScheme.parse,
+  );
+
   const quizCreationFormRef = useRef<QuizCreationFormRefObject>(null);
+
   const quiz =
     document.location.search.length > 0
       ? loadCardsQuizFromParams()
       : cardsQuizCommanderPresets[0];
 
-  const selectQuizPreset = useCallback(
+  const configureQuizPreset = useCallback(
     (quiz: CardsQuiz) => quizCreationFormRef.current?.configureQuiz(quiz),
     [],
   );
@@ -63,21 +86,21 @@ export default function HomePage() {
       <div>
         <h2>{"Presets: "}</h2>
         <div className="HomePage_Presets">
-          {presets.map((preset) => (
-            <span
-              className={
-                selectedPreset.name === preset.name ? "selected" : undefined
-              }
-              key={preset.name}
-              onClick={() => setSelectedPreset(preset)}
-            >
-              {preset.name}
-            </span>
-          ))}
+          {presetNames.map((name) =>
+            presets[name].length > 0 ? (
+              <span
+                className={selectedPresetName === name ? "selected" : undefined}
+                key={name}
+                onClick={() => setSelectedPresetName(name)}
+              >
+                {name}
+              </span>
+            ) : null,
+          )}
         </div>
         <QuizPresets
-          onSelectQuizPreset={selectQuizPreset}
-          presets={selectedPreset.presets}
+          onSelectQuizPreset={configureQuizPreset}
+          presets={presets[selectedPresetName]}
         />
       </div>
     </div>
