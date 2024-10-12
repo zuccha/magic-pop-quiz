@@ -40,6 +40,13 @@ const Storage = {
       if (listeners.get(id)?.size === 0) listeners.delete(id);
     };
   },
+
+  getIdsStartingWith: (prefix: string): string[] => {
+    prefix = `${appId}/${prefix}`;
+    return Object.keys(localStorage)
+      .filter((id) => id.startsWith(prefix))
+      .map((id) => id.substring(appId.length + 1));
+  },
 };
 
 export default Storage;

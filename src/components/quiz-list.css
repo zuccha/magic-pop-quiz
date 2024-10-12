@@ -37,7 +37,13 @@
   font-size: 100%;
 }
 
+.QuizList th.narrow,
 .QuizList td.narrow {
   width: 1%;
   white-space: nowrap;
+}
+
+.QuizList th.right,
+.QuizList td.right {
+  text-align: right;
 }

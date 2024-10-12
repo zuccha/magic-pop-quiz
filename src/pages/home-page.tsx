@@ -10,14 +10,17 @@ import cardsQuizModernPresets from "../data/cards-quiz-modern-presets";
 import cardsQuizPioneerPresets from "../data/cards-quiz-pioneer-presets";
 import cardsQuizStandardPresets from "../data/cards-quiz-standard-presets";
 import cardsQuizVintagePresets from "../data/cards-quiz-vintage-presets";
+import {
+  useCardsQuizFromParams,
+  useFavoriteCardsQuizzes,
+  useRecentCardsQuizzes,
+} from "../hooks/use-cards-quiz";
 import useStore from "../hooks/use-store";
-import { CardsQuiz, loadCardsQuizFromParams } from "../models/cards-quiz";
+import { CardsQuiz } from "../models/cards-quiz";
 import "./home-page.css";
 import { z } from "zod";
 
 const presetNames = [
-  "Favorites",
-  "Recent",
   "Generic",
   "Commander",
   "Vintage",
@@ -26,13 +29,10 @@ const presetNames = [
   "Pioneer",
   "Standard",
 ] as const;
-
 const PresetNameScheme = z.enum(presetNames);
 type PresetName = z.infer<typeof PresetNameScheme>;
 
 const presets: Record<PresetName, CardsQuiz[]> = {
-  Favorites: [],
-  Recent: [],
   Generic: cardsQuizGenericPresets,
   Commander: cardsQuizCommanderPresets,
   Vintage: cardsQuizVintagePresets,
@@ -42,24 +42,35 @@ const presets: Record<PresetName, CardsQuiz[]> = {
   Standard: cardsQuizStandardPresets,
 } as const;
 
+const categoryNames = ["Favorites", "Recent", ...presetNames] as const;
+const CategoryNameScheme = z.enum(categoryNames);
+type CategoryName = z.infer<typeof CategoryNameScheme>;
+
 export default function HomePage() {
-  const [selectedPresetName, setSelectedPresetName] = useStore<PresetName>(
-    "preset-name",
-    "Generic",
-    PresetNameScheme.parse,
-  );
+  const [selectedCategoryName, setSelectedCategoryName] =
+    useStore<CategoryName>(
+      "cards-quiz-category-name",
+      "Generic",
+      CategoryNameScheme.parse,
+    );
 
   const quizCreationFormRef = useRef<QuizCreationFormRefObject>(null);
 
-  const quiz =
-    document.location.search.length > 0
-      ? loadCardsQuizFromParams()
-      : cardsQuizCommanderPresets[0];
+  const quiz = useCardsQuizFromParams(cardsQuizCommanderPresets[0]);
 
   const configureQuiz = useCallback(
     (quiz: CardsQuiz) => quizCreationFormRef.current?.configureQuiz(quiz),
     [],
   );
+
+  const favoriteQuizzes = useFavoriteCardsQuizzes();
+  const recentQuizzes = useRecentCardsQuizzes(10);
+
+  const quizzes = {
+    ...presets,
+    Favorites: favoriteQuizzes,
+    Recent: recentQuizzes,
+  }[selectedCategoryName];
 
   return (
     <div className="HomePage">
@@ -86,22 +97,45 @@ export default function HomePage() {
       <div>
         <h2>{"Presets: "}</h2>
         <div className="HomePage_Presets">
-          {presetNames.map((name) =>
-            presets[name].length > 0 ? (
+          {favoriteQuizzes.length > 0 && (
+            <>
               <span
-                className={selectedPresetName === name ? "selected" : undefined}
-                key={name}
-                onClick={() => setSelectedPresetName(name)}
+                className={
+                  selectedCategoryName === "Favorites" ? "selected" : undefined
+                }
+                onClick={() => setSelectedCategoryName("Favorites")}
               >
-                {name}
+                Favorites
               </span>
-            ) : null,
+              |
+            </>
           )}
+
+          {recentQuizzes.length > 0 && (
+            <>
+              <span
+                className={
+                  selectedCategoryName === "Recent" ? "selected" : undefined
+                }
+                onClick={() => setSelectedCategoryName("Recent")}
+              >
+                Recent
+              </span>
+              |
+            </>
+          )}
+
+          {presetNames.map((name) => (
+            <span
+              className={selectedCategoryName === name ? "selected" : undefined}
+              key={name}
+              onClick={() => setSelectedCategoryName(name)}
+            >
+              {name}
+            </span>
+          ))}
         </div>
-        <QuizList
-          onSelectQuiz={configureQuiz}
-          quizzes={presets[selectedPresetName]}
-        />
+        <QuizList onSelectQuiz={configureQuiz} quizzes={quizzes} />
       </div>
     </div>
   );

@@ -4,13 +4,11 @@ import CardsQuiz from "../components/cards-quiz";
 import { typeInfos } from "../components/card-types-indicator";
 import QuizProgress from "../components/quiz-progress";
 import {
+  useCardsQuizFromParams,
   useCardsQuizIsFavorite,
   useCardsQuizPB,
 } from "../hooks/use-cards-quiz";
-import {
-  loadCardsQuizFromParams,
-  saveCardsQuizToParams,
-} from "../models/cards-quiz";
+import { saveCardsQuizToParams } from "../models/cards-quiz";
 import { CardsQuizAnswer } from "../models/cards-quiz-answer";
 import { formattedCardsSearchDirection } from "../models/cards-search-direction";
 import { formattedCardsSearchOrder } from "../models/cards-search-order";
@@ -23,7 +21,7 @@ export default function QuizPage() {
     undefined,
   );
 
-  const quiz = loadCardsQuizFromParams();
+  const quiz = useCardsQuizFromParams();
   const [pb, setPB] = useCardsQuizPB(quiz);
   const [isFavorite, toggleIsFavorite] = useCardsQuizIsFavorite(quiz);
 

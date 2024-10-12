@@ -6,6 +6,7 @@ export const CardsQuizPBSchema = z.union([
     date: z.coerce.date(),
     timeRemaining: z.number(),
     answersGuessed: z.number(),
+    answersTotal: z.number(),
   }),
 ]);
 

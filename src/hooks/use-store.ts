@@ -38,7 +38,7 @@ export default function useStore<T>(
   return [value, saveValue];
 }
 
-const parseBoolean = z.boolean().parse;
+export const parseBoolean = z.boolean().parse;
 export function useStoreBoolean(
   id: string,
   initialValue: boolean,
@@ -46,7 +46,7 @@ export function useStoreBoolean(
   return useStore(id, initialValue, parseBoolean);
 }
 
-const parseNumber = z.number().parse;
+export const parseNumber = z.number().parse;
 export function useStoreNumber(
   id: string,
   initialValue: number,
@@ -54,7 +54,7 @@ export function useStoreNumber(
   return useStore(id, initialValue, parseNumber);
 }
 
-const parseString = z.string().parse;
+export const parseString = z.string().parse;
 export function useStoreString(
   id: string,
   initialValue: string,

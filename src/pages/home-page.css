@@ -14,10 +14,10 @@
   flex-wrap: wrap;
   column-gap: 1em;
   margin-bottom: 1.25rem;
+  font-size: 1.2em;
 }
 
 .HomePage_Presets > span {
-  font-size: 1.2em;
   color: var(--color-primary-3);
 }
 

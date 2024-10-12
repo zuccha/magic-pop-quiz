@@ -16,14 +16,14 @@ export default function QuizList({ onSelectQuiz, quizzes }: QuizListProps) {
         <tr>
           <th>Name</th>
           <th>Query</th>
-          <th>Time</th>
-          <th>Hints</th>
-          <th>Score</th>
+          <th className="narrow">Time</th>
+          <th className="narrow">Hints</th>
+          <th className="narrow right">Score</th>
         </tr>
       </thead>
       <tbody>
         {quizzes.map((quiz) => (
-          <QuizEntry key={quiz.name} onSelectQuiz={onSelectQuiz} quiz={quiz} />
+          <QuizEntry key={quiz.id} onSelectQuiz={onSelectQuiz} quiz={quiz} />
         ))}
       </tbody>
     </table>
@@ -46,11 +46,9 @@ function QuizEntry({ onSelectQuiz, quiz }: QuizEntryProps) {
       <td>{quiz.query}</td>
       <td className="narrow">{msToTime(quiz.time)}</td>
       <td className="narrow">{formatHints(quiz.hints)}</td>
-      <td className="narrow">
+      <td className="narrow right">
         {pb
-          ? quiz.quantity === 0
-            ? pb.answersGuessed
-            : `${Math.floor((100 * pb.answersGuessed) / quiz.quantity)}%`
+          ? `${Math.floor((100 * pb.answersGuessed) / pb.answersTotal)}%`
           : "-"}
       </td>
     </tr>

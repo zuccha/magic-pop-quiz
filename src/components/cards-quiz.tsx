@@ -125,11 +125,12 @@ export default function CardsQuiz({
     if (timer.status === TimerStatus.Stopped) {
       onDone({
         answersGuessed: guessed.size,
+        answersTotal: answers.length,
         timeRemaining: timer.remaining,
         date: new Date(),
       });
     }
-  }, [guessed.size, timer.remaining, timer.status, timer.stop]);
+  }, [answers.length, guessed.size, timer.remaining, timer.status, timer.stop]);
 
   return (
     <div className="CardsQuiz">
