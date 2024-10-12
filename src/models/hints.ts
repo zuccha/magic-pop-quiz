@@ -11,15 +11,15 @@ export type Hints = {
 
 export function formatHints(hints: Hints): string {
   const formattedHints: string[] = [];
-  if (hints.showColors) formattedHints.push("color");
-  if (hints.showCost) formattedHints.push("cost");
-  if (hints.showIdentity) formattedHints.push("identity");
-  if (hints.showPriceEur) formattedHints.push("eur");
-  if (hints.showPriceTix) formattedHints.push("tix");
-  if (hints.showPriceUsd) formattedHints.push("usd");
-  if (hints.showStats) formattedHints.push("stats");
-  if (hints.showTypes) formattedHints.push("types");
-  return formattedHints.length > 0 ? formattedHints.join(", ") : "none";
+  if (hints.showColors) formattedHints.push("Color");
+  if (hints.showCost) formattedHints.push("Cost");
+  if (hints.showIdentity) formattedHints.push("Identity");
+  if (hints.showPriceEur) formattedHints.push("EUR");
+  if (hints.showPriceTix) formattedHints.push("TIX");
+  if (hints.showPriceUsd) formattedHints.push("USD");
+  if (hints.showStats) formattedHints.push("Stats");
+  if (hints.showTypes) formattedHints.push("Types");
+  return formattedHints.length > 0 ? formattedHints.join(", ") : "None";
 }
 
 export function encodeHints(hints: Hints): string {

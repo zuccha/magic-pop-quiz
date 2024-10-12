@@ -1,14 +1,14 @@
 import { CardsQuiz } from "../models/cards-quiz";
 import { formatHints } from "../models/hints";
 import { msToTime } from "../models/time";
-import "./quiz-presets.css";
+import "./quiz-list.css";
 
 export type QuizPresetsProps = {
   onSelectQuizPreset: (quiz: CardsQuiz) => void;
   presets: CardsQuiz[];
 };
 
-export default function QuizPresets({
+export default function QuizList({
   onSelectQuizPreset,
   presets,
 }: QuizPresetsProps) {

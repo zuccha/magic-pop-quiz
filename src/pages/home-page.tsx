@@ -2,7 +2,7 @@ import { useRef, useCallback } from "react";
 import QuizCreationForm, {
   QuizCreationFormRefObject,
 } from "../components/quiz-creation-form";
-import QuizPresets from "../components/quiz-presets";
+import QuizList from "../components/quiz-list";
 import cardsQuizCommanderPresets from "../data/cards-quiz-commander-presets";
 import cardsQuizGenericPresets from "../data/cards-quiz-generic-presets";
 import cardsQuizLegacyPresets from "../data/cards-quiz-legacy-presets";
@@ -56,7 +56,7 @@ export default function HomePage() {
       ? loadCardsQuizFromParams()
       : cardsQuizCommanderPresets[0];
 
-  const configureQuizPreset = useCallback(
+  const configureQuiz = useCallback(
     (quiz: CardsQuiz) => quizCreationFormRef.current?.configureQuiz(quiz),
     [],
   );
@@ -98,9 +98,9 @@ export default function HomePage() {
             ) : null,
           )}
         </div>
-        <QuizPresets
-          onSelectQuizPreset={configureQuizPreset}
-          presets={presets[selectedPresetName]}
+        <QuizList
+          onSelectQuiz={configureQuiz}
+          quizzes={presets[selectedPresetName]}
         />
       </div>
     </div>

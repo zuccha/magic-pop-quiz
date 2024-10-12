@@ -1,43 +1,43 @@
-.QuizPresets {
+.QuizList {
   border-collapse: collapse;
   border-spacing: 0;
   width: 100%;
 }
 
-.QuizPresets tbody {
+.QuizList tbody {
   cursor: pointer;
 }
 
-.QuizPresets tbody > tr:hover {
+.QuizList tbody > tr:hover {
   background-color: rgba(101, 82, 0, 0.075);
 }
 
-.QuizPresets tr {
+.QuizList tr {
   border-bottom: 1px solid #e0dee3;
 }
 
-.QuizPresets tr:nth-child(even) {
+.QuizList tr:nth-child(even) {
   background-color: rgba(0, 0, 0, 0.05);
 }
 
-.QuizPresets th,
-.QuizPresets td {
+.QuizList th,
+.QuizList td {
   color: #16161d;
   padding: 0.3125em 0.375em;
 }
 
-.QuizPresets th {
+.QuizList th {
   font-size: 0.75em;
   font-weight: bold;
   text-align: left;
   text-transform: uppercase;
 }
 
-.QuizPresets td {
+.QuizList td {
   font-size: 100%;
 }
 
-.QuizPresets td.narrow {
+.QuizList td.narrow {
   width: 1%;
   white-space: nowrap;
 }
