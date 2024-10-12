@@ -43,7 +43,7 @@
 .CardsQuiz_Answers > div {
   display: flex;
   align-items: stretch;
-  border: 1px solid var(--color-neutral-3);
+  border: 1px solid var(--color-neutral-6);
   break-inside: avoid;
 }
 
@@ -62,7 +62,7 @@
 }
 
 .CardsQuiz_Answer_Name.success {
-  background-color: var(--color-success-2);
+  animation: successTransition 1s ease-out forwards;
 }
 
 .CardsQuiz_Answer_Name.failure {
@@ -74,10 +74,19 @@
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  border-right: 1px solid var(--color-neutral-3);
-  background-color: #f9f7f5;
+  border-right: 1px solid var(--color-neutral-6);
+  background-color: var(--color-neutral-3);
 }
 
 .CardsQuiz_Answer_Box > * {
   height: 100%;
+}
+
+@keyframes successTransition {
+  0% {
+    background-color: var(--color-highlight-2);
+  }
+  100% {
+    background-color: var(--color-success-2);
+  }
 }
