@@ -1,28 +1,34 @@
 import { clamp, padL } from "../utils";
 import {
-  CardsSearchDirection,
-  cardsSearchDirectionDecodings,
-  cardsSearchDirectionEncodings,
-  validateCardsSearchDirection,
-} from "./cards-search-direction";
+  CardsQuizDirection,
+  cardsQuizDirectionDecodings,
+  CardsQuizDirectionEncoding,
+  cardsQuizDirectionEncodings,
+  validateCardsQuizDirection,
+} from "./cards-quiz-direction";
 import {
-  CardsSearchOrder,
-  cardsSearchOrderDecodings,
-  cardsSearchOrderEncodings,
-  validateCardsSearchOrder,
-} from "./cards-search-order";
-import { decodeHints, encodeHints, Hints } from "./hints";
+  CardsQuizOrder,
+  cardsQuizOrderDecodings,
+  CardsQuizOrderEncoding,
+  cardsQuizOrderEncodings,
+  validateCardsQuizOrder,
+} from "./cards-quiz-order";
+import {
+  decodeCardsQuizHints,
+  encodeCardsQuizHints,
+  CardsQuizHints,
+} from "./cards-quiz-hints";
 import { timeToMs, seconds, minutes, msToTime } from "./time";
 
 export type CardsQuiz = {
   id: string;
   name: string;
   query: string;
-  order: CardsSearchOrder;
-  direction: CardsSearchDirection;
+  order: CardsQuizOrder;
+  direction: CardsQuizDirection;
   quantity: number;
   time: number;
-  hints: Hints;
+  hints: CardsQuizHints;
 };
 
 export function loadCardsQuizFromParams(): CardsQuiz {
@@ -31,8 +37,8 @@ export function loadCardsQuizFromParams(): CardsQuiz {
   return cardsQuizFromValues({
     name: params.get("name") ?? "",
     query: params.get("q") ?? "",
-    order: validateCardsSearchOrder(params.get("order")),
-    direction: validateCardsSearchDirection(params.get("dir")),
+    order: validateCardsQuizOrder(params.get("order")),
+    direction: validateCardsQuizDirection(params.get("dir")),
     quantity: clamp(parseInt(params.get("qty") ?? "50"), 0, 175),
     time: clamp(
       timeToMs(params.get("time") ?? "10:00"),
@@ -72,26 +78,26 @@ export function saveCardsQuizToParams(quiz: CardsQuiz): void {
 }
 
 export function cardsQuizFromValues(quiz: Omit<CardsQuiz, "id">): CardsQuiz {
-  const order = cardsSearchOrderEncodings[quiz.order];
-  const direction = cardsSearchDirectionEncodings[quiz.direction];
+  const order = cardsQuizOrderEncodings[quiz.order];
+  const direction = cardsQuizDirectionEncodings[quiz.direction];
   const quantity = padL(`${quiz.quantity}`, 3, "0");
   const time = msToTime(quiz.time);
-  const hints = encodeHints(quiz.hints);
+  const hints = encodeCardsQuizHints(quiz.hints);
   const id = `cs0000${order}${direction}${quantity}${time}${hints}${quiz.query}`;
   return { ...quiz, id };
 }
 
 export function cardsQuizFromId(id: string, name: string): CardsQuiz {
-  const order = id.slice(6, 8) as keyof typeof cardsSearchOrderDecodings;
-  const dir = id.slice(8, 9) as keyof typeof cardsSearchDirectionDecodings;
+  const order = id.slice(6, 8) as CardsQuizOrderEncoding;
+  const dir = id.slice(8, 9) as CardsQuizDirectionEncoding;
   return {
     id,
     name,
-    order: cardsSearchOrderDecodings[order] ?? "name",
-    direction: cardsSearchDirectionDecodings[dir] ?? "auto",
+    order: cardsQuizOrderDecodings[order] ?? "name",
+    direction: cardsQuizDirectionDecodings[dir] ?? "auto",
     quantity: parseInt(id.slice(9, 12)) || 0,
     time: timeToMs(id.slice(12, 17)),
-    hints: decodeHints(id.slice(17, 33)),
+    hints: decodeCardsQuizHints(id.slice(17, 33)),
     query: id.slice(33),
   };
 }

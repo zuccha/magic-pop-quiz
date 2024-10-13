@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import useTimer, { TimerStatus } from "../hooks/use-timer";
 import { CardsQuizAnswer } from "../models/cards-quiz-answer";
-import { CardsQuizPB } from "../models/cards-quiz-pb";
+import { QuizRecord } from "../models/quiz-record";
 import CardColorsIndicator from "./card-colors-indicator";
 import CardCostsIndicator from "./card-costs-indicator";
 import { updateCardPreview } from "./card-preview";
@@ -14,7 +14,7 @@ import "./cards-quiz.css";
 export type CardsQuizProps = {
   answers: CardsQuizAnswer[];
   duration: number;
-  onDone: (pb: CardsQuizPB) => void;
+  onDone: (pb: QuizRecord) => void;
   showColors?: boolean;
   showCost?: boolean;
   showIdentity?: boolean;

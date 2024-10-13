@@ -3,7 +3,7 @@ import { z } from "zod";
 import QuizCreationForm, {
   QuizCreationFormRefObject,
 } from "../components/quiz-creation-form";
-import QuizList from "../components/quiz-list";
+import CardsQuizList from "../components/cards-quiz-list";
 import cardsQuizCommanderPresets from "../data/cards-quiz-commander-presets";
 import cardsQuizGenericPresets from "../data/cards-quiz-generic-presets";
 import cardsQuizLegacyPresets from "../data/cards-quiz-legacy-presets";
@@ -97,9 +97,9 @@ export default function HomePage() {
   );
 
   return (
-    <div className="App_Page HomePage">
+    <div className="HomePage">
       <div>
-        <h2>New Quiz</h2>
+        <h2>New Cards Quiz</h2>
         <QuizCreationForm
           defaultName={quiz.name}
           defaultQuery={quiz.query}
@@ -119,7 +119,7 @@ export default function HomePage() {
       </div>
 
       <div>
-        <h2>Quizzes</h2>
+        <h2>Cards Quizzes</h2>
         <div className="HomePage_Presets">
           {favoriteQuizzes.length > 0 && (
             <>
@@ -138,7 +138,11 @@ export default function HomePage() {
           ))}
         </div>
 
-        <QuizList actions={actions} onSelectQuiz={openQuiz} quizzes={quizzes} />
+        <CardsQuizList
+          actions={actions}
+          onSelectQuiz={openQuiz}
+          quizzes={quizzes}
+        />
       </div>
     </div>
   );

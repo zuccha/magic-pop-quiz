@@ -1,15 +1,15 @@
 import { forwardRef, useRef, useImperativeHandle } from "react";
 import { CardsQuiz } from "../models/cards-quiz";
 import {
-  CardsSearchOrder,
-  cardsSearchOrders,
-  formattedCardsSearchOrder as formattedCardsSearchOrders,
-} from "../models/cards-search-order";
+  CardsQuizOrder,
+  cardsQuizOrders,
+  formattedCardsQuizOrder as formattedCardsSearchOrders,
+} from "../models/cards-quiz-order";
 import {
-  CardsSearchDirection,
-  cardsSearchDirections,
-  formattedCardsSearchDirection as formattedCardsSearchDirections,
-} from "../models/cards-search-direction";
+  CardsQuizDirection,
+  cardsQuizDirections,
+  formattedCardsQuizDirection as formattedCardsSearchDirections,
+} from "../models/cards-quiz-direction";
 import { msToTime } from "../models/time";
 import "./quiz-creation-form.css";
 
@@ -21,8 +21,8 @@ export type QuizCreationFormRefObject = {
 export type QuizCreationFormProps = {
   defaultName?: string;
   defaultQuery?: string;
-  defaultOrder?: CardsSearchOrder;
-  defaultDirection?: CardsSearchDirection;
+  defaultOrder?: CardsQuizOrder;
+  defaultDirection?: CardsQuizDirection;
   defaultQuantity?: number;
   defaultTime?: number;
   defaultShowCost?: boolean;
@@ -150,7 +150,7 @@ export default forwardRef<QuizCreationFormRefObject, QuizCreationFormProps>(
             ref={orderRef}
             required
           >
-            {cardsSearchOrders.map((order) => (
+            {cardsQuizOrders.map((order) => (
               <option key={order} value={order}>
                 {formattedCardsSearchOrders[order]}
               </option>
@@ -163,7 +163,7 @@ export default forwardRef<QuizCreationFormRefObject, QuizCreationFormProps>(
             ref={directionRef}
             required
           >
-            {cardsSearchDirections.map((direction) => (
+            {cardsQuizDirections.map((direction) => (
               <option key={direction} value={direction}>
                 {formattedCardsSearchDirections[direction]}
               </option>

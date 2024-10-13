@@ -1,28 +1,28 @@
 import { useCardsQuizPB } from "../hooks/use-cards-quiz";
 import { CardsQuiz } from "../models/cards-quiz";
-import { formatHints } from "../models/hints";
+import { formatCardsQuizHints } from "../models/cards-quiz-hints";
 import { msToTime } from "../models/time";
-import "./quiz-list.css";
+import "./cards-quiz-list.css";
 
-export type QuizListAction = {
+export type CardsQuizListAction = {
   icon: string;
   name: string;
   onClick: (quiz: CardsQuiz) => void;
 };
 
-export type QuizListProps = {
-  actions?: QuizListAction[];
+export type CardsQuizListProps = {
+  actions?: CardsQuizListAction[];
   onSelectQuiz: (quiz: CardsQuiz) => void;
   quizzes: CardsQuiz[];
 };
 
-export default function QuizList({
+export default function CardsQuizList({
   actions = [],
   onSelectQuiz,
   quizzes,
-}: QuizListProps) {
+}: CardsQuizListProps) {
   return (
-    <table className="QuizList">
+    <table className="CardsQuizList">
       <thead>
         <tr>
           <th>Name</th>
@@ -48,7 +48,7 @@ export default function QuizList({
 }
 
 type QuizEntryProps = {
-  actions: QuizListAction[];
+  actions: CardsQuizListAction[];
   onSelectQuiz: (quiz: CardsQuiz) => void;
   quiz: CardsQuiz;
 };
@@ -63,7 +63,7 @@ function QuizEntry({ actions, onSelectQuiz, quiz }: QuizEntryProps) {
       </td>
       <td>{quiz.query}</td>
       <td className="narrow">{msToTime(quiz.time)}</td>
-      <td className="narrow">{formatHints(quiz.hints)}</td>
+      <td className="narrow">{formatCardsQuizHints(quiz.hints)}</td>
       <td className="narrow right">
         {pb
           ? `${Math.floor((100 * pb.answersGuessed) / pb.answersTotal)}%`

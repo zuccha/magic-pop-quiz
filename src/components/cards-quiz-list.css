@@ -1,0 +1,48 @@
+.CardsQuizList {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+}
+
+.CardsQuizList tbody {
+  cursor: pointer;
+}
+
+.CardsQuizList tbody > tr:hover {
+  background-color: rgba(101, 82, 0, 0.075);
+}
+
+.CardsQuizList tr {
+  border-bottom: 1px solid var(--color-neutral-4);
+}
+
+.CardsQuizList tr:nth-child(even) {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.CardsQuizList th,
+.CardsQuizList td {
+  padding: 0.3125em 0.375em;
+}
+
+.CardsQuizList th {
+  font-size: 0.75em;
+  font-weight: bold;
+  text-align: left;
+  text-transform: uppercase;
+}
+
+.CardsQuizList td {
+  font-size: 100%;
+}
+
+.CardsQuizList th.narrow,
+.CardsQuizList td.narrow {
+  width: 1%;
+  white-space: nowrap;
+}
+
+.CardsQuizList th.right,
+.CardsQuizList td.right {
+  text-align: right;
+}

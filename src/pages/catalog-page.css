@@ -1,0 +1,13 @@
+.CatalogPage {
+  display: flex;
+  flex-direction: column;
+  gap: 3em;
+  width: 100%;
+  max-width: var(--page-width);
+  margin: 0 auto;
+  padding: 2em;
+}
+
+.CatalogPage h2 {
+  margin-bottom: 1.25rem;
+}

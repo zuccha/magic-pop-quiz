@@ -1,6 +1,7 @@
 import CardPreview from "./components/card-preview";
 import useCardSymbolInfos from "./data-hooks/use-card-symbol-infos";
 import AboutPage from "./pages/about-page";
+import CatalogPage from "./pages/catalog-page";
 import DocsPageCardsQuiz from "./pages/docs/docs-page-cards-quiz";
 import DocsPageOverview from "./pages/docs/docs-page-overview";
 import DocsPageSettings from "./pages/docs/docs-page-settings";
@@ -11,6 +12,7 @@ import "./app.css";
 
 const pages: Record<string, () => JSX.Element> = {
   "/": HomePage,
+  "/catalog": CatalogPage,
   "/about": AboutPage,
   "/docs": DocsPageOverview,
   "/docs/settings": DocsPageSettings,
@@ -31,8 +33,13 @@ export default function App() {
         <div className="App_Header_Content">
           <div className="App_Header_Group">
             <a href="/">
-              <i className="fa-solid fa-house fa-sm" />
-              <b>Home</b>
+              <i className="fa-solid fa-layer-group" />
+              <b>Cards</b>
+            </a>
+
+            <a href="/catalog">
+              <i className="fa-solid fa-book" />
+              <b>Catalog</b>
             </a>
           </div>
 

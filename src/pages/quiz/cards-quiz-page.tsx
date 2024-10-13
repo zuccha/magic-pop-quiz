@@ -10,9 +10,9 @@ import {
 } from "../../hooks/use-cards-quiz";
 import { saveCardsQuizToParams } from "../../models/cards-quiz";
 import { CardsQuizAnswer } from "../../models/cards-quiz-answer";
-import { formattedCardsSearchDirection } from "../../models/cards-search-direction";
-import { formattedCardsSearchOrder } from "../../models/cards-search-order";
-import { formatHints } from "../../models/hints";
+import { formattedCardsQuizDirection } from "../../models/cards-quiz-direction";
+import { formattedCardsQuizOrder } from "../../models/cards-quiz-order";
+import { formatCardsQuizHints } from "../../models/cards-quiz-hints";
 import "./cards-quiz-page.css";
 
 export default function CardsQuizPage() {
@@ -25,9 +25,9 @@ export default function CardsQuizPage() {
   const [pb, setPB] = useCardsQuizPB(quiz);
   const [isFavorite, toggleIsFavorite] = useCardsQuizIsFavorite(quiz);
 
-  const formattedOrder = formattedCardsSearchOrder[quiz.order];
-  const formattedDirection = formattedCardsSearchDirection[quiz.direction];
-  const formattedHints = formatHints(quiz.hints);
+  const formattedOrder = formattedCardsQuizOrder[quiz.order];
+  const formattedDirection = formattedCardsQuizDirection[quiz.direction];
+  const formattedHints = formatCardsQuizHints(quiz.hints);
 
   const edit = useCallback(() => saveCardsQuizToParams(quiz), [quiz]);
   // const copy = useCallback(

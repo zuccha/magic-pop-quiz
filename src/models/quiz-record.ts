@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const CardsQuizPBSchema = z.union([
+export const QuizRecordSchema = z.union([
   z.undefined(),
   z.object({
     date: z.coerce.date(),
@@ -10,4 +10,4 @@ export const CardsQuizPBSchema = z.union([
   }),
 ]);
 
-export type CardsQuizPB = z.infer<typeof CardsQuizPBSchema>;
+export type QuizRecord = z.infer<typeof QuizRecordSchema>;

@@ -1,48 +1,48 @@
-.QuizList {
+.CatalogQuizList {
   border-collapse: collapse;
   border-spacing: 0;
   width: 100%;
 }
 
-.QuizList tbody {
+.CatalogQuizList tbody {
   cursor: pointer;
 }
 
-.QuizList tbody > tr:hover {
+.CatalogQuizList tbody > tr:hover {
   background-color: rgba(101, 82, 0, 0.075);
 }
 
-.QuizList tr {
+.CatalogQuizList tr {
   border-bottom: 1px solid var(--color-neutral-4);
 }
 
-.QuizList tr:nth-child(even) {
+.CatalogQuizList tr:nth-child(even) {
   background-color: rgba(0, 0, 0, 0.05);
 }
 
-.QuizList th,
-.QuizList td {
+.CatalogQuizList th,
+.CatalogQuizList td {
   padding: 0.3125em 0.375em;
 }
 
-.QuizList th {
+.CatalogQuizList th {
   font-size: 0.75em;
   font-weight: bold;
   text-align: left;
   text-transform: uppercase;
 }
 
-.QuizList td {
+.CatalogQuizList td {
   font-size: 100%;
 }
 
-.QuizList th.narrow,
-.QuizList td.narrow {
+.CatalogQuizList th.narrow,
+.CatalogQuizList td.narrow {
   width: 1%;
   white-space: nowrap;
 }
 
-.QuizList th.right,
-.QuizList td.right {
+.CatalogQuizList th.right,
+.CatalogQuizList td.right {
   text-align: right;
 }

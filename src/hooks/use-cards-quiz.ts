@@ -4,14 +4,15 @@ import {
   cardsQuizFromId,
   loadCardsQuizFromParams,
 } from "../models/cards-quiz";
-import { CardsQuizPB, CardsQuizPBSchema } from "../models/cards-quiz-pb";
+import { QuizRecord, QuizRecordSchema } from "../models/quiz-record";
 import Storage from "../store/storage";
-import useStore, {
+import {
   parseBoolean,
   parseString,
   useStoreBoolean,
   useStoreString,
 } from "./use-store";
+import useQuizPB from "./use-quiz-pb";
 
 const pbPrefix = "pb/";
 const favPrefix = "fav/";
@@ -28,7 +29,7 @@ export function useCardsQuizFromParams(): CardsQuiz {
 export function useFavoriteCardsQuizzes(): CardsQuiz[] {
   return useMemo(
     () =>
-      Storage.getIdsStartingWith(favPrefix)
+      Storage.getIdsStartingWith(`${favPrefix}cs`)
         .map((id) => id.substring(favPrefix.length))
         .filter((id) => Storage.load(favId(id), false, parseBoolean))
         .map((id) => {
@@ -42,10 +43,10 @@ export function useFavoriteCardsQuizzes(): CardsQuiz[] {
 export function useRecentCardsQuizzes(amount?: number): CardsQuiz[] {
   return useMemo(
     () =>
-      Storage.getIdsStartingWith(pbPrefix)
+      Storage.getIdsStartingWith(`${pbPrefix}cs`)
         .map((id) => {
           id = id.substring(pbPrefix.length);
-          const pb = Storage.load(pbId(id), undefined, CardsQuizPBSchema.parse);
+          const pb = Storage.load(pbId(id), undefined, QuizRecordSchema.parse);
           return { id, pb };
         })
         .filter(({ pb }) => pb)
@@ -65,31 +66,8 @@ export function useRecentCardsQuizzes(amount?: number): CardsQuiz[] {
 
 export function useCardsQuizPB(
   quiz: CardsQuiz,
-): [CardsQuizPB, (pb: CardsQuizPB) => void] {
-  const [, setName] = useStoreString(`${namePrefix}${quiz.id}`, quiz.name);
-  const [pb, setPB] = useStore(
-    pbId(quiz.id),
-    undefined,
-    CardsQuizPBSchema.parse,
-  );
-
-  const updatePB = useCallback(
-    (maybePB: CardsQuizPB) => {
-      setName(quiz.name);
-      setPB((prevPB) =>
-        maybePB &&
-        (!prevPB ||
-          prevPB.answersGuessed < maybePB.answersGuessed ||
-          (prevPB.answersGuessed === maybePB.answersGuessed &&
-            prevPB.timeRemaining < maybePB.timeRemaining))
-          ? maybePB
-          : prevPB,
-      );
-    },
-    [quiz.name, setPB],
-  );
-
-  return [pb, updatePB];
+): [QuizRecord, (pb: QuizRecord) => void] {
+  return useQuizPB(quiz.id, quiz.name);
 }
 
 export function useCardsQuizIsFavorite(quiz: CardsQuiz): [boolean, () => void] {

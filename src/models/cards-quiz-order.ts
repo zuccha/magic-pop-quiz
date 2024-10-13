@@ -1,4 +1,4 @@
-export const cardsSearchOrders = [
+export const cardsQuizOrders = [
   "name",
   "released",
   "set",
@@ -15,24 +15,24 @@ export const cardsSearchOrders = [
   "review",
 ] as const;
 
-export type CardsSearchOrder = (typeof cardsSearchOrders)[number];
+export type CardsQuizOrder = (typeof cardsQuizOrders)[number];
 
-export function isCardsSearchOrder(
-  maybeCardSearchOrder: unknown,
-): maybeCardSearchOrder is CardsSearchOrder {
-  return cardsSearchOrders.includes(maybeCardSearchOrder as CardsSearchOrder);
+export function isCardsQuizOrder(
+  maybeCardsQuizOrder: unknown,
+): maybeCardsQuizOrder is CardsQuizOrder {
+  return cardsQuizOrders.includes(maybeCardsQuizOrder as CardsQuizOrder);
 }
 
-export function validateCardsSearchOrder(
-  maybeCardSearchOrder: unknown,
-  defaultCardSearchOrder: CardsSearchOrder = "name",
-): CardsSearchOrder {
-  return isCardsSearchOrder(maybeCardSearchOrder)
-    ? maybeCardSearchOrder
-    : defaultCardSearchOrder;
+export function validateCardsQuizOrder(
+  maybeCardsQuizOrder: unknown,
+  defaultCardsQuizOrder: CardsQuizOrder = "name",
+): CardsQuizOrder {
+  return isCardsQuizOrder(maybeCardsQuizOrder)
+    ? maybeCardsQuizOrder
+    : defaultCardsQuizOrder;
 }
 
-export const formattedCardsSearchOrder: Record<CardsSearchOrder, string> = {
+export const formattedCardsQuizOrder: Record<CardsQuizOrder, string> = {
   name: "Name",
   released: "Release Date",
   set: "Set/Number",
@@ -49,7 +49,7 @@ export const formattedCardsSearchOrder: Record<CardsSearchOrder, string> = {
   review: "Set Review",
 };
 
-export const cardsSearchOrderEncodings = {
+export const cardsQuizOrderEncodings = {
   name: "00",
   released: "01",
   set: "02",
@@ -66,7 +66,7 @@ export const cardsSearchOrderEncodings = {
   review: "14",
 } as const;
 
-export const cardsSearchOrderDecodings = {
+export const cardsQuizOrderDecodings = {
   "00": "name",
   "01": "released",
   "02": "set",
@@ -82,3 +82,5 @@ export const cardsSearchOrderDecodings = {
   "13": "edhrec",
   "14": "review",
 } as const;
+
+export type CardsQuizOrderEncoding = keyof typeof cardsQuizOrderDecodings;

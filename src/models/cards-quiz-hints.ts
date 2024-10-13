@@ -1,4 +1,4 @@
-export type Hints = {
+export type CardsQuizHints = {
   showColors?: boolean;
   showCost?: boolean;
   showIdentity?: boolean;
@@ -9,7 +9,7 @@ export type Hints = {
   showTypes?: boolean;
 };
 
-export function formatHints(hints: Hints): string {
+export function formatCardsQuizHints(hints: CardsQuizHints): string {
   const formattedHints: string[] = [];
   if (hints.showColors) formattedHints.push("Color");
   if (hints.showCost) formattedHints.push("Cost");
@@ -22,7 +22,7 @@ export function formatHints(hints: Hints): string {
   return formattedHints.length > 0 ? formattedHints.join(", ") : "None";
 }
 
-export function encodeHints(hints: Hints): string {
+export function encodeCardsQuizHints(hints: CardsQuizHints): string {
   return [
     hints.showColors,
     hints.showCost,
@@ -45,8 +45,8 @@ export function encodeHints(hints: Hints): string {
     .join("");
 }
 
-export function decodeHints(encoded: string): Hints {
-  const hints: Hints = {};
+export function decodeCardsQuizHints(encoded: string): CardsQuizHints {
+  const hints: CardsQuizHints = {};
   if (encoded.charAt(0) === "t") hints.showColors = true;
   if (encoded.charAt(1) === "t") hints.showCost = true;
   if (encoded.charAt(2) === "t") hints.showIdentity = true;
