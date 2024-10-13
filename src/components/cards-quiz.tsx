@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import useTimer, { TimerStatus } from "../hooks/use-timer";
 import { CardsQuizAnswer } from "../models/cards-quiz-answer";
 import { QuizRecord } from "../models/quiz-record";
+import { sanitize } from "../utils";
 import CardColorsIndicator from "./card-colors-indicator";
 import CardCostsIndicator from "./card-costs-indicator";
 import { updateCardPreview } from "./card-preview";
@@ -104,11 +105,7 @@ export default function CardsQuiz({
 
   const checkGuess = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      const guess = e.currentTarget.value
-        .normalize("NFD")
-        .replace(/[^a-zA-Z0-9]/g, "")
-        .toLowerCase()
-        .trim();
+      const guess = sanitize(e.currentTarget.value);
       setGuessed((prevGuessed) => {
         const newGuessedAnswers = answers.filter(
           (answer) =>

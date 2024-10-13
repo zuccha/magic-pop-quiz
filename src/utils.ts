@@ -9,3 +9,11 @@ export function padL(text: string, size: number, fill = " "): string {
 export function padR(text: string, size: number, fill = " "): string {
   return `${text}${fill.repeat(Math.max(size - text.length, 0))}`;
 }
+
+export function sanitize(text: string): string {
+  return text
+    .normalize("NFD")
+    .replace(/[^a-zA-Z0-9]/g, "")
+    .toLowerCase()
+    .trim();
+}

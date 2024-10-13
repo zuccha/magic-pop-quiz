@@ -23,7 +23,11 @@ const favId = (id: string) => `${favPrefix}${id}`;
 const nameId = (id: string) => `${namePrefix}${id}`;
 
 export function useCardsQuizFromParams(): CardsQuiz {
-  return useMemo(() => loadCardsQuizFromParams(), []);
+  return useMemo(
+    () =>
+      loadCardsQuizFromParams(new URLSearchParams(document.location.search)),
+    [],
+  );
 }
 
 export function useFavoriteCardsQuizzes(): CardsQuiz[] {

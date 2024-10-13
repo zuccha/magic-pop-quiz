@@ -20,6 +20,9 @@ export const typeInfos: Record<string, string> = {
   Conspiracy: /*   */ "Con.",
   Scheme: /*       */ "Sch.",
   Vanguard: /*     */ "Van.",
+  Dungeon: /*      */ "Dun.",
+  Emblem: /*       */ "Emb.",
+  Hero: /*         */ "Hero",
 };
 
 export default function CardTypesIndicator({

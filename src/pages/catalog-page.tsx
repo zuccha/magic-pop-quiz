@@ -1,14 +1,16 @@
-import { useCallback } from "react";
 import CatalogQuizList from "../components/catalog-quiz-list";
 import catalogQuizPresets from "../data/catalog-quiz-presets";
-import { CatalogQuiz } from "../models/catalog-quiz";
+import { CatalogQuiz, saveCatalogQuizToParams } from "../models/catalog-quiz";
 import "./catalog-page.css";
 
-export default function CatalogPage() {
-  const openQuiz = useCallback((_quiz: CatalogQuiz) => {
-    // TODO.
-  }, []);
+const openQuiz = (quiz: CatalogQuiz) => {
+  const url = new URL(document.location.origin);
+  url.pathname = "/quiz/catalogue";
+  url.search = saveCatalogQuizToParams(quiz).toString();
+  document.location.href = url.href;
+};
 
+export default function CatalogPage() {
   return (
     <div className="CatalogPage">
       <div>

@@ -15,9 +15,9 @@ export type CatalogQuiz = {
   time: number;
 };
 
-export function loadCatalogQuizFromParams(): CatalogQuiz {
-  const params = new URLSearchParams(document.location.search);
-
+export function loadCatalogQuizFromParams(
+  params: URLSearchParams,
+): CatalogQuiz {
   return catalogQuizFromValues({
     name: params.get("name") ?? "",
     types:
@@ -34,12 +34,12 @@ export function loadCatalogQuizFromParams(): CatalogQuiz {
   });
 }
 
-export function saveCatalogQuizToParams(quiz: CatalogQuiz): void {
-  const url = new URL(document.location.origin);
-  url.searchParams.set("name", quiz.name);
-  url.searchParams.set("type", quiz.types.join(","));
-  url.searchParams.set("time", msToTime(quiz.time));
-  document.location.href = url.href;
+export function saveCatalogQuizToParams(quiz: CatalogQuiz): URLSearchParams {
+  const params = new URLSearchParams(document.location.origin);
+  params.set("name", quiz.name);
+  params.set("type", quiz.types.join(","));
+  params.set("time", msToTime(quiz.time));
+  return params;
 }
 
 export function catalogQuizFromValues(

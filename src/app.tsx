@@ -7,17 +7,19 @@ import DocsPageOverview from "./pages/docs/docs-page-overview";
 import DocsPageSettings from "./pages/docs/docs-page-settings";
 import HomePage from "./pages/home-page";
 import CardsQuizPage from "./pages/quiz/cards-quiz-page";
+import CatalogQuizPage from "./pages/quiz/catalog-quiz-page";
 import NotFoundPage from "./pages/not-found-page";
 import "./app.css";
 
 const pages: Record<string, () => JSX.Element> = {
   "/": HomePage,
-  "/catalog": CatalogPage,
   "/about": AboutPage,
+  "/catalog": CatalogPage,
   "/docs": DocsPageOverview,
   "/docs/settings": DocsPageSettings,
   "/docs/cards-quiz": DocsPageCardsQuiz,
   "/quiz/cards": CardsQuizPage,
+  "/quiz/catalogue": CatalogQuizPage,
 };
 
 export default function App() {

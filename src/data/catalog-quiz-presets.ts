@@ -45,7 +45,7 @@ const catalogQuizPresets: CatalogQuiz[] = [
   catalogQuizFromValues({
     name: "Keywords (Abilities)",
     types: ["keyword-abilities"],
-    time: 15 * minutes,
+    time: 20 * minutes,
   }),
   catalogQuizFromValues({
     name: "Keywords (Actions)",
@@ -60,7 +60,7 @@ const catalogQuizPresets: CatalogQuiz[] = [
   catalogQuizFromValues({
     name: "Keywords and Words",
     types: ["keyword-abilities", "keyword-actions", "ability-words"],
-    time: 25 * minutes,
+    time: 30 * minutes,
   }),
 ];
 

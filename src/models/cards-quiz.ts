@@ -31,9 +31,7 @@ export type CardsQuiz = {
   hints: CardsQuizHints;
 };
 
-export function loadCardsQuizFromParams(): CardsQuiz {
-  const params = new URLSearchParams(document.location.search);
-
+export function loadCardsQuizFromParams(params: URLSearchParams): CardsQuiz {
   return cardsQuizFromValues({
     name: params.get("name") ?? "",
     query: params.get("q") ?? "",
@@ -58,23 +56,23 @@ export function loadCardsQuizFromParams(): CardsQuiz {
   });
 }
 
-export function saveCardsQuizToParams(quiz: CardsQuiz): void {
-  const url = new URL(document.location.origin);
-  url.searchParams.set("name", quiz.name);
-  url.searchParams.set("q", quiz.query);
-  url.searchParams.set("order", quiz.order);
-  url.searchParams.set("dir", quiz.direction);
-  url.searchParams.set("qty", `${quiz.quantity}`);
-  url.searchParams.set("time", msToTime(quiz.time));
-  if (quiz.hints.showColors) url.searchParams.set("show-colors", "on");
-  if (quiz.hints.showCost) url.searchParams.set("show-cost", "on");
-  if (quiz.hints.showIdentity) url.searchParams.set("show-identity", "on");
-  if (quiz.hints.showPriceEur) url.searchParams.set("show-price-eur", "on");
-  if (quiz.hints.showPriceTix) url.searchParams.set("show-price-tix", "on");
-  if (quiz.hints.showPriceUsd) url.searchParams.set("show-price-usd", "on");
-  if (quiz.hints.showStats) url.searchParams.set("show-stats", "on");
-  if (quiz.hints.showTypes) url.searchParams.set("show-types", "on");
-  document.location.href = url.href;
+export function saveCardsQuizToParams(quiz: CardsQuiz): URLSearchParams {
+  const params = new URLSearchParams();
+  params.set("name", quiz.name);
+  params.set("q", quiz.query);
+  params.set("order", quiz.order);
+  params.set("dir", quiz.direction);
+  params.set("qty", `${quiz.quantity}`);
+  params.set("time", msToTime(quiz.time));
+  if (quiz.hints.showColors) params.set("show-colors", "on");
+  if (quiz.hints.showCost) params.set("show-cost", "on");
+  if (quiz.hints.showIdentity) params.set("show-identity", "on");
+  if (quiz.hints.showPriceEur) params.set("show-price-eur", "on");
+  if (quiz.hints.showPriceTix) params.set("show-price-tix", "on");
+  if (quiz.hints.showPriceUsd) params.set("show-price-usd", "on");
+  if (quiz.hints.showStats) params.set("show-stats", "on");
+  if (quiz.hints.showTypes) params.set("show-types", "on");
+  return params;
 }
 
 export function cardsQuizFromValues(quiz: Omit<CardsQuiz, "id">): CardsQuiz {

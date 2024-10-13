@@ -13,6 +13,7 @@ import { CardsQuizAnswer } from "../../models/cards-quiz-answer";
 import { formattedCardsQuizDirection } from "../../models/cards-quiz-direction";
 import { formattedCardsQuizOrder } from "../../models/cards-quiz-order";
 import { formatCardsQuizHints } from "../../models/cards-quiz-hints";
+import { sanitize } from "../../utils";
 import "./cards-quiz-page.css";
 
 export default function CardsQuizPage() {
@@ -29,11 +30,11 @@ export default function CardsQuizPage() {
   const formattedDirection = formattedCardsQuizDirection[quiz.direction];
   const formattedHints = formatCardsQuizHints(quiz.hints);
 
-  const edit = useCallback(() => saveCardsQuizToParams(quiz), [quiz]);
-  // const copy = useCallback(
-  //   () => navigator.clipboard.writeText(document.location.href),
-  //   [],
-  // );
+  const edit = useCallback(() => {
+    const url = new URL(document.location.origin);
+    url.search = saveCardsQuizToParams(quiz).toString();
+    document.location.href = url.href;
+  }, [quiz]);
 
   useLayoutEffect(() => {
     const fetchCards = async () => {
@@ -59,12 +60,12 @@ export default function CardsQuizPage() {
           return {
             id: card.id,
             name: card.name,
-            simpleName: normalize(card.name),
-            simpleNames: card.name.split("//").map(normalize),
-            simpleShortName: normalize(card.name.split(",")[0]),
+            simpleName: sanitize(card.name),
+            simpleNames: card.name.split("//").map(sanitize),
+            simpleShortName: sanitize(card.name.split(",")[0]),
             simpleShortNames: card.name
               .split("//")
-              .map((name) => normalize(name.split(",")[0])),
+              .map((name) => sanitize(name.split(",")[0])),
             set: card.set_name,
             costs: card.mana_cost
               ? splitCosts(card.mana_cost)
@@ -139,11 +140,6 @@ export default function CardsQuizPage() {
               <i className="fa-solid fa-pen" />
               Edit
             </button>
-
-            {/* <button className="small" onClick={copy}>
-              <i className="fa-solid fa-share" />
-              Share
-            </button> */}
 
             <button className="small icon" onClick={toggleIsFavorite}>
               <abbr {...favoriteIcon(isFavorite)} />
@@ -223,14 +219,6 @@ function splitCosts(cost?: string): string[][] {
   return cost
     ? cost.split("//").map((symbol) => symbol.match(/{[^}]+}/g) ?? [])
     : [];
-}
-
-function normalize(text: string): string {
-  return text
-    .normalize("NFD")
-    .replace(/[^a-zA-Z0-9]/g, "")
-    .toLowerCase()
-    .trim();
 }
 
 function favoriteIcon(active: boolean): { className: string; title: string } {

@@ -4,7 +4,11 @@ import { QuizRecord } from "../models/quiz-record";
 import useQuizPB from "./use-quiz-pb";
 
 export function useCatalogQuizFromParams(): CatalogQuiz {
-  return useMemo(() => loadCatalogQuizFromParams(), []);
+  return useMemo(
+    () =>
+      loadCatalogQuizFromParams(new URLSearchParams(document.location.search)),
+    [],
+  );
 }
 
 export function useCatalogQuizPB(

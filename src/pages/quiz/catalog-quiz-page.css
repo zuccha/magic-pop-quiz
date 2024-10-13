@@ -1,0 +1,50 @@
+.CatalogQuizPage {
+  display: flex;
+  flex-direction: column;
+  gap: 2em;
+  width: 100%;
+  max-width: var(--page-width);
+  margin: 0 auto;
+  padding: 2em;
+}
+
+.CatalogQuizPage_Header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.CatalogQuizPage_Header h1 {
+  margin: 0;
+}
+
+.CatalogQuizPage_Header_ActionsAndPB {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1em;
+}
+
+.CatalogQuizPage_Header_Actions {
+  display: flex;
+  gap: 0.5em;
+}
+
+.CatalogQuizPage_Header_PB {
+  display: flex;
+  gap: 1em;
+  font-family: monospace;
+  font-size: 1.2em;
+}
+
+.CatalogQuizPage_Message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 3em auto 0 auto;
+  gap: 1em;
+}
+
+.CatalogQuizPage_Message > button {
+  width: 10em;
+}
