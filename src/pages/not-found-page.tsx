@@ -5,7 +5,7 @@ export default function NotFoundPage() {
     <div className="NotFoundPage">
       <h1>Page Not Found</h1>
       <p>
-        The page you're looking for doesn't exist, either it was deleted or it
+        The page you're looking for was not found, either it was deleted or it
         never existed.
       </p>
       <a className="button" href="/">

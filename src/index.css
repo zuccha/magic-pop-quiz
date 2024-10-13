@@ -9,6 +9,7 @@
   --color-primary-3: #551a8b;
   --color-primary-4: #3b1260;
   --color-primary-5: #2b253a;
+  --color-primary-6: #4f4255;
   --color-neutral-1: #fdfdfd;
   --color-neutral-2: #fefefe;
   --color-neutral-3: #f9f7f5;
@@ -20,6 +21,8 @@
   --color-danger-2: #a71f2a10;
   --color-success-2: #1fa73320;
   --color-highlight-2: #fade3e60;
+
+  --page-width: 62.5em;
 
   /* color-scheme: light dark; */
   font-synthesis: none;
@@ -52,6 +55,15 @@ h2 {
   color: var(--color-neutral-8);
   font-weight: 300;
   margin: 0;
+}
+
+h2 {
+  font-size: 1.75em;
+}
+
+h3 {
+  font-size: 1.125em;
+  font-weight: normal;
 }
 
 a.button,

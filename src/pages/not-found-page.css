@@ -4,6 +4,10 @@
   align-items: center;
   justify-content: center;
   flex: 1;
+  width: 100%;
+  max-width: var(--page-width);
+  margin: 0 auto;
+  padding: 2em;
 }
 
 .NotFoundPage h1 {

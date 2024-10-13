@@ -1,0 +1,84 @@
+.DocsPage {
+  display: flex;
+  flex: 1;
+  --padding-x: (100% - var(--page-width)) / 2 + 2em;
+}
+
+.DocsPage_SidePanel {
+  background-color: var(--color-primary-6);
+  padding-top: 1.875em;
+  padding-left: calc(var(--padding-x));
+}
+
+.DocsPage_SidePanel h6 {
+  color: rgba(255, 255, 255, 0.75);
+  text-transform: uppercase;
+  margin: 0 2em 0.75em 0;
+  font-size: 0.75em;
+}
+
+.DocsPage_SidePanel ul {
+  appearance: none;
+  margin: 0 0 1.625em 0;
+  list-style-type: none;
+  padding: 0;
+}
+
+.DocsPage_SidePanel a {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  position: relative;
+}
+
+.DocsPage_SidePanel a.selected {
+  color: white !important;
+}
+
+.DocsPage_SidePanel a.selected::after {
+  display: block;
+  content: "";
+  width: 0;
+  height: 0;
+  border-top: 8px solid transparent;
+  border-bottom: 8px solid transparent;
+  border-right: 8px solid white;
+  position: absolute;
+  right: -1px;
+  top: 0;
+  transform: translateY(25%);
+}
+
+.DocsPage_SidePanel a,
+.DocsPage_SidePanel a:active {
+  color: rgba(255, 255, 255, 0.75) !important;
+  text-decoration: none;
+  font-weight: 500;
+  margin-bottom: 0.625em;
+}
+
+.DocsPage_SidePanel a:focus,
+.DocsPage_SidePanel a:hover {
+  color: white !important;
+  outline: none;
+  text-decoration: none;
+}
+
+.DocsPage_SidePanel a > b {
+  margin-right: 2em;
+}
+
+.DocsPage_SidePanel a:focus > b,
+.DocsPage_SidePanel a:hover > b {
+  text-decoration: underline;
+}
+
+.DocsPage_Content {
+  padding: 1.6875em calc(var(--padding-x)) 1.6875em 1.6875em;
+}
+
+.DocsPage_Content h3 {
+  border-top: 1px solid var(--color-neutral-4);
+  padding-top: 1.5em;
+  margin-top: 0.875em;
+}

@@ -97,9 +97,9 @@ export default function HomePage() {
   );
 
   return (
-    <div className="HomePage">
+    <div className="App_Page HomePage">
       <div>
-        <h2 className="HomePage_Title">New Quiz:</h2>
+        <h2>New Quiz</h2>
         <QuizCreationForm
           defaultName={quiz.name}
           defaultQuery={quiz.query}
@@ -119,7 +119,7 @@ export default function HomePage() {
       </div>
 
       <div>
-        <h2>Quizzes:</h2>
+        <h2>Quizzes</h2>
         <div className="HomePage_Presets">
           {favoriteQuizzes.length > 0 && (
             <>

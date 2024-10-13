@@ -1,7 +1,9 @@
 import CardPreview from "./components/card-preview";
 import useCardSymbolInfos from "./data-hooks/use-card-symbol-infos";
 import AboutPage from "./pages/about-page";
-import HelpPage from "./pages/help-page";
+import DocsPageCardsQuiz from "./pages/docs/docs-page-cards-quiz";
+import DocsPageOverview from "./pages/docs/docs-page-overview";
+import DocsPageSettings from "./pages/docs/docs-page-settings";
 import HomePage from "./pages/home-page";
 import CardsQuizPage from "./pages/quiz/cards-quiz-page";
 import NotFoundPage from "./pages/not-found-page";
@@ -10,7 +12,9 @@ import "./app.css";
 const pages: Record<string, () => JSX.Element> = {
   "/": HomePage,
   "/about": AboutPage,
-  "/help": HelpPage,
+  "/docs": DocsPageOverview,
+  "/docs/settings": DocsPageSettings,
+  "/docs/cards-quiz": DocsPageCardsQuiz,
   "/quiz/cards": CardsQuizPage,
 };
 
@@ -26,34 +30,33 @@ export default function App() {
       <div className="App_Header">
         <div className="App_Header_Content">
           <div className="App_Header_Group">
-            <a className="App_Header_Nav" href="/">
+            <a href="/">
               <i className="fa-solid fa-house fa-sm" />
-              Home
+              <b>Home</b>
             </a>
           </div>
 
           <div className="App_Header_Group">
-            <a className="App_Header_Nav" href="/about">
+            <a href="/about">
               <i className="fa-solid fa-circle-info" />
-              About
+              <b>About</b>
             </a>
 
-            <a className="App_Header_Nav" href="/help">
+            <a href="/docs">
               <i className="fa-solid fa-circle-question" />
-              Help
+              <b>Docs</b>
             </a>
 
             <div className="App_Header_Divider" />
 
-            <a className="App_Header_Nav" href="/settings">
+            <a href="/settings">
               <i className="fa-solid fa-gear" />
             </a>
           </div>
         </div>
       </div>
-      <div className="App_Page">
-        <Page />
-      </div>
+
+      <Page />
 
       <CardPreview />
     </div>

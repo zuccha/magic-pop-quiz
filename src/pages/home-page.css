@@ -1,10 +1,14 @@
 .HomePage {
   display: flex;
   flex-direction: column;
-  gap: 2em;
+  gap: 3em;
+  width: 100%;
+  max-width: var(--page-width);
+  margin: 0 auto;
+  padding: 2em;
 }
 
-.HomePage_Title {
+.HomePage h2 {
   margin-bottom: 1.25rem;
 }
 
@@ -13,7 +17,7 @@
   align-items: flex-end;
   flex-wrap: wrap;
   column-gap: 1em;
-  margin-bottom: 1.25rem;
+  margin-bottom: 1rem;
   font-size: 1.2em;
 }
 
