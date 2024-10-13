@@ -100,7 +100,7 @@ export default forwardRef<QuizCreationFormRefObject, QuizCreationFormProps>(
     }));
 
     return (
-      <form action="/cards-quiz" className="QuizCreationForm" ref={formRef}>
+      <form action="/quiz/cards" className="QuizCreationForm" ref={formRef}>
         <div className="QuizCreationForm_Inputs">
           <input
             defaultValue={defaultName}

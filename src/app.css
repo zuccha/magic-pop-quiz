@@ -1,6 +1,7 @@
 .App {
   display: flex;
   flex-direction: column;
+  min-height: 100vh;
 }
 
 .App_Header {
@@ -8,39 +9,61 @@
   color: rgba(255, 255, 255, 0.75);
 }
 
-.App_Header > div,
+.App_Header_Content,
 .App_Page {
   width: 100%;
   max-width: 62.5em;
-  margin: auto;
+  margin: 0 auto;
 }
 
-.App_Header > div {
+.App_Header_Content {
   padding: 0 2em;
   height: 3.25em;
   display: flex;
   align-items: center;
+  justify-content: space-between;
 }
 
-.App_Page {
-  padding: 2em;
+.App_Header_Group {
+  display: flex;
+  align-items: center;
+  gap: 0.875em;
 }
 
-.App_Header a,
-.App_Header a:active {
+.App_Header_Nav {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+}
+
+.App_Header_Nav,
+.App_Header_Nav:active {
   color: rgba(255, 255, 255, 0.75) !important;
   text-decoration: none;
+  font-weight: 500;
 }
 
-.App_Header a:focus,
-.App_Header a:hover {
+.App_Header_Nav:focus,
+.App_Header_Nav:hover {
   color: white !important;
   outline: none;
   text-decoration: none;
 }
 
-.App_Header_Title {
+.App_Header_Nav:focus > b,
+.App_Header_Nav:hover > b {
+  text-decoration: underline;
+}
+
+.App_Header_Divider {
+  width: 1px;
+  height: 1.25em;
+  background-color: rgba(255, 255, 255, 0.75);
+}
+
+.App_Page {
+  padding: 2em;
+  flex: 1;
   display: flex;
-  align-items: center;
-  gap: 0.5em;
+  flex-direction: column;
 }

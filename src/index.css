@@ -14,6 +14,7 @@
   --color-neutral-3: #f9f7f5;
   --color-neutral-4: #e0dee3;
   --color-neutral-6: #aeaeae;
+  --color-neutral-7: #777777;
   --color-neutral-8: #343242;
   --color-danger-1: #a71f2a;
   --color-danger-2: #a71f2a10;
@@ -53,6 +54,7 @@ h2 {
   margin: 0;
 }
 
+a.button,
 button,
 input,
 select {
@@ -71,12 +73,15 @@ select:focus {
   outline: none;
 }
 
+a.button,
 button,
 input[type="checkbox"],
 select {
   cursor: pointer;
 }
 
+a.button,
+a.button:focus,
 button {
   font-family: Lato, "Helvetica Neue", system-ui, Avenir, Helvetica, Arial,
     sans-serif;
@@ -88,51 +93,68 @@ button {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5em;
+  padding: 0.5rem 0.8rem;
+  text-decoration: none;
+  gap: 0.5rem;
 }
 
+a.button.small,
 button.small {
   font-size: 0.75rem;
   padding: 0 0.4375rem;
   height: 1.375rem;
 }
 
+a.button.danger,
 button.danger {
   color: var(--color-danger-1);
   border-color: var(--color-danger-1);
 }
 
+a.button.solid,
 button.solid {
   color: white;
   border-color: var(--color-primary-2);
   background-color: var(--color-primary-2);
 }
 
+a.button.icon,
 button.icon {
   border-color: transparent;
   background-color: transparent;
 }
 
+a.button.icon:hover,
 button.icon:hover {
   color: var(--color-primary-1);
 }
 
+a.button.icon abbr[title],
 button.icon abbr[title] {
   text-decoration: none;
 }
 
+a.button:focus,
+a.button:hover,
 button:focus,
 button:hover {
   background-color: white;
 }
 
-button:focus.solid,
-button:hover.solid {
+a.button.solid:focus,
+a.button.solid:hover,
+button.solid:focus,
+button.solid:hover {
   background-color: var(--color-primary-1);
 }
 
+a.button:focus,
 button:focus {
   outline: none;
+}
+
+a.button:hover {
+  text-decoration: none;
 }
 
 select {

@@ -1,11 +1,17 @@
 import CardPreview from "./components/card-preview";
 import useCardSymbolInfos from "./data-hooks/use-card-symbol-infos";
+import AboutPage from "./pages/about-page";
+import HelpPage from "./pages/help-page";
 import HomePage from "./pages/home-page";
-import QuizPage from "./pages/quiz-page";
+import CardsQuizPage from "./pages/quiz/cards-quiz-page";
+import NotFoundPage from "./pages/not-found-page";
 import "./app.css";
 
 const pages: Record<string, () => JSX.Element> = {
-  "/cards-quiz": QuizPage,
+  "/": HomePage,
+  "/about": AboutPage,
+  "/help": HelpPage,
+  "/quiz/cards": CardsQuizPage,
 };
 
 export default function App() {
@@ -13,16 +19,36 @@ export default function App() {
 
   if (cardSymbolInfos.status !== "success") return null;
 
-  const Page = pages[document.location.pathname] ?? HomePage;
+  const Page = pages[document.location.pathname] ?? NotFoundPage;
 
   return (
     <div className="App">
       <div className="App_Header">
-        <div>
-          <a className="App_Header_Title" href="/">
-            <i className="fa-solid fa-house fa-sm" />
-            <b>Home</b>
-          </a>
+        <div className="App_Header_Content">
+          <div className="App_Header_Group">
+            <a className="App_Header_Nav" href="/">
+              <i className="fa-solid fa-house fa-sm" />
+              Home
+            </a>
+          </div>
+
+          <div className="App_Header_Group">
+            <a className="App_Header_Nav" href="/about">
+              <i className="fa-solid fa-circle-info" />
+              About
+            </a>
+
+            <a className="App_Header_Nav" href="/help">
+              <i className="fa-solid fa-circle-question" />
+              Help
+            </a>
+
+            <div className="App_Header_Divider" />
+
+            <a className="App_Header_Nav" href="/settings">
+              <i className="fa-solid fa-gear" />
+            </a>
+          </div>
         </div>
       </div>
       <div className="App_Page">

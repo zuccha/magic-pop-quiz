@@ -1,21 +1,21 @@
 import { ScryfallCard } from "@scryfall/api-types";
 import { useCallback, useLayoutEffect, useState } from "react";
-import CardsQuiz from "../components/cards-quiz";
-import { typeInfos } from "../components/card-types-indicator";
-import QuizProgress from "../components/quiz-progress";
+import CardsQuiz from "../../components/cards-quiz";
+import { typeInfos } from "../../components/card-types-indicator";
+import QuizProgress from "../../components/quiz-progress";
 import {
   useCardsQuizFromParams,
   useCardsQuizIsFavorite,
   useCardsQuizPB,
-} from "../hooks/use-cards-quiz";
-import { saveCardsQuizToParams } from "../models/cards-quiz";
-import { CardsQuizAnswer } from "../models/cards-quiz-answer";
-import { formattedCardsSearchDirection } from "../models/cards-search-direction";
-import { formattedCardsSearchOrder } from "../models/cards-search-order";
-import { formatHints } from "../models/hints";
-import "./quiz-page.css";
+} from "../../hooks/use-cards-quiz";
+import { saveCardsQuizToParams } from "../../models/cards-quiz";
+import { CardsQuizAnswer } from "../../models/cards-quiz-answer";
+import { formattedCardsSearchDirection } from "../../models/cards-search-direction";
+import { formattedCardsSearchOrder } from "../../models/cards-search-order";
+import { formatHints } from "../../models/hints";
+import "./cards-quiz-page.css";
 
-export default function QuizPage() {
+export default function CardsQuizPage() {
   const [error, setError] = useState("");
   const [answers, setAnswers] = useState<CardsQuizAnswer[] | undefined>(
     undefined,
@@ -124,8 +124,8 @@ export default function QuizPage() {
   }, [quiz.quantity, quiz.query, quiz.order, quiz.direction]);
 
   return (
-    <div className="QuizPage">
-      <div className="QuizPage_Header">
+    <div className="CardsQuizPage">
+      <div className="CardsQuizPage_Header">
         <div>
           <h1>{quiz.name || "Unnamed"}</h1>
           <span>
@@ -133,8 +133,8 @@ export default function QuizPage() {
           </span>
         </div>
 
-        <div className="QuizPage_Header_ActionsAndPB">
-          <div className="QuizPage_Header_Actions">
+        <div className="CardsQuizPage_Header_ActionsAndPB">
+          <div className="CardsQuizPage_Header_Actions">
             <button className="small" onClick={edit}>
               <i className="fa-solid fa-pen" />
               Edit
@@ -151,7 +151,7 @@ export default function QuizPage() {
           </div>
 
           {pb && answers && (
-            <div className="QuizPage_Header_PB">
+            <div className="CardsQuizPage_Header_PB">
               <span>Record:</span>
               <QuizProgress
                 guessed={pb.answersGuessed}
@@ -178,14 +178,14 @@ export default function QuizPage() {
           showTypes={quiz.hints.showTypes}
         />
       ) : error ? (
-        <div className="QuizPage_Message">
+        <div className="CardsQuizPage_Message">
           <h2>{error}</h2>
           <button className="solid" onClick={edit}>
             Edit quiz
           </button>
         </div>
       ) : (
-        <div className="QuizPage_Message">
+        <div className="CardsQuizPage_Message">
           <h2>Retrieving cards...</h2>
         </div>
       )}

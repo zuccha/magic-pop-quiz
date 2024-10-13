@@ -1,19 +1,19 @@
-.QuizPage {
+.CardsQuizPage {
   display: flex;
   flex-direction: column;
   gap: 2em;
 }
 
-.QuizPage_Header {
+.CardsQuizPage_Header {
   display: flex;
   justify-content: space-between;
 }
 
-.QuizPage_Header h1 {
+.CardsQuizPage_Header h1 {
   margin: 0;
 }
 
-.QuizPage_Header_ActionsAndPB {
+.CardsQuizPage_Header_ActionsAndPB {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
@@ -21,19 +21,19 @@
   gap: 1em;
 }
 
-.QuizPage_Header_Actions {
+.CardsQuizPage_Header_Actions {
   display: flex;
   gap: 0.5em;
 }
 
-.QuizPage_Header_PB {
+.CardsQuizPage_Header_PB {
   display: flex;
   gap: 1em;
   font-family: monospace;
   font-size: 1.2em;
 }
 
-.QuizPage_Message {
+.CardsQuizPage_Message {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -41,6 +41,6 @@
   gap: 1em;
 }
 
-.QuizPage_Message > button {
+.CardsQuizPage_Message > button {
   width: 10em;
 }

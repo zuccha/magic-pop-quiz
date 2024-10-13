@@ -30,7 +30,6 @@ const edhrecTop100Cards = (description: string, condition: string): CardsQuiz =>
 const cardsQuizCommanderPresets: CardsQuiz[] = [
   bannedCards(),
   edhrecTop100Cards("", ""),
-  edhrecTop100Cards("Colorless (nonland)", "identity=colorless -type:land"),
   edhrecTop100Cards("White", "identity=white"),
   edhrecTop100Cards("Blue", "identity=blue"),
   edhrecTop100Cards("Black", "identity=black"),

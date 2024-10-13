@@ -1,0 +1,24 @@
+.NotFoundPage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+}
+
+.NotFoundPage h1 {
+  font-size: 2.8em;
+  font-weight: 300;
+}
+
+.NotFoundPage p {
+  margin: 1em 0;
+  color: var(--color-neutral-7);
+  font-size: 1em;
+  max-width: 28em;
+  text-align: center;
+}
+
+.NotFoundPage button {
+  font-size: 1em;
+}
