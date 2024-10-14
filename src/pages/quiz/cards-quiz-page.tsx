@@ -176,9 +176,7 @@ export default function CardsQuizPage() {
       ) : error ? (
         <div className="CardsQuizPage_Message">
           <h2>{error}</h2>
-          <button className="solid" onClick={edit}>
-            Edit quiz
-          </button>
+          <button onClick={edit}>Edit Quiz</button>
         </div>
       ) : (
         <div className="CardsQuizPage_Message">
