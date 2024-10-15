@@ -2,19 +2,15 @@ import { padL } from "../utils";
 import "./card-stats-indicator.css";
 
 export type CardStatsIndicatorProps = {
-  power: string;
-  toughness: string;
+  stats: string;
   size?: number;
 };
 
 export default function CardStatsIndicator({
-  power,
-  toughness,
+  stats,
   size,
 }: CardStatsIndicatorProps) {
   return (
-    <div className="CardStatsIndicator">
-      {size ? padL(`${power}/${toughness}`, size) : `${power}/${toughness}`}
-    </div>
+    <div className="CardStatsIndicator">{size ? padL(stats, size) : stats}</div>
   );
 }

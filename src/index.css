@@ -143,6 +143,10 @@ button.icon:hover {
   color: var(--color-primary-1);
 }
 
+button.icon abbr {
+  cursor: unset;
+}
+
 a.button.icon abbr[title],
 button.icon abbr[title] {
   text-decoration: none;

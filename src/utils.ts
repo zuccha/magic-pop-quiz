@@ -2,8 +2,15 @@ export function clamp(value: number, min: number, max: number): number {
   return Math.max(Math.min(value, max), min);
 }
 
-export function hasFirstItem<T>(list: T[]): list is [T, ...T[]] {
-  return list.length > 0;
+export function isListWithAtLeastOneItem<T>(items: T[]): items is [T, ...T[]] {
+  return items.length > 0;
+}
+
+export function validateListWithAtLeastOneItem<T>(
+  items: T[],
+  defaultItem: T,
+): [T, ...T[]] {
+  return isListWithAtLeastOneItem(items) ? items : [defaultItem];
 }
 
 export function padL(text: string, size: number, fill = " "): string {

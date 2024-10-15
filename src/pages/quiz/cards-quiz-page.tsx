@@ -1,7 +1,6 @@
 import { ScryfallCard } from "@scryfall/api-types";
 import { useCallback, useLayoutEffect, useState } from "react";
 import CardsQuiz from "../../components/cards-quiz";
-import { typeInfos } from "../../components/card-types-indicator";
 import QuizProgress from "../../components/quiz-progress";
 import {
   useCardsQuizFromParams,
@@ -9,18 +8,15 @@ import {
   useCardsQuizPB,
 } from "../../hooks/use-cards-quiz";
 import { saveCardsQuizToParams } from "../../models/cards-quiz";
-import { CardsQuizAnswer } from "../../models/cards-quiz-answer";
+import { Card, cardFromScryfallCard } from "../../models/card";
 import { formattedCardsQuizDirection } from "../../models/cards-quiz-direction";
 import { formattedCardsQuizOrder } from "../../models/cards-quiz-order";
 import { formatCardsQuizHints } from "../../models/cards-quiz-hints";
-import { sanitize } from "../../utils";
 import "./cards-quiz-page.css";
 
 export default function CardsQuizPage() {
   const [error, setError] = useState("");
-  const [answers, setAnswers] = useState<CardsQuizAnswer[] | undefined>(
-    undefined,
-  );
+  const [cards, setCards] = useState<Card[] | undefined>(undefined);
 
   const quiz = useCardsQuizFromParams();
   const [pb, setPB] = useCardsQuizPB(quiz);
@@ -50,73 +46,14 @@ export default function CardsQuizPage() {
             ? "No cards found for the given query"
             : "An error occurred",
         );
-        setAnswers(undefined);
+        setCards(undefined);
         return;
       }
 
       const cards = response.data as ScryfallCard.Any[];
       setError("");
-      setAnswers(
-        cards.slice(0, quiz.quantity || undefined).map((card) => {
-          return {
-            id: card.id,
-            name: card.name,
-            simpleName: sanitize(card.name),
-            simpleNames: card.name.split("//").map(sanitize),
-            simpleShortName: sanitize(card.name.split(",")[0]),
-            simpleShortNames: card.name
-              .split("//")
-              .map((name) => sanitize(name.split(",")[0])),
-            set: card.set_name,
-            costs: card.mana_cost
-              ? splitCosts(card.mana_cost)
-              : "card_faces" in card
-                ? card.card_faces.flatMap((face) => splitCosts(face.mana_cost))
-                : [],
-            identity: sortColors(card.color_identity),
-            colors: sortColors(
-              "colors" in card && card.colors
-                ? card.colors
-                : "card_faces" in card
-                  ? card.card_faces.flatMap((face) =>
-                      "colors" in face ? face.colors : [],
-                    )
-                  : [],
-            ),
-            types:
-              "card_faces" in card
-                ? splitTypes(card.card_faces[0]?.type_line)
-                : splitTypes(card.type_line),
-            stats: {
-              power:
-                "card_faces" in card
-                  ? (card.card_faces[0]?.power ?? "-")
-                  : (card.power ?? "-"),
-              toughness:
-                "card_faces" in card
-                  ? (card.card_faces[0]?.toughness ?? "-")
-                  : (card.toughness ?? "-"),
-            },
-            image:
-              "image_uris" in card && card.image_uris
-                ? card.image_uris.normal
-                : "card_faces" in card &&
-                    "image_uris" in card.card_faces[0] &&
-                    card.card_faces[0].image_uris
-                  ? card.card_faces[0].image_uris.normal
-                  : "",
-            url: card.scryfall_uri,
-            price: {
-              usd:
-                card.prices.usd ??
-                card.prices.usd_foil ??
-                card.prices.usd_etched ??
-                "-",
-              eur: card.prices.eur ?? card.prices.eur_foil ?? "-",
-              tix: card.prices.tix ?? "-",
-            },
-          };
-        }),
+      setCards(
+        cards.slice(0, quiz.quantity || undefined).map(cardFromScryfallCard),
       );
     };
 
@@ -143,26 +80,36 @@ export default function CardsQuizPage() {
             </button>
 
             <button className="small icon" onClick={toggleIsFavorite}>
-              <abbr {...favoriteIcon(isFavorite)} />
+              {isFavorite ? (
+                <abbr
+                  className="fa-solid fa-heart fa-xl"
+                  title="Remove favorite"
+                />
+              ) : (
+                <abbr
+                  className="fa-regular fa-heart fa-xl"
+                  title="Save favorite"
+                />
+              )}
             </button>
           </div>
 
-          {pb && answers && (
+          {pb && cards && (
             <div className="CardsQuizPage_Header_PB">
               <span>Record:</span>
               <QuizProgress
                 guessed={pb.answersGuessed}
                 time={pb.timeRemaining}
-                total={answers.length}
+                total={cards.length}
               />
             </div>
           )}
         </div>
       </div>
 
-      {answers ? (
+      {cards ? (
         <CardsQuiz
-          answers={answers}
+          cards={cards}
           duration={quiz.time}
           onDone={setPB}
           showColors={quiz.hints.showColors}
@@ -186,43 +133,4 @@ export default function CardsQuizPage() {
       )}
     </div>
   );
-}
-
-const colorSortingScore: Record<string, number> = {
-  W: 5,
-  U: 4,
-  B: 3,
-  R: 2,
-  G: 1,
-};
-
-function sortColors(colors: string[]): string[] {
-  return [...new Set(colors)].sort((c1, c2) => {
-    const score1 = colorSortingScore[c1] ?? 0;
-    const score2 = colorSortingScore[c2] ?? 0;
-    if (score1 > score2) return -1;
-    if (score1 < score2) return 1;
-    return 0;
-  });
-}
-
-function splitTypes(typeLine: string): string[] {
-  return (typeLine.split("-")[0] || "")
-    .trim()
-    .split(" ")
-    .filter((type) => typeInfos[type])
-    .sort();
-}
-
-function splitCosts(cost?: string): string[][] {
-  return cost
-    ? cost.split("//").map((symbol) => symbol.match(/{[^}]+}/g) ?? [])
-    : [];
-}
-
-function favoriteIcon(active: boolean): { className: string; title: string } {
-  return {
-    className: active ? `fa-solid fa-heart fa-xl` : `fa-regular fa-heart fa-xl`,
-    title: active ? "Remove favorite" : "Save favorite",
-  };
 }

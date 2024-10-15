@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import useTimer, { TimerStatus } from "../hooks/use-timer";
 import { QuizRecord } from "../models/quiz-record";
-import { CatalogQuizAnswer } from "../models/catalog-quiz-answer";
+import { CatalogEntry } from "../models/catalog-entry";
 import {
   CatalogQuizType,
   formattedCatalogQuizType,
@@ -12,14 +12,14 @@ import QuizProgress from "./quiz-progress";
 import "./catalog-quiz.css";
 
 export type CatalogQuizProps = {
-  answers: CatalogQuizAnswer[];
+  entries: CatalogEntry[];
   duration: number;
   onDone: (pb: QuizRecord) => void;
   types: CatalogQuizType[];
 };
 
 export default function CatalogQuiz({
-  answers,
+  entries,
   duration,
   onDone,
   types,
@@ -37,42 +37,39 @@ export default function CatalogQuiz({
   const maxTypeLength = useMemo(
     () =>
       Math.max(
-        ...answers.map(
-          (answer) => formattedCatalogQuizType[answer.type].length,
-        ),
+        ...entries.map((entry) => formattedCatalogQuizType[entry.type].length),
       ),
-    [answers],
+    [entries],
   );
 
   const checkGuess = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const guess = sanitize(e.currentTarget.value);
       setGuessed((prevGuessed) => {
-        const newGuessedAnswers = answers.filter(
-          (answer) =>
-            !prevGuessed.has(answer.name) && answer.simpleName === guess,
+        const newGuessedAnswers = entries.filter(
+          (entry) => !prevGuessed.has(entry.name) && entry.simpleName === guess,
         );
         if (newGuessedAnswers.length === 0) return prevGuessed;
         if (inputRef.current) inputRef.current.value = "";
         const newGuessed = new Set(prevGuessed);
-        newGuessedAnswers.forEach((answer) => newGuessed.add(answer.name));
-        if (newGuessed.size === answers.length) timer.stop();
+        newGuessedAnswers.forEach((entry) => newGuessed.add(entry.name));
+        if (newGuessed.size === entries.length) timer.stop();
         return newGuessed;
       });
     },
-    [answers, timer.stop],
+    [entries, timer.stop],
   );
 
   useEffect(() => {
     if (timer.status === TimerStatus.Stopped) {
       onDone({
         answersGuessed: guessed.size,
-        answersTotal: answers.length,
+        answersTotal: entries.length,
         timeRemaining: timer.remaining,
         date: new Date(),
       });
     }
-  }, [answers.length, guessed.size, timer.remaining, timer.status, timer.stop]);
+  }, [entries.length, guessed.size, timer.remaining, timer.status, timer.stop]);
 
   return (
     <div className="CatalogQuiz">
@@ -123,32 +120,38 @@ export default function CatalogQuiz({
           dangerThreshold={15 * 1000}
           guessed={guessed.size}
           time={timer.remaining}
-          total={answers.length}
+          total={entries.length}
         />
       </div>
 
       {timer.status === TimerStatus.Paused ? (
         <i>Quiz paused</i>
       ) : (
-        <div className="CatalogQuiz_Answers">
-          {answers.map((answer) => (
-            <div key={answer.name}>
+        <div
+          className={
+            types.length === 1
+              ? "CatalogQuiz_Answers compact"
+              : "CatalogQuiz_Answers"
+          }
+        >
+          {entries.map((entry) => (
+            <div key={entry.name}>
               {types.length > 1 && (
                 <div className="CatalogQuiz_Answer_Text">
                   <CatalogTypeIndicator
-                    type={answer.type}
+                    type={entry.type}
                     size={maxTypeLength}
                   />
                 </div>
               )}
 
-              {guessed.has(answer.name) ? (
+              {guessed.has(entry.name) ? (
                 <span className="CatalogQuiz_Answer_Name success">
-                  {answer.name}
+                  {entry.name}
                 </span>
               ) : timer.status === TimerStatus.Stopped ? (
                 <span className="CatalogQuiz_Answer_Name failure">
-                  {answer.name}
+                  {entry.name}
                 </span>
               ) : (
                 <span className="CatalogQuiz_Answer_Name">&nbsp;</span>

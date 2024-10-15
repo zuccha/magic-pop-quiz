@@ -1,10 +1,9 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import CardSheet from "../../components/card-sheet";
-import { blankCard } from "../../data/cards";
 import { useCheckboxValueStore } from "../../hooks/use-checkbox-value";
 import useInputValue, { useInputValueStore } from "../../hooks/use-input-value";
 import useResource from "../../hooks/use-resource";
-import { cardFromScryfallCard } from "../../models/card";
+import { blankCard, cardFromScryfallCard } from "../../models/card";
 import { sanitize } from "../../utils";
 import "./random-card-page.css";
 
@@ -78,7 +77,7 @@ export default function RandomCardPage() {
           : "",
         set: showSet ? face.set : { code: "", name: "" },
         stats: showStats ? face.stats : undefined,
-        type: showType ? face.type : "",
+        type: showType ? face.typeLine : "",
       })),
     };
   }, [
@@ -126,7 +125,7 @@ export default function RandomCardPage() {
             <h3>
               {gaveUp ? "" : "Correct! "}
               The card is{" "}
-              <a href={card.scryfall} target="_blank">
+              <a href={card.scryfallUrl} target="_blank">
                 <b>{card.name}</b>
               </a>
               !

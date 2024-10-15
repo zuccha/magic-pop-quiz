@@ -1,6 +1,6 @@
+import { Fragment } from "react/jsx-runtime";
 import CardSymbol from "./card-symbol";
 import "./card-costs-indicator.css";
-import { Fragment } from "react/jsx-runtime";
 
 export type CardCostsIndicatorProps = {
   costs: string[][];

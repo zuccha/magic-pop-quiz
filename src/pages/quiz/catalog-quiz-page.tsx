@@ -5,16 +5,14 @@ import {
   useCatalogQuizFromParams,
   useCatalogQuizPB,
 } from "../../hooks/use-catalog-quiz";
-import { CatalogQuizAnswer } from "../../models/catalog-quiz-answer";
+import { CatalogEntry } from "../../models/catalog-entry";
 import { CatalogQuizType } from "../../models/catalog-quiz-type";
 import "./catalog-quiz-page.css";
 import { sanitize } from "../../utils";
 
 export default function CatalogQuizPage() {
   const [error, setError] = useState("");
-  const [answers, setAnswers] = useState<CatalogQuizAnswer[] | undefined>(
-    undefined,
-  );
+  const [entries, setEntries] = useState<CatalogEntry[] | undefined>(undefined);
 
   const quiz = useCatalogQuizFromParams();
   const [pb, setPB] = useCatalogQuizPB(quiz);
@@ -45,11 +43,11 @@ export default function CatalogQuizPage() {
     Promise.all(quiz.types.map(fetchCatalog))
       .then((values) => {
         setError("");
-        setAnswers(values.flat());
+        setEntries(values.flat());
       })
       .catch(() => {
         setError("An error occurred");
-        setAnswers(undefined);
+        setEntries(undefined);
       });
   }, [quiz.types]);
 
@@ -66,23 +64,23 @@ export default function CatalogQuizPage() {
         <div className="CardsQuizPage_Header_ActionsAndPB">
           <div className="CardsQuizPage_Header_Actions" />
 
-          {pb && answers && (
+          {pb && entries && (
             <div className="CardsQuizPage_Header_PB">
               <span>Record:</span>
               <QuizProgress
                 guessed={pb.answersGuessed}
                 time={pb.timeRemaining}
-                total={answers.length}
+                total={entries.length}
               />
             </div>
           )}
         </div>
       </div>
 
-      {answers ? (
+      {entries ? (
         <CatalogQuiz
-          answers={answers}
           duration={quiz.time}
+          entries={entries}
           onDone={setPB}
           types={quiz.types}
         />

@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import useTimer, { TimerStatus } from "../hooks/use-timer";
-import { CardsQuizAnswer } from "../models/cards-quiz-answer";
+import { Card } from "../models/card";
 import { QuizRecord } from "../models/quiz-record";
+import { seconds } from "../models/time";
 import { sanitize } from "../utils";
 import CardColorsIndicator from "./card-colors-indicator";
 import CardCostsIndicator from "./card-costs-indicator";
@@ -13,7 +14,7 @@ import QuizProgress from "./quiz-progress";
 import "./cards-quiz.css";
 
 export type CardsQuizProps = {
-  answers: CardsQuizAnswer[];
+  cards: Card[];
   duration: number;
   onDone: (pb: QuizRecord) => void;
   showColors?: boolean;
@@ -27,7 +28,7 @@ export type CardsQuizProps = {
 };
 
 export default function CardsQuiz({
-  answers,
+  cards,
   duration,
   onDone,
   showColors = false,
@@ -52,90 +53,84 @@ export default function CardsQuiz({
   const maxCostLength = useMemo(
     () =>
       Math.max(
-        ...answers.map(
-          (answer) =>
-            answer.costs.reduce((sum, c) => sum + c.length, 0) +
-            answer.costs.length -
+        ...cards.map(
+          (card) =>
+            card.faces.reduce((sum, f) => sum + f.cost.length, 0) +
+            card.faces.length -
             1,
         ),
       ),
-    [answers],
+    [cards],
   );
 
   const maxColorsLength = useMemo(
-    () => Math.max(...answers.map((answer) => answer.colors.length)),
-    [answers],
+    () => Math.max(...cards.map((card) => card.colors.length)),
+    [cards],
   );
 
   const maxIdentityLength = useMemo(
-    () => Math.max(...answers.map((answer) => answer.identity.length)),
-    [answers],
+    () => Math.max(...cards.map((card) => card.identity.length)),
+    [cards],
   );
 
   const maxTypesLength = useMemo(
-    () => Math.max(...answers.map((answer) => answer.types.length)),
-    [answers],
+    () => Math.max(...cards.map((card) => card.faces[0].types.length)),
+    [cards],
   );
 
   const maxUsdLength = useMemo(
-    () => Math.max(...answers.map((answer) => answer.price.usd.length)) + 1,
-    [answers],
+    () => Math.max(...cards.map((card) => card.price.usd.length)) + 1,
+    [cards],
   );
 
   const maxEurLength = useMemo(
-    () => Math.max(...answers.map((answer) => answer.price.eur.length)) + 1,
-    [answers],
+    () => Math.max(...cards.map((card) => card.price.eur.length)) + 1,
+    [cards],
   );
 
   const maxTixLength = useMemo(
-    () => Math.max(...answers.map((answer) => answer.price.tix.length)),
-    [answers],
+    () => Math.max(...cards.map((card) => card.price.tix.length)),
+    [cards],
   );
 
   const maxStatsLength = useMemo(
-    () =>
-      Math.max(
-        ...answers.map(
-          (answer) =>
-            answer.stats.power.length + answer.stats.toughness.length + 1,
-        ),
-      ),
-    [answers],
+    () => Math.max(...cards.map((card) => card.faces[0].stats?.length ?? 0)),
+    [cards],
   );
 
   const checkGuess = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const guess = sanitize(e.currentTarget.value);
       setGuessed((prevGuessed) => {
-        const newGuessedAnswers = answers.filter(
-          (answer) =>
-            !prevGuessed.has(answer.id) &&
-            (answer.simpleName === guess ||
-              answer.simpleShortName === guess ||
-              answer.simpleNames.some((name) => name === guess) ||
-              answer.simpleShortNames.some((name) => name === guess)),
+        const newGuessedAnswers = cards.filter(
+          (card) =>
+            !prevGuessed.has(card.id) &&
+            (card.nameSanitized === guess ||
+              card.nameSanitizedShort === guess ||
+              card.faces.some((face) => face.nameSanitized === guess) ||
+              card.faces.some((face) => face.nameSanitizedShort === guess)),
         );
         if (newGuessedAnswers.length === 0) return prevGuessed;
         if (inputRef.current) inputRef.current.value = "";
         const newGuessed = new Set(prevGuessed);
         newGuessedAnswers.forEach((answer) => newGuessed.add(answer.id));
-        if (newGuessed.size === answers.length) timer.stop();
+        if (newGuessed.size === cards.length) timer.stop();
         return newGuessed;
       });
     },
-    [answers, timer.stop],
+    [cards, timer.stop],
   );
 
   useEffect(() => {
     if (timer.status === TimerStatus.Stopped) {
       onDone({
         answersGuessed: guessed.size,
-        answersTotal: answers.length,
+        answersTotal: cards.length,
         timeRemaining: timer.remaining,
         date: new Date(),
       });
     }
-  }, [answers.length, guessed.size, timer.remaining, timer.status, timer.stop]);
+  }, [cards.length, guessed.size, timer.remaining, timer.status, timer.stop]);
 
   return (
     <div className="CardsQuiz">
@@ -183,10 +178,10 @@ export default function CardsQuiz({
         )}
 
         <QuizProgress
-          dangerThreshold={15 * 1000}
+          dangerThreshold={15 * seconds}
           guessed={guessed.size}
           time={timer.remaining}
-          total={answers.length}
+          total={cards.length}
         />
       </div>
 
@@ -194,13 +189,13 @@ export default function CardsQuiz({
         <i>Quiz paused</i>
       ) : (
         <div className="CardsQuiz_Answers">
-          {answers.map((answer) => (
-            <div key={answer.id}>
+          {cards.map((card) => (
+            <div key={card.id}>
               {showPriceUsd && (
                 <div className="CardsQuiz_Answer_Text">
                   <CardPriceIndicator
                     currency="$"
-                    price={answer.price.usd}
+                    price={card.price.usd}
                     size={maxUsdLength}
                   />
                 </div>
@@ -209,7 +204,7 @@ export default function CardsQuiz({
                 <div className="CardsQuiz_Answer_Text">
                   <CardPriceIndicator
                     currency="€"
-                    price={answer.price.eur}
+                    price={card.price.eur}
                     size={maxEurLength}
                   />
                 </div>
@@ -218,7 +213,7 @@ export default function CardsQuiz({
                 <div className="CardsQuiz_Answer_Text">
                   <CardPriceIndicator
                     currency=""
-                    price={answer.price.tix}
+                    price={card.price.tix}
                     size={maxTixLength}
                   />
                 </div>
@@ -226,7 +221,7 @@ export default function CardsQuiz({
               {showCost && (
                 <div className="CardsQuiz_Answer_Text">
                   <CardCostsIndicator
-                    costs={answer.costs}
+                    costs={card.faces.map((face) => face.cost)}
                     size={maxCostLength}
                   />
                 </div>
@@ -234,7 +229,7 @@ export default function CardsQuiz({
               {showColors && (
                 <div className="CardsQuiz_Answer_Box">
                   <CardColorsIndicator
-                    colors={answer.colors}
+                    colors={card.colors}
                     size={maxColorsLength}
                   />
                 </div>
@@ -242,7 +237,7 @@ export default function CardsQuiz({
               {showIdentity && (
                 <div className="CardsQuiz_Answer_Box">
                   <CardColorsIndicator
-                    colors={answer.identity}
+                    colors={card.identity}
                     size={maxIdentityLength}
                   />
                 </div>
@@ -250,7 +245,7 @@ export default function CardsQuiz({
               {showTypes && (
                 <div className="CardsQuiz_Answer_Text">
                   <CardTypesIndicator
-                    types={answer.types}
+                    types={card.faces[0].types}
                     size={maxTypesLength}
                   />
                 </div>
@@ -258,32 +253,31 @@ export default function CardsQuiz({
               {showStats && (
                 <div className="CardsQuiz_Answer_Text">
                   <CardStatsIndicator
-                    power={answer.stats.power}
-                    toughness={answer.stats.toughness}
+                    stats={card.faces[0].stats ?? ""}
                     size={maxStatsLength}
                   />
                 </div>
               )}
 
-              {guessed.has(answer.id) ? (
+              {guessed.has(card.id) ? (
                 <span className="CardsQuiz_Answer_Name success">
                   <a
-                    {...updateCardPreview(answer.image)}
-                    href={answer.url}
+                    {...updateCardPreview(card.imageUrl)}
+                    href={card.scryfallUrl}
                     target="_blank"
                   >
-                    {answer.name}
+                    {card.name}
                   </a>
                 </span>
               ) : timer.status === TimerStatus.Stopped ? (
                 <span className="CardsQuiz_Answer_Name failure">
                   <a
-                    {...updateCardPreview(answer.image)}
+                    {...updateCardPreview(card.imageUrl)}
                     className="error"
-                    href={answer.url}
+                    href={card.scryfallUrl}
                     target="_blank"
                   >
-                    {answer.name}
+                    {card.name}
                   </a>
                 </span>
               ) : (

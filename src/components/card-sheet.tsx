@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 import { Fragment } from "react/jsx-runtime";
 import { CardFace } from "../models/card";
-import { hasFirstItem } from "../utils";
+import { isListWithAtLeastOneItem } from "../utils";
 import CardCostsIndicator from "./card-costs-indicator";
 import CardSymbol from "./card-symbol";
 import "./card-sheet.css";
@@ -52,7 +52,7 @@ export default function CardSheet({ faces }: CardSheetProps) {
 
           <div className="CardSheet_Art"></div>
 
-          <div className="CardSheet_Type">{face.type || "\u00A0"}</div>
+          <div className="CardSheet_Type">{face.typeLine || "\u00A0"}</div>
 
           <div className="CardSheet_Oracle">
             {face.oracle.split("\n").map((paragraph, paragraphIndex) => (
@@ -110,7 +110,11 @@ function Formatter({
   const parts = text.split(regex);
 
   const renderPart = (part: string) =>
-    hasFirstItem(rest) ? <Formatter patterns={rest} text={part} /> : part;
+    isListWithAtLeastOneItem(rest) ? (
+      <Formatter patterns={rest} text={part} />
+    ) : (
+      part
+    );
 
   return parts.map((part, i) => (
     <Fragment key={i}>
