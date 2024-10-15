@@ -2,7 +2,9 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import CardSheet from "../../components/card-sheet";
 import { useCheckboxValueStore } from "../../hooks/use-checkbox-value";
 import useInputValue, { useInputValueStore } from "../../hooks/use-input-value";
-import useResource from "../../hooks/use-resource";
+import useResourceScryfall, {
+  scryfallUrl,
+} from "../../hooks/use-resource-scryfall";
 import { blankCard, cardFromScryfallCard } from "../../models/card";
 import { sanitize } from "../../utils";
 import "./random-card-page.css";
@@ -39,14 +41,17 @@ export default function RandomCardPage() {
     useCheckboxValueStore("setting/random-card/show-artist", false);
 
   const url = useMemo(() => {
-    // const url = new URL("https://api.scryfall.com/cards/named");
+    // const url = scryfallUrl('/cards/named');
     // url.searchParams.set("fuzzy", "");
-    const url = new URL("https://api.scryfall.com/cards/random");
+    const url = scryfallUrl("/cards/random");
     url.searchParams.set("q", query);
     return url.toString();
   }, [query]);
 
-  const [randomCard, fetchRandomCard] = useResource(url, cardFromScryfallCard);
+  const [randomCard, fetchRandomCard] = useResourceScryfall(
+    url,
+    cardFromScryfallCard,
+  );
 
   const guessed = useMemo(() => {
     if (randomCard.status !== "success") return false;

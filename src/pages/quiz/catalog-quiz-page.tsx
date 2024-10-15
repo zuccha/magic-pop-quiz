@@ -5,6 +5,7 @@ import {
   useCatalogQuizFromParams,
   useCatalogQuizPB,
 } from "../../hooks/use-catalog-quiz";
+import { fetchScryfall, scryfallUrl } from "../../hooks/use-resource-scryfall";
 import { CatalogEntry } from "../../models/catalog-entry";
 import { CatalogQuizType } from "../../models/catalog-quiz-type";
 import { sanitize } from "../../utils";
@@ -19,7 +20,8 @@ export default function CatalogQuizPage() {
 
   useLayoutEffect(() => {
     const fetchCatalog = async (type: CatalogQuizType) => {
-      const response = await fetch(`https://api.scryfall.com/catalog/${type}`);
+      const url = scryfallUrl(`/catalog/${type}`);
+      const response = await fetchScryfall(url);
       const json = await response.json();
 
       if (json.object === "error") {

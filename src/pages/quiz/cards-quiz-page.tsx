@@ -7,6 +7,7 @@ import {
   useCardsQuizIsFavorite,
   useCardsQuizPB,
 } from "../../hooks/use-cards-quiz";
+import { fetchScryfall, scryfallUrl } from "../../hooks/use-resource-scryfall";
 import { saveCardsQuizToParams } from "../../models/cards-quiz";
 import { Card, cardFromScryfallCard } from "../../models/card";
 import { formattedCardsQuizDirection } from "../../models/cards-quiz-direction";
@@ -35,11 +36,11 @@ export default function CardsQuizPage() {
 
   useLayoutEffect(() => {
     const fetchCards = async () => {
-      const url = new URL("https://api.scryfall.com/cards/search");
+      const url = scryfallUrl("/cards/search");
       url.searchParams.set("q", quiz.query);
       url.searchParams.set("order", quiz.order);
       url.searchParams.set("dir", quiz.direction);
-      const response = await (await fetch(url)).json();
+      const response = await (await fetchScryfall(url)).json();
       if (response.object === "error") {
         setError(
           response.status === 404

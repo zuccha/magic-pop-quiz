@@ -2,6 +2,15 @@ export function clamp(value: number, min: number, max: number): number {
   return Math.max(Math.min(value, max), min);
 }
 
+export function delayAsyncFn<T>(
+  asyncFn: () => Promise<T>,
+  delay: number,
+): Promise<T> {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => asyncFn().then(resolve).catch(reject), delay);
+  });
+}
+
 export function isListWithAtLeastOneItem<T>(items: T[]): items is [T, ...T[]] {
   return items.length > 0;
 }

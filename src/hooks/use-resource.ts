@@ -7,8 +7,9 @@ export type Resource<T> =
   | { status: "success"; data: T };
 
 export default function useResource<T>(
-  url: string,
+  url: RequestInfo | URL,
   parse: (rawData: any) => T,
+  fetch = window.fetch,
 ): [Resource<T>, () => void] {
   const [resource, setResource] = useState<Resource<T>>({ status: "initial" });
 
@@ -28,7 +29,11 @@ export default function useResource<T>(
   return [resource, fetchResource];
 }
 
-export function createUseResource<T>(url: string, parse: (rawData: any) => T) {
+export function createUseResource<T>(
+  url: RequestInfo | URL,
+  parse: (rawData: any) => T,
+  fetch = window.fetch,
+) {
   let memoizedResource: Resource<T> = { status: "initial" };
 
   const callbacks: Set<(resource: Resource<T>) => void> = new Set();
