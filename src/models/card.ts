@@ -1,5 +1,6 @@
 import { ScryfallCard, ScryfallPrices } from "@scryfall/api-types";
 import { typeInfos } from "../components/card-types-indicator";
+import { cardSymbolInfosRef } from "../data-hooks/use-card-symbol-infos";
 import { sanitize, validateListWithAtLeastOneItem } from "../utils";
 
 export type CardFace = {
@@ -188,9 +189,11 @@ function parseTypes(typeLine: string): string[] {
     .sort();
 }
 
-function inferColors(_cost: string): string[] {
-  // TODO.
-  return [];
+function inferColors(text: string): string[] {
+  if (cardSymbolInfosRef.current.status !== "success") return [];
+
+  const info = cardSymbolInfosRef.current.data;
+  return [...new Set(parseCost(text).flatMap((symbol) => info[symbol].colors))];
 }
 
 function inferIdentity(cost: string, oracle: string): string[] {

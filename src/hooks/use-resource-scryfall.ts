@@ -1,5 +1,5 @@
 import { delayAsyncFn } from "../utils";
-import useResource, { createUseResource } from "./use-resource";
+import useResource, { createResourceContext } from "./use-resource";
 
 export const scryfallUrl = (pathname: string) =>
   new URL(pathname, "https://api.scryfall.com");
@@ -25,5 +25,5 @@ export function createUseResourceScryfall<T>(
   url: RequestInfo | URL,
   parse: (rawData: any) => T,
 ) {
-  return createUseResource(url, parse, fetchScryfall);
+  return createResourceContext(url, parse, fetchScryfall);
 }

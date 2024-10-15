@@ -6,7 +6,7 @@ import {
 
 export type CardSymbolInfos = Record<string, ScryfallCardSymbol>;
 
-const useCardSymbolInfos = createUseResourceScryfall(
+const cardSymbolInfosContext = createUseResourceScryfall(
   scryfallUrl("/symbology"),
   (symbols: ScryfallList.CardSymbols) => {
     const data: CardSymbolInfos = {};
@@ -15,4 +15,8 @@ const useCardSymbolInfos = createUseResourceScryfall(
   },
 );
 
+export const cardSymbolInfosRef = cardSymbolInfosContext.resourceRef;
+export const fetchCardSymbolInfos = cardSymbolInfosContext.fetchResource;
+
+const useCardSymbolInfos = cardSymbolInfosContext.useResource;
 export default useCardSymbolInfos;

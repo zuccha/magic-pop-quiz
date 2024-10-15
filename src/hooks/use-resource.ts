@@ -29,34 +29,36 @@ export default function useResource<T>(
   return [resource, fetchResource];
 }
 
-export function createUseResource<T>(
+export function createResourceContext<T>(
   url: RequestInfo | URL,
   parse: (rawData: any) => T,
   fetch = window.fetch,
 ) {
-  let memoizedResource: Resource<T> = { status: "initial" };
+  let resourceRef: { current: Resource<T> } = {
+    current: { status: "initial" },
+  };
 
   const callbacks: Set<(resource: Resource<T>) => void> = new Set();
   const notify = (resource: Resource<T>) => {
-    memoizedResource = resource;
+    resourceRef.current = resource;
     callbacks.forEach((callback) => callback(resource));
   };
 
-  return function useResource(): [Resource<T>, () => void] {
-    const [resource, setResource] = useState<Resource<T>>(memoizedResource);
+  const fetchResource = () => {
+    if (resourceRef.current.status !== "initial") return;
 
-    const fetchResource = useCallback(() => {
-      if (memoizedResource.status !== "initial") return;
+    notify({ status: "loading" });
+    fetch(url)
+      .then(async (response) => {
+        const json = await response.json();
+        const data = parse(json);
+        notify({ status: "success", data });
+      })
+      .catch(() => notify({ status: "failure" }));
+  };
 
-      notify({ status: "loading" });
-      fetch(url)
-        .then(async (response) => {
-          const json = await response.json();
-          const data = parse(json);
-          notify({ status: "success", data });
-        })
-        .catch(() => notify({ status: "failure" }));
-    }, []);
+  function useResource(): [Resource<T>, () => void] {
+    const [resource, setResource] = useState<Resource<T>>(resourceRef.current);
 
     useLayoutEffect(() => {
       callbacks.add(setResource);
@@ -65,8 +67,10 @@ export function createUseResource<T>(
       };
     }, []);
 
-    useLayoutEffect(fetchResource, [fetchResource]);
+    useLayoutEffect(fetchResource, []);
 
     return [resource, fetchResource];
-  };
+  }
+
+  return { resourceRef, fetchResource, useResource };
 }
