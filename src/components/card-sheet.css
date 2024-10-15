@@ -4,10 +4,12 @@
   border: 0.75em solid black;
   border-radius: 1em;
   gap: 0.5em;
+  font-size: 1em;
+  line-height: 1.5em;
 }
 
 .CardSheet_Face {
-  width: 20em;
+  min-width: 20em;
   aspect-ratio: 0.714;
   box-sizing: border-box;
   border-radius: 0.25em;
@@ -69,7 +71,7 @@
   margin: 0 0.75em;
   padding: 0.25em 0.75em;
   background-color: var(--card-background-2);
-  border: 2px solid black;
+  border: 0.125em solid black;
   border-radius: 0.25em;
 }
 
@@ -86,8 +88,8 @@
   aspect-ratio: 1.367;
   margin: 0 1em;
   background-color: lightgray;
-  border-left: 2px solid black;
-  border-right: 2px solid black;
+  border-left: 0.125em solid black;
+  border-right: 0.125em solid black;
 }
 
 .CardSheet_Oracle {
@@ -99,9 +101,9 @@
   margin: 0 1em;
   padding: 0.5em 0.75em;
   background-color: var(--card-background-3);
-  border-left: 2px solid black;
-  border-right: 2px solid black;
-  border-bottom: 2px solid black;
+  border-left: 0.125em solid black;
+  border-right: 0.125em solid black;
+  border-bottom: 0.125em solid black;
 }
 
 .CardSheet_Oracle p {
@@ -116,7 +118,7 @@
 .CardSheet_Stats {
   display: flex;
   justify-content: center;
-  border: 2px solid black;
+  border: 0.125em solid black;
   border-radius: 0.25em;
   background-color: var(--card-background-2);
   padding: 0em 0.9em;

@@ -9,12 +9,24 @@
   padding: 2em;
 }
 
+.RandomCardPage_Card {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+@media (max-width: 45em) {
+  .RandomCardPage_Card {
+    font-size: 2vw;
+  }
+}
+
 .RandomCardPage_Form {
   flex: 1;
   display: flex;
   flex-direction: column;
   width: 100%;
-  max-width: 30em;
+  max-width: 32em;
   gap: 0.5em;
 }
 
@@ -31,7 +43,7 @@
 .RandomCardPage_Hints {
   margin-top: 1em;
   display: grid;
-  grid-template-columns: repeat(auto-fill, 5em);
+  grid-template-columns: repeat(auto-fill, 5em) 6.5em;
   column-gap: 1em;
   row-gap: 0.5em;
 }

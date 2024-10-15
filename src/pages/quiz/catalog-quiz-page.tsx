@@ -7,8 +7,8 @@ import {
 } from "../../hooks/use-catalog-quiz";
 import { CatalogEntry } from "../../models/catalog-entry";
 import { CatalogQuizType } from "../../models/catalog-quiz-type";
-import "./catalog-quiz-page.css";
 import { sanitize } from "../../utils";
+import "./catalog-quiz-page.css";
 
 export default function CatalogQuizPage() {
   const [error, setError] = useState("");
@@ -52,20 +52,16 @@ export default function CatalogQuizPage() {
   }, [quiz.types]);
 
   return (
-    <div className="CardsQuizPage">
-      <div className="CardsQuizPage_Header">
+    <div className="CatalogQuizPage">
+      <div className="CatalogQuizPage_Header">
         <div>
           <h1>{quiz.name || "Unnamed"}</h1>
-          <span>
+          <span className="CatalogQuizPage_Header_Params">
             <i>{`Types: ${quiz.types.join(", ")}`}</i>
           </span>
-        </div>
-
-        <div className="CardsQuizPage_Header_ActionsAndPB">
-          <div className="CardsQuizPage_Header_Actions" />
 
           {pb && entries && (
-            <div className="CardsQuizPage_Header_PB">
+            <div className="CatalogQuizPage_Header_PB">
               <span>Record:</span>
               <QuizProgress
                 guessed={pb.answersGuessed}
@@ -75,6 +71,8 @@ export default function CatalogQuizPage() {
             </div>
           )}
         </div>
+
+        <div className="CatalogQuizPage_Header_Actions" />
       </div>
 
       {entries ? (
@@ -85,14 +83,14 @@ export default function CatalogQuizPage() {
           types={quiz.types}
         />
       ) : error ? (
-        <div className="CardsQuizPage_Message">
+        <div className="CatalogQuizPage_Message">
           <h2>{error}</h2>
           <a className="button" href="/catalog">
             Go Back
           </a>
         </div>
       ) : (
-        <div className="CardsQuizPage_Message">
+        <div className="CatalogQuizPage_Message">
           <h2>Retrieving values...</h2>
         </div>
       )}

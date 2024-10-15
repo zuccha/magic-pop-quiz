@@ -27,14 +27,16 @@ export default function RandomCardPage() {
     useCheckboxValueStore("setting/random-card/show-type", false);
   const [showOracle, _setShowOracleChange, handleShowOracleChange] =
     useCheckboxValueStore("setting/random-card/show-oracle", false);
+  const [showReminder, _setShowReminderChange, handleShowReminderChange] =
+    useCheckboxValueStore("setting/random-card/show-reminder", true);
   const [showFlavor, _setShowFlavorChange, handleShowFlavorChange] =
     useCheckboxValueStore("setting/random-card/show-flavor", false);
+  const [showStats, _setShowStatsChange, handleShowStatsChange] =
+    useCheckboxValueStore("setting/random-card/show-stats", false);
   const [showSet, _setShowSetChange, handleShowSetChange] =
     useCheckboxValueStore("setting/random-card/show-set", false);
   const [showArtist, _setShowArtistChange, handleShowArtistChange] =
     useCheckboxValueStore("setting/random-card/show-artist", false);
-  const [showStats, _setShowStatsChange, handleShowStatsChange] =
-    useCheckboxValueStore("setting/random-card/show-stats", false);
 
   const url = useMemo(() => {
     // const url = new URL("https://api.scryfall.com/cards/named");
@@ -117,7 +119,9 @@ export default function RandomCardPage() {
 
   return (
     <div className="RandomCardPage">
-      <CardSheet faces={card.faces} />
+      <div className="RandomCardPage_Card">
+        <CardSheet faces={card.faces} scale={1} showReminder={showReminder} />
+      </div>
 
       <div className="RandomCardPage_Form">
         {guessed ? (
@@ -136,7 +140,7 @@ export default function RandomCardPage() {
                 disabled={loading}
                 onChange={handleQueryChange}
                 onKeyDown={submitFetchNextRandomCard}
-                placeholder="Search query"
+                placeholder="Scryfall query"
                 value={query}
               />
               <button
@@ -166,6 +170,10 @@ export default function RandomCardPage() {
             </div>
           </>
         )}
+
+        <small>
+          <i>{query || "\u00A0"}</i>
+        </small>
 
         <div className="RandomCardPage_Hints">
           <Checkbox
@@ -201,19 +209,11 @@ export default function RandomCardPage() {
           />
 
           <Checkbox
-            checked={showOracle}
+            checked={showStats}
             disabled={loading}
-            id="show-oracle"
-            label="Oracle"
-            onChange={handleShowOracleChange}
-          />
-
-          <Checkbox
-            checked={showFlavor}
-            disabled={loading}
-            id="show-flavor"
-            label="Flavor"
-            onChange={handleShowFlavorChange}
+            id="show-stats"
+            label="Stats"
+            onChange={handleShowStatsChange}
           />
 
           <Checkbox
@@ -233,11 +233,27 @@ export default function RandomCardPage() {
           />
 
           <Checkbox
-            checked={showStats}
+            checked={showOracle}
             disabled={loading}
-            id="show-stats"
-            label="Stats"
-            onChange={handleShowStatsChange}
+            id="show-oracle"
+            label="Oracle"
+            onChange={handleShowOracleChange}
+          />
+
+          <Checkbox
+            checked={showFlavor}
+            disabled={loading}
+            id="show-flavor"
+            label="Flavor"
+            onChange={handleShowFlavorChange}
+          />
+
+          <Checkbox
+            checked={showReminder}
+            disabled={loading}
+            id="show-reminder"
+            label="Reminder"
+            onChange={handleShowReminderChange}
           />
         </div>
       </div>

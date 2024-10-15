@@ -6,6 +6,7 @@
 
 .QuizCreationForm_Inputs {
   display: flex;
+  flex-wrap: wrap;
   gap: 0.5em;
 }
 
@@ -14,8 +15,8 @@
 }
 
 .QuizCreationForm_Hints {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 5.5em);
   column-gap: 1.5em;
   row-gap: 0.2em;
 }
@@ -24,8 +25,10 @@
   display: flex;
   justify-content: flex-end;
   gap: 0.5em;
+  width: 100%;
 }
 
 .QuizCreationForm_Buttons > button {
-  min-width: 10em;
+  flex: 1;
+  max-width: 10em;
 }

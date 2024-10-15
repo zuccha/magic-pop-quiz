@@ -67,32 +67,9 @@ export default function CardsQuizPage() {
       <div className="CardsQuizPage_Header">
         <div>
           <h1>{quiz.name || "Unnamed"}</h1>
-          <span>
+          <span className="CardsQuizPage_Header_Params">
             <i>{`${quiz.query} | Order: ${formattedOrder}, ${formattedDirection} | Hints: ${formattedHints}`}</i>
           </span>
-        </div>
-
-        <div className="CardsQuizPage_Header_ActionsAndPB">
-          <div className="CardsQuizPage_Header_Actions">
-            <button className="small" onClick={edit}>
-              <i className="fa-solid fa-pen" />
-              Edit
-            </button>
-
-            <button className="small icon" onClick={toggleIsFavorite}>
-              {isFavorite ? (
-                <abbr
-                  className="fa-solid fa-heart fa-xl"
-                  title="Remove favorite"
-                />
-              ) : (
-                <abbr
-                  className="fa-regular fa-heart fa-xl"
-                  title="Save favorite"
-                />
-              )}
-            </button>
-          </div>
 
           {pb && cards && (
             <div className="CardsQuizPage_Header_PB">
@@ -104,6 +81,27 @@ export default function CardsQuizPage() {
               />
             </div>
           )}
+        </div>
+
+        <div className="CardsQuizPage_Header_Actions">
+          <button className="small" onClick={edit}>
+            <i className="fa-solid fa-pen" />
+            Edit
+          </button>
+
+          <button className="small icon" onClick={toggleIsFavorite}>
+            {isFavorite ? (
+              <abbr
+                className="fa-solid fa-heart fa-xl"
+                title="Remove favorite"
+              />
+            ) : (
+              <abbr
+                className="fa-regular fa-heart fa-xl"
+                title="Save favorite"
+              />
+            )}
+          </button>
         </div>
       </div>
 

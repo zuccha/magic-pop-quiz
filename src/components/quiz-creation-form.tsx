@@ -175,88 +175,54 @@ export default forwardRef<QuizCreationFormRefObject, QuizCreationFormProps>(
         </div>
 
         <div className="QuizCreationForm_Hints">
-          <span>Hints:</span>
-
-          <label htmlFor="show-cost">
-            <input
-              defaultChecked={defaultShowCost}
-              id="show-cost"
-              name="show-cost"
-              ref={showCostRef}
-              type="checkbox"
-            />
-            Cost
-          </label>
-          <label htmlFor="show-colors">
-            <input
-              defaultChecked={defaultShowColors}
-              id="show-colors"
-              name="show-colors"
-              ref={showColorsRef}
-              type="checkbox"
-            />
-            Colors
-          </label>
-          <label htmlFor="show-identity">
-            <input
-              defaultChecked={defaultShowIdentity}
-              id="show-identity"
-              name="show-identity"
-              ref={showIdentityRef}
-              type="checkbox"
-            />
-            Identity
-          </label>
-          <label htmlFor="show-types">
-            <input
-              defaultChecked={defaultShowTypes}
-              id="show-types"
-              name="show-types"
-              ref={showTypesRef}
-              type="checkbox"
-            />
-            Types
-          </label>
-          <label htmlFor="show-price-usd">
-            <input
-              defaultChecked={defaultShowUsd}
-              id="show-price-usd"
-              name="show-price-usd"
-              ref={showUsdRef}
-              type="checkbox"
-            />
-            Price (USD)
-          </label>
-          <label htmlFor="show-price-eur">
-            <input
-              defaultChecked={defaultShowEur}
-              id="show-price-eur"
-              name="show-price-eur"
-              ref={showEurRef}
-              type="checkbox"
-            />
-            Price (EUR)
-          </label>
-          <label htmlFor="show-price-tix">
-            <input
-              defaultChecked={defaultShowTix}
-              id="show-price-tix"
-              name="show-price-tix"
-              ref={showTixRef}
-              type="checkbox"
-            />
-            Price (TIX)
-          </label>
-          <label htmlFor="show-stats">
-            <input
-              defaultChecked={defaultShowStats}
-              id="show-stats"
-              name="show-stats"
-              ref={showStatsRef}
-              type="checkbox"
-            />
-            P/T
-          </label>
+          <Checkbox
+            defaultChecked={defaultShowCost}
+            id="show-cost"
+            name="Cost"
+            ref={showCostRef}
+          />
+          <Checkbox
+            defaultChecked={defaultShowColors}
+            id="show-colors"
+            name="Colors"
+            ref={showColorsRef}
+          />
+          <Checkbox
+            defaultChecked={defaultShowIdentity}
+            id="show-identity"
+            name="Identity"
+            ref={showIdentityRef}
+          />
+          <Checkbox
+            defaultChecked={defaultShowTypes}
+            id="show-types"
+            name="Types"
+            ref={showTypesRef}
+          />
+          <Checkbox
+            defaultChecked={defaultShowStats}
+            id="show-stats"
+            name="Stats"
+            ref={showStatsRef}
+          />
+          <Checkbox
+            defaultChecked={defaultShowUsd}
+            id="show-price-usd"
+            name="USD"
+            ref={showUsdRef}
+          />
+          <Checkbox
+            defaultChecked={defaultShowEur}
+            id="show-price-eur"
+            name="EUR"
+            ref={showEurRef}
+          />
+          <Checkbox
+            defaultChecked={defaultShowTix}
+            id="show-price-tix"
+            name="TIX"
+            ref={showTixRef}
+          />
         </div>
 
         <div className="QuizCreationForm_Buttons">
@@ -271,3 +237,19 @@ export default forwardRef<QuizCreationFormRefObject, QuizCreationFormProps>(
     );
   },
 );
+
+const Checkbox = forwardRef<
+  HTMLInputElement,
+  { defaultChecked: boolean; id: string; name: string }
+>(({ defaultChecked, id, name }, ref) => (
+  <label htmlFor={id}>
+    <input
+      defaultChecked={defaultChecked}
+      id={id}
+      name={id}
+      ref={ref}
+      type="checkbox"
+    />
+    {name}
+  </label>
+));

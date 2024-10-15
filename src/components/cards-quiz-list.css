@@ -46,3 +46,9 @@
 .CardsQuizList td.right {
   text-align: right;
 }
+
+@media (max-width: 32em) {
+  .CardsQuizList {
+    font-size: 0.8em;
+  }
+}

@@ -59,3 +59,9 @@
   height: 1.25em;
   background-color: rgba(255, 255, 255, 0.75);
 }
+
+@media (max-width: 32em) {
+  .App_Header_Group a b {
+    display: none;
+  }
+}

@@ -8,10 +8,21 @@ import "./card-sheet.css";
 
 export type CardSheetProps = {
   faces: CardFace[];
+  scale?: number;
+  showReminder: boolean;
 };
 
-const oraclePatterns = [
+const oracleWithReminderPatterns = [
   { pattern: "\\([^)]+\\)", render: (val: ReactNode) => <i>{val}</i> },
+  {
+    pattern: "{[^}]+}",
+    render: (val: ReactNode) =>
+      typeof val === "string" ? <CardSymbol symbol={val} /> : val,
+  },
+] as const;
+
+const oracleWithoutReminderPatterns = [
+  { pattern: "\\([^)]+\\)", render: () => null },
   {
     pattern: "{[^}]+}",
     render: (val: ReactNode) =>
@@ -37,9 +48,15 @@ function inferColor(colors: string[]): string {
   return "gold";
 }
 
-export default function CardSheet({ faces }: CardSheetProps) {
+export default function CardSheet({
+  faces,
+  scale = 1,
+  showReminder,
+}: CardSheetProps) {
+  const fontSize = `calc(1em * ${scale})`;
+  const maxWidth = `calc(${faces.length} * 20em + ${faces.length - 1} * 0.5em + 1.5em)`;
   return (
-    <div className="CardSheet">
+    <div className="CardSheet" style={{ fontSize, maxWidth }}>
       {faces.map((face) => (
         <div
           className={`CardSheet_Face ${inferColor(face.colors)}`}
@@ -57,7 +74,14 @@ export default function CardSheet({ faces }: CardSheetProps) {
           <div className="CardSheet_Oracle">
             {face.oracle.split("\n").map((paragraph, paragraphIndex) => (
               <p key={paragraphIndex}>
-                <Formatter patterns={oraclePatterns} text={paragraph} />
+                <Formatter
+                  patterns={
+                    showReminder
+                      ? oracleWithReminderPatterns
+                      : oracleWithoutReminderPatterns
+                  }
+                  text={paragraph}
+                />
               </p>
             ))}
             {face.flavor && (
