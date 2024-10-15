@@ -58,6 +58,15 @@
   --card-background-2: #efeeee;
   --card-background-3: #fefefe;
 }
+.CardSheet_Face.land {
+  --card-background-1: #eecea8;
+}
+.CardSheet_Face.artifact {
+  --card-background-1: #a0b1c9;
+}
+.CardSheet_Face.vehicle {
+  --card-background-1: #6c482b;
+}
 
 .CardSheet_Face > * {
   font-size: 0.8em;

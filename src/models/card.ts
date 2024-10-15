@@ -178,11 +178,11 @@ function parseStats(face: {
 }
 
 function parseSubtypes(typeLine: string): string[] {
-  return (typeLine.split("-")[1] || "").trim().split(" ").sort();
+  return (typeLine.split("—")[1] || "").trim().split(" ").sort();
 }
 
 function parseTypes(typeLine: string): string[] {
-  return (typeLine.split("-")[0] || "")
+  return (typeLine.split("—")[0] || "")
     .trim()
     .split(" ")
     .filter((type) => typeInfos[type])

@@ -84,7 +84,7 @@ export default function RandomCardPage() {
           : "",
         set: showSet ? face.set : { code: "", name: "" },
         stats: showStats ? face.stats : undefined,
-        type: showType ? face.typeLine : "",
+        typeLine: showType ? face.typeLine : "",
       })),
     };
   }, [

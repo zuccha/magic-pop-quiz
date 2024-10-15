@@ -48,6 +48,13 @@ function inferColor(colors: string[]): string {
   return "gold";
 }
 
+function inferFrame(types: string[], subtypes: string[]): string {
+  if (subtypes.includes("Vehicle")) return "vehicle";
+  if (types.includes("Land")) return "land";
+  if (types.includes("Artifact")) return "artifact";
+  return "normal";
+}
+
 export default function CardSheet({
   faces,
   scale = 1,
@@ -57,65 +64,74 @@ export default function CardSheet({
   const maxWidth = `calc(${faces.length} * 20em + ${faces.length - 1} * 0.5em + 1.5em)`;
   return (
     <div className="CardSheet" style={{ fontSize, maxWidth }}>
-      {faces.map((face) => (
-        <div
-          className={`CardSheet_Face ${inferColor(face.colors)}`}
-          key={face.nameSanitized}
-        >
-          <div className="CardSheet_Name">
-            <span>{face.name || "\u00A0"}</span>
-            <CardCostsIndicator costs={[face.cost]} />
-          </div>
+      {faces.map((face) => {
+        const frame = inferFrame(face.types, face.subtypes);
+        const color =
+          frame === "land"
+            ? inferColor(face.identity)
+            : inferColor(face.colors);
+        return (
+          <div
+            className={`CardSheet_Face ${color} ${frame}`}
+            key={face.nameSanitized}
+          >
+            <div className="CardSheet_Name">
+              <span>{face.name || "\u00A0"}</span>
+              <CardCostsIndicator costs={[face.cost]} />
+            </div>
 
-          <div className="CardSheet_Art"></div>
+            <div className="CardSheet_Art"></div>
 
-          <div className="CardSheet_Type">{face.typeLine || "\u00A0"}</div>
+            <div className="CardSheet_Type">{face.typeLine || "\u00A0"}</div>
 
-          <div className="CardSheet_Oracle">
-            {face.oracle.split("\n").map((paragraph, paragraphIndex) => (
-              <p key={paragraphIndex}>
-                <Formatter
-                  patterns={
-                    showReminder
-                      ? oracleWithReminderPatterns
-                      : oracleWithoutReminderPatterns
-                  }
-                  text={paragraph}
-                />
-              </p>
-            ))}
-            {face.flavor && (
-              <p>
-                <i>
-                  <Formatter patterns={flavorPatterns} text={face.flavor} />
-                </i>
-              </p>
-            )}
-          </div>
+            <div className="CardSheet_Oracle">
+              {face.oracle.split("\n").map((paragraph, paragraphIndex) => (
+                <p key={paragraphIndex}>
+                  <Formatter
+                    patterns={
+                      showReminder
+                        ? oracleWithReminderPatterns
+                        : oracleWithoutReminderPatterns
+                    }
+                    text={paragraph}
+                  />
+                </p>
+              ))}
+              {face.flavor && (
+                <p>
+                  <i>
+                    <Formatter patterns={flavorPatterns} text={face.flavor} />
+                  </i>
+                </p>
+              )}
+            </div>
 
-          {face.stats && <div className="CardSheet_Stats">{face.stats}</div>}
+            {face.stats && <div className="CardSheet_Stats">{face.stats}</div>}
 
-          <span className="CardSheet_Artist">
-            <span>
-              {face.set.code && face.artist ? (
-                <>
+            <span className="CardSheet_Artist">
+              <span>
+                {face.set.code && face.artist ? (
+                  <>
+                    <abbr title={face.set.name}>
+                      {face.set.code.toUpperCase()}
+                    </abbr>
+                    {" — "}
+                    {face.artist}
+                  </>
+                ) : face.set.code ? (
                   <abbr title={face.set.name}>
                     {face.set.code.toUpperCase()}
                   </abbr>
-                  {" — "}
-                  {face.artist}
-                </>
-              ) : face.set.code ? (
-                <abbr title={face.set.name}>{face.set.code.toUpperCase()}</abbr>
-              ) : face.artist ? (
-                face.artist
-              ) : (
-                "\u00A0"
-              )}
+                ) : face.artist ? (
+                  face.artist
+                ) : (
+                  "\u00A0"
+                )}
+              </span>
             </span>
-          </span>
-        </div>
-      ))}
+          </div>
+        );
+      })}
     </div>
   );
 }
