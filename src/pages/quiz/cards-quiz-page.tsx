@@ -32,6 +32,7 @@ export default function CardsQuizPage() {
 
   const edit = useCallback(() => {
     const url = new URL(document.location.origin);
+    url.pathname = "/cards";
     url.search = saveCardsQuizToParams(quiz).toString();
     document.location.href = url.href;
   }, [quiz]);

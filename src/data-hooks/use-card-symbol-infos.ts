@@ -1,5 +1,5 @@
 import { ScryfallCardSymbol, ScryfallList } from "@scryfall/api-types";
-import createUseResource from "../hooks/use-resource";
+import { createUseResource } from "../hooks/use-resource";
 
 export type CardSymbolInfos = Record<string, ScryfallCardSymbol>;
 

@@ -1,0 +1,137 @@
+.CardSheet {
+  display: flex;
+  background-color: black;
+  border: 0.75em solid black;
+  border-radius: 1em;
+  gap: 0.5em;
+}
+
+.CardSheet_Face {
+  width: 20em;
+  aspect-ratio: 0.714;
+  box-sizing: border-box;
+  border-radius: 0.25em;
+  padding-top: 0.75em;
+  padding-bottom: 1.5em;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+
+  background-color: var(--card-background-1);
+}
+
+.CardSheet_Face.W {
+  --card-background-1: #f9f8db;
+  --card-background-2: #fdfdf3;
+  --card-background-3: #fffffe;
+}
+.CardSheet_Face.U {
+  --card-background-1: #abdff8;
+  --card-background-2: #e4f5fd;
+  --card-background-3: #fdfeff;
+}
+.CardSheet_Face.B {
+  --card-background-1: #cbc2bf;
+  --card-background-2: #edebea;
+  --card-background-3: #fefefe;
+}
+.CardSheet_Face.R {
+  --card-background-1: #faab8f;
+  --card-background-2: #fde3da;
+  --card-background-3: #fffdfd;
+}
+.CardSheet_Face.G {
+  --card-background-1: #9bd3ae;
+  --card-background-2: #dff1e4;
+  --card-background-3: #fdfefd;
+}
+.CardSheet_Face.gold {
+  --card-background-1: #d7c491;
+  --card-background-2: #f2ecda;
+  --card-background-3: #fefefd;
+}
+.CardSheet_Face.colorless {
+  --card-background-1: #d1cccb;
+  --card-background-2: #efeeee;
+  --card-background-3: #fefefe;
+}
+
+.CardSheet_Face > * {
+  font-size: 0.8em;
+}
+
+.CardSheet_Name,
+.CardSheet_Type {
+  display: flex;
+  justify-content: space-between;
+  font-weight: bold;
+  margin: 0 0.75em;
+  padding: 0.25em 0.75em;
+  background-color: var(--card-background-2);
+  border: 2px solid black;
+  border-radius: 0.25em;
+}
+
+.CardSheet_Name * {
+  font-size: 1.1em;
+}
+
+.CardSheet_Name .CardSymbol {
+  font-size: 1.3em;
+}
+
+.CardSheet_Art {
+  padding: 0;
+  aspect-ratio: 1.367;
+  margin: 0 1em;
+  background-color: lightgray;
+  border-left: 2px solid black;
+  border-right: 2px solid black;
+}
+
+.CardSheet_Oracle {
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  flex: 1;
+  gap: 0.5em;
+  margin: 0 1em;
+  padding: 0.5em 0.75em;
+  background-color: var(--card-background-3);
+  border-left: 2px solid black;
+  border-right: 2px solid black;
+  border-bottom: 2px solid black;
+}
+
+.CardSheet_Oracle p {
+  margin: 0;
+  line-height: 1.2em;
+}
+
+.CardSheet_Oracle p .plain {
+  font-style: normal;
+}
+
+.CardSheet_Stats {
+  display: flex;
+  justify-content: center;
+  border: 2px solid black;
+  border-radius: 0.25em;
+  background-color: var(--card-background-2);
+  padding: 0em 0.9em;
+  position: absolute;
+  right: 0.75em;
+  bottom: 1.125em;
+  font-weight: bold;
+}
+
+.CardSheet_Artist {
+  position: absolute;
+  bottom: 0.25em;
+  left: 1em;
+}
+
+.CardSheet_Artist span {
+  font-size: 0.9em;
+}

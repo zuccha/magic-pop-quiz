@@ -1,8 +1,13 @@
 .CardSymbol {
+  display: inline-block;
   color: transparent;
   cursor: help;
   background-position: center;
   background-repeat: no-repeat;
-  display: flex;
   width: 1em;
+  height: 1em;
+  border-right: 1px solid black;
+  border-bottom: 1px solid black;
+  border-radius: 100%;
+  font-family: monospace;
 }

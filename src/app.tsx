@@ -10,20 +10,22 @@ import CardsQuizPage from "./pages/quiz/cards-quiz-page";
 import CatalogQuizPage from "./pages/quiz/catalog-quiz-page";
 import NotFoundPage from "./pages/not-found-page";
 import "./app.css";
+import RandomCardPage from "./pages/quiz/random-card-page";
 
 const pages: Record<string, () => JSX.Element> = {
-  "/": HomePage,
+  "/": RandomCardPage,
   "/about": AboutPage,
+  "/cards": HomePage,
+  "/cards/quiz": CardsQuizPage,
   "/catalog": CatalogPage,
+  "/catalog/quiz": CatalogQuizPage,
   "/docs": DocsPageOverview,
-  "/docs/settings": DocsPageSettings,
   "/docs/cards-quiz": DocsPageCardsQuiz,
-  "/quiz/cards": CardsQuizPage,
-  "/quiz/catalogue": CatalogQuizPage,
+  "/docs/settings": DocsPageSettings,
 };
 
 export default function App() {
-  const cardSymbolInfos = useCardSymbolInfos();
+  const [cardSymbolInfos] = useCardSymbolInfos();
 
   if (cardSymbolInfos.status !== "success") return null;
 
@@ -35,6 +37,11 @@ export default function App() {
         <div className="App_Header_Content">
           <div className="App_Header_Group">
             <a href="/">
+              <i className="fa-solid fa-shuffle" />
+              <b>Random</b>
+            </a>
+
+            <a href="/cards">
               <i className="fa-solid fa-layer-group" />
               <b>Cards</b>
             </a>

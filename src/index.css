@@ -51,7 +51,9 @@ body {
 }
 
 h1,
-h2 {
+h2,
+h3,
+h4 {
   color: var(--color-neutral-8);
   font-weight: 300;
   margin: 0;
@@ -226,4 +228,8 @@ a:focus {
 a.error,
 a.error:visited {
   color: var(--color-danger-1);
+}
+
+abbr {
+  cursor: help;
 }

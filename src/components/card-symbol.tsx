@@ -7,7 +7,7 @@ export type CardSymbolProps = {
 };
 
 export default function CardSymbol({ symbol }: CardSymbolProps) {
-  const cardSymbolInfos = useCardSymbolInfos();
+  const [cardSymbolInfos] = useCardSymbolInfos();
   if (cardSymbolInfos.status !== "success")
     return <abbr className="CardSymbol">{symbol}</abbr>;
 

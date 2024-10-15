@@ -5,7 +5,7 @@ import "./catalog-page.css";
 
 const openQuiz = (quiz: CatalogQuiz) => {
   const url = new URL(document.location.origin);
-  url.pathname = "/quiz/catalogue";
+  url.pathname = "/catalog/quiz";
   url.search = saveCatalogQuizToParams(quiz).toString();
   document.location.href = url.href;
 };
