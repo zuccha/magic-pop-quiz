@@ -5,9 +5,6 @@
 .CardSheet {
   display: flex;
   gap: 0.5em;
-  /* background-color: black; */
-  /* border: 0.75em solid black; */
-  /* border-radius: 1em; */
   font-size: 1em;
   line-height: 1.5em;
 }
@@ -90,7 +87,7 @@
 /* -------------------------------------------------------------------------- */
 
 .CardSheet_Name {
-  top: 1.3em;
+  top: 1.4em;
   left: 1.6em;
   right: 1.6em;
   height: 1.5em;
@@ -107,7 +104,6 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  transform: translateY(0.125em);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -115,7 +111,7 @@
 /* -------------------------------------------------------------------------- */
 
 .CardSheet_Type {
-  top: 15.75em;
+  top: 15.85em;
   left: 1.6em;
   right: 1.6em;
   height: 1.5em;
@@ -132,7 +128,44 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  transform: translateY(0.125em);
+}
+
+/* -------------------------------------------------------------------------- */
+/* Card Rarity */
+/* -------------------------------------------------------------------------- */
+
+.CardSheet_Rarity {
+  height: 0.675em;
+  width: 0.675em;
+  margin-top: -0.1em;
+  border: 0.1em solid transparent;
+  border-radius: 100%;
+}
+
+.CardSheet_Rarity.common {
+  border-color: white;
+  background-color: black;
+}
+
+.CardSheet_Rarity.uncommon {
+  border: 1px solid black;
+  background-color: #ccd8e9;
+}
+
+.CardSheet_Rarity.rare {
+  border: 1px solid black;
+  background-color: #bfb285;
+}
+
+.CardSheet_Rarity.mythic,
+.CardSheet_Rarity.bonus {
+  border: 1px solid black;
+  background-color: #e0732f;
+}
+
+.CardSheet_Rarity.special {
+  border: 1px solid black;
+  background-color: #a37ba0;
 }
 
 /* -------------------------------------------------------------------------- */
@@ -175,8 +208,9 @@
   font-style: normal;
 }
 
-.CardSheet_Oracle hr {
+p.CardSheet_OracleDivider {
   border-top: 1px solid var(--color-neutral-6);
+  margin: 0.4em 0;
 }
 
 /* -------------------------------------------------------------------------- */
@@ -184,7 +218,7 @@
 /* -------------------------------------------------------------------------- */
 
 .CardSheet_Stats {
-  top: 25.1em;
+  top: 25.2em;
   left: 15.9em;
   right: 1.4em;
   height: 1.2em;
@@ -202,7 +236,6 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  transform: translateY(0.125em);
 }
 
 .CardSheet_Face.vehicle .CardSheet_Stats span {
@@ -221,8 +254,6 @@
   display: flex;
   align-items: center;
   gap: 0.5em;
-  background-color: black;
-  /* background-color: red; */
 }
 
 .CardSheet_Artist span {

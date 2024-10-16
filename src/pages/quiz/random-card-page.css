@@ -43,7 +43,8 @@
 .RandomCardPage_Hints {
   margin-top: 1em;
   display: grid;
-  grid-template-columns: repeat(auto-fill, 5em) 6.5em;
+  grid-template-columns: repeat(auto-fill, 6.5em);
+  justify-content: center;
   column-gap: 1em;
   row-gap: 0.5em;
 }

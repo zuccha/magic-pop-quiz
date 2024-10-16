@@ -32,6 +32,8 @@ export default function RandomCardPage() {
     useCheckboxValueStore("setting/random-card/show-image", true);
   const [showType, _setShowTypeChange, handleShowTypeChange] =
     useCheckboxValueStore("setting/random-card/show-type", false);
+  const [showRarity, _setShowRarityChange, handleShowRarityChange] =
+    useCheckboxValueStore("setting/random-card/show-rarity", true);
   const [showOracle, _setShowOracleChange, handleShowOracleChange] =
     useCheckboxValueStore("setting/random-card/show-oracle", false);
   const [showReminder, _setShowReminderChange, handleShowReminderChange] =
@@ -46,7 +48,7 @@ export default function RandomCardPage() {
     useCheckboxValueStore("setting/random-card/show-artist", false);
 
   const url = useMemo(() => {
-    // const url = scryfallUrl('/cards/named');
+    // const url = scryfallUrl("/cards/named");
     // url.searchParams.set("fuzzy", "");
     const url = scryfallUrl("/cards/random");
     url.searchParams.set("q", query);
@@ -62,9 +64,12 @@ export default function RandomCardPage() {
     if (randomCard.status !== "success") return false;
 
     const sanitizedGuess = sanitize(guess);
+    const card = randomCard.data;
     return (
-      sanitizedGuess === randomCard.data.nameSanitized ||
-      randomCard.data.faces.some((f) => f.nameSanitized === sanitizedGuess)
+      card.nameSanitized === sanitizedGuess ||
+      card.nameSanitizedShort === sanitizedGuess ||
+      card.faces.some((f) => f.nameSanitized === sanitizedGuess) ||
+      card.faces.some((f) => f.nameSanitizedShort === sanitizedGuess)
     );
   }, [guess, randomCard]);
 
@@ -94,6 +99,7 @@ export default function RandomCardPage() {
         })),
         blankCardFace,
       ),
+      rarity: showRarity ? randomCard.data.rarity : "",
     };
   }, [
     guessed,
@@ -103,6 +109,7 @@ export default function RandomCardPage() {
     showCost,
     showFlavor,
     showOracle,
+    showRarity,
     showSet,
     showStats,
     showType,
@@ -227,6 +234,14 @@ export default function RandomCardPage() {
           />
 
           <Checkbox
+            checked={showRarity}
+            disabled={loading}
+            id="show-rarity"
+            label="Rarity"
+            onChange={handleShowRarityChange}
+          />
+
+          <Checkbox
             checked={showStats}
             disabled={loading}
             id="show-stats"
@@ -259,19 +274,19 @@ export default function RandomCardPage() {
           />
 
           <Checkbox
-            checked={showFlavor}
-            disabled={loading}
-            id="show-flavor"
-            label="Flavor"
-            onChange={handleShowFlavorChange}
-          />
-
-          <Checkbox
             checked={showReminder}
             disabled={loading}
             id="show-reminder"
             label="Reminder"
             onChange={handleShowReminderChange}
+          />
+
+          <Checkbox
+            checked={showFlavor}
+            disabled={loading}
+            id="show-flavor"
+            label="Flavor"
+            onChange={handleShowFlavorChange}
           />
         </div>
       </div>

@@ -32,6 +32,7 @@ export type Card = {
   nameSanitized: string;
   nameSanitizedShort: string;
   price: { eur: string; tix: string; usd: string };
+  rarity: string;
   scryfallUrl: string;
 };
 
@@ -44,18 +45,20 @@ export function cardFromScryfallCard(card: ScryfallCard.Any): Card {
             : card.card_faces.flatMap((face) => face.colors),
         ),
         faces: validateListWithAtLeastOneItem(
-          card.card_faces.map((face) => ({
+          card.card_faces.map((face, i) => ({
             artCrop:
-              "image_uris" in card
-                ? (card.image_uris?.art_crop ?? "")
-                : "image_uris" in card.card_faces[0]
-                  ? (card.card_faces[0].image_uris?.art_crop ?? "")
+              "image_uris" in face
+                ? (face.image_uris?.art_crop ?? "")
+                : "image_uris" in card
+                  ? (card.image_uris?.art_crop ?? "")
                   : "",
             artist: face.artist ?? "",
             colors: parseColors(
               "colors" in face
                 ? face.colors
-                : inferColors(face.mana_cost ?? ""),
+                : card.layout === "flip" && i === 1
+                  ? card.colors
+                  : (face.color_indicator ?? inferColors(face.mana_cost ?? "")),
             ),
             cost: parseCost(face.mana_cost ?? ""),
             flavor: face.flavor_text,
@@ -85,6 +88,7 @@ export function cardFromScryfallCard(card: ScryfallCard.Any): Card {
         nameSanitized: sanitize(card.name),
         nameSanitizedShort: sanitize(card.name.split(",")[0]),
         price: parsePrice(card.prices),
+        rarity: card.rarity,
         scryfallUrl: card.uri,
       }
     : {
@@ -116,6 +120,7 @@ export function cardFromScryfallCard(card: ScryfallCard.Any): Card {
         nameSanitized: sanitize(card.name),
         nameSanitizedShort: sanitize(card.name.split(",")[0]),
         price: parsePrice(card.prices),
+        rarity: card.rarity,
         scryfallUrl: card.uri,
       };
 }
@@ -149,6 +154,7 @@ export const blankCard: Card = {
   nameSanitized: "",
   nameSanitizedShort: "",
   price: { eur: "", tix: "", usd: "" },
+  rarity: "",
   scryfallUrl: "",
 };
 

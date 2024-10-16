@@ -67,7 +67,7 @@ export default function CardSheet({
 
             <CardSheetName face={face} />
             <CardSheetArt face={face} />
-            <CardSheetType face={face} />
+            <CardSheetType face={face} rarity={card.rarity} />
             <CardSheetOracle face={face} showReminder={showReminder} />
             <CardSheetStats face={face} />
             <CardSheetArtist face={face} />
@@ -152,13 +152,21 @@ function CardSheetName({ face }: { face: CardFace }) {
 }
 
 function CardSheetArt({ face }: { face: CardFace }) {
-  return <img className="CardSheet_Art" src={face.artCrop} />;
+  return (
+    <img
+      className="CardSheet_Art"
+      src={face.artCrop}
+      onLoad={(e) => (e.currentTarget.style.display = "unset")}
+      onError={(e) => (e.currentTarget.style.display = "none")}
+    />
+  );
 }
 
-function CardSheetType({ face }: { face: CardFace }) {
+function CardSheetType({ face, rarity }: { face: CardFace; rarity: string }) {
   return (
     <div className="CardSheet_Type">
       <span>{face.typeLine || "\u00A0"}</span>
+      <div className={`CardSheet_Rarity ${rarity}`} />
     </div>
   );
 }
@@ -185,7 +193,7 @@ function CardSheetOracle({
         </p>
       ))}
 
-      {face.oracle && face.flavor && <hr />}
+      {face.oracle && face.flavor && <p className="CardSheet_OracleDivider" />}
 
       {face.flavor && (
         <p>
@@ -194,8 +202,6 @@ function CardSheetOracle({
           </i>
         </p>
       )}
-
-      {face.stats && <p>{"\u00A0"}</p>}
     </div>
   );
 }
