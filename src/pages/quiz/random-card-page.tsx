@@ -85,6 +85,7 @@ export default function RandomCardPage() {
       faces: validateListWithAtLeastOneItem(
         randomCard.data.faces.map((face) => ({
           ...face,
+          art: showImage ? face.art : "",
           artist: showArtist ? face.artist : "",
           colors: showColors ? face.colors : [],
           cost: showCost ? face.cost : [],
@@ -108,6 +109,7 @@ export default function RandomCardPage() {
     showColors,
     showCost,
     showFlavor,
+    showImage,
     showOracle,
     showRarity,
     showSet,

@@ -181,8 +181,36 @@
   top: 2.9em;
   left: 1.3em;
   width: 17.4em;
-  object-fit: cover;
   z-index: -1;
+  background-color: var(--color-neutral-4);
+}
+
+.CardSheet_Art > img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+}
+
+.CardSheet_Art.aftermath-left > img {
+  object-position: 22%;
+}
+
+.CardSheet_Art.aftermath-right > img {
+  object-position: 94%;
+}
+
+.CardSheet_Art.fuse-left > img,
+.CardSheet_Art.room-left > img {
+  object-position: 0%;
+}
+
+.CardSheet_Art.fuse-right > img,
+.CardSheet_Art.room-right > img {
+  object-position: 100%;
+}
+
+.CardSheet_Art.flip > img {
+  transform: rotate(180deg);
 }
 
 .CardSheet_Face.vertical .CardSheet_Art {

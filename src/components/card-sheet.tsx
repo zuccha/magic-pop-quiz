@@ -71,7 +71,7 @@ export default function CardSheet({
             )}
 
             <CardSheetName face={face} />
-            <CardSheetArt face={face} />
+            <CardSheetArt card={card} face={face} />
             <CardSheetType face={face} rarity={card.rarity} />
             <CardSheetOracle face={face} showReminder={showReminder} />
             <CardSheetStats face={face} />
@@ -189,14 +189,30 @@ function CardSheetName({ face }: { face: CardFace }) {
   );
 }
 
-function CardSheetArt({ face }: { face: CardFace }) {
+function CardSheetArt({ card, face }: { card: Card; face: CardFace }) {
+  const transform = useMemo(() => {
+    if (card.layout === "flip") return { 1: "flip" }[face.index];
+    if (face.subtypes.includes("Room"))
+      return { 0: "room-left", 1: "room-right" }[face.index];
+    if (card.keywords.includes("Fuse"))
+      return { 0: "fuse-left", 1: "fuse-right" }[face.index];
+    if (card.keywords.includes("Aftermath"))
+      return { 0: "aftermath-left", 1: "aftermath-right" }[face.index];
+    return undefined;
+  }, [card.keywords, face.subtypes]);
+
+  const className = transform ? `CardSheet_Art ${transform}` : "CardSheet_Art";
+
   return (
-    <img
-      className="CardSheet_Art"
-      src={face.artCrop}
-      onLoad={(e) => (e.currentTarget.style.display = "unset")}
-      onError={(e) => (e.currentTarget.style.display = "none")}
-    />
+    <div className={className}>
+      {face.art && (
+        <img
+          src={face.art}
+          onLoad={(e) => (e.currentTarget.style.display = "unset")}
+          onError={(e) => (e.currentTarget.style.display = "none")}
+        />
+      )}
+    </div>
   );
 }
 
