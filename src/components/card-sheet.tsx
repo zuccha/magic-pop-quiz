@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { ReactNode, useMemo } from "react";
 import { Fragment } from "react/jsx-runtime";
 import { Card, CardFace } from "../models/card";
 import { isListWithAtLeastOneItem } from "../utils";
@@ -53,17 +53,22 @@ export default function CardSheet({
   return (
     <div className="CardSheet" style={{ fontSize, maxWidth }}>
       {faces.map((face) => {
-        // const layout = inferLayout(card, face);
+        const layout = inferLayout(face);
         const frame = inferFrame(face);
         const isLand = frame === "land";
         const color = inferColor(isLand ? face.identity : face.colors);
-        const bgs = inferBackgrounds(frame, color);
-        const className = `CardSheet_Face ${frame} ${color}`;
+        const className = `CardSheet_Face ${layout} ${frame} ${color}`;
         return (
           <div className={className} key={face.nameSanitized}>
-            <img className="CardSheet_BG" src={bgs.frame} />
-            <img className="CardSheet_BG" src={bgs.content} />
-            {face.stats && <img className="CardSheet_FG" src={bgs.stats} />}
+            {layout === "regular" ? (
+              <CardSheetRegularLayout
+                color={color}
+                frame={frame}
+                showStats={Boolean(face.stats)}
+              />
+            ) : (
+              <CardSheetVerticalLayout color={color} frame={frame} />
+            )}
 
             <CardSheetName face={face} />
             <CardSheetArt face={face} />
@@ -91,55 +96,88 @@ function inferFrame(face: CardFace): string {
   return "normal";
 }
 
-// function inferLayout(card: Card, face: CardFace): string {
-//   if (card.keywords.includes("Fuse")) return "fuse";
-//   if (card.keywords.includes("Aftermath")) return "aftermath";
-//   if (face.types.includes("Room")) return "room";
-//   if (face.types.includes("Class")) return "class";
-//   if (face.types.includes("Case")) return "case";
-//   if (face.types.includes("Saga")) return "saga";
-//   return "normal";
-// }
+function inferLayout(face: CardFace): string {
+  if (face.subtypes.includes("Class")) return "vertical";
+  if (face.subtypes.includes("Case")) return "vertical";
+  if (face.subtypes.includes("Saga")) return "vertical";
+  return "regular";
+}
 
-function inferBackgrounds(frame: string, color: string) {
-  if (frame === "artifact")
-    return color === "C"
-      ? {
-          frame: `/images/card-template/regular/frame/artifact.png`,
-          content: `/images/card-template/regular/content/artifact.png`,
-          stats: `/images/card-template/regular/stats/artifact.png`,
-        }
-      : {
-          frame: `/images/card-template/regular/frame/artifact.png`,
-          content: `/images/card-template/regular/content/color-${color}.png`,
-          stats: `/images/card-template/regular/stats/color-${color}.png`,
-        };
+function CardSheetRegularLayout({
+  color,
+  frame,
+  showStats,
+}: {
+  color: string;
+  frame: string;
+  showStats: boolean;
+}) {
+  const bgs = useMemo(() => {
+    if (frame === "artifact")
+      return color === "C"
+        ? {
+            frame: `/images/card-template/regular/frame/artifact.png`,
+            content: `/images/card-template/regular/content/artifact.png`,
+            stats: `/images/card-template/regular/stats/artifact.png`,
+          }
+        : {
+            frame: `/images/card-template/regular/frame/artifact.png`,
+            content: `/images/card-template/regular/content/color-${color}.png`,
+            stats: `/images/card-template/regular/stats/color-${color}.png`,
+          };
 
-  if (frame === "vehicle")
-    return color === "C"
-      ? {
-          frame: `/images/card-template/regular/frame/vehicle.png`,
-          content: `/images/card-template/regular/content/artifact.png`,
-          stats: `/images/card-template/regular/stats/vehicle.png`,
-        }
-      : {
-          frame: `/images/card-template/regular/frame/vehicle.png`,
-          content: `/images/card-template/regular/content/color-${color}.png`,
-          stats: `/images/card-template/regular/stats/vehicle.png`,
-        };
+    if (frame === "vehicle")
+      return color === "C"
+        ? {
+            frame: `/images/card-template/regular/frame/vehicle.png`,
+            content: `/images/card-template/regular/content/artifact.png`,
+            stats: `/images/card-template/regular/stats/vehicle.png`,
+          }
+        : {
+            frame: `/images/card-template/regular/frame/vehicle.png`,
+            content: `/images/card-template/regular/content/color-${color}.png`,
+            stats: `/images/card-template/regular/stats/vehicle.png`,
+          };
 
-  if (frame === "land")
+    if (frame === "land")
+      return {
+        frame: `/images/card-template/regular/frame/land.png`,
+        content: `/images/card-template/regular/content/color-${color}.png`,
+        stats: `/images/card-template/regular/stats/color-${color}.png`,
+      };
+
     return {
-      frame: `/images/card-template/regular/frame/land.png`,
+      frame: `/images/card-template/regular/frame/color-${color}.png`,
       content: `/images/card-template/regular/content/color-${color}.png`,
       stats: `/images/card-template/regular/stats/color-${color}.png`,
     };
+  }, [color, frame]);
 
-  return {
-    frame: `/images/card-template/regular/frame/color-${color}.png`,
-    content: `/images/card-template/regular/content/color-${color}.png`,
-    stats: `/images/card-template/regular/stats/color-${color}.png`,
-  };
+  return (
+    <>
+      <img className="CardSheet_BG" src={bgs.frame} />
+      <img className="CardSheet_BG" src={bgs.content} />
+      {showStats && <img className="CardSheet_FG" src={bgs.stats} />}
+    </>
+  );
+}
+
+function CardSheetVerticalLayout({
+  color,
+  frame,
+}: {
+  color: string;
+  frame: string;
+}) {
+  const bg = useMemo(() => {
+    if (color !== "C")
+      return `/images/card-template/vertical/color-${color}.png`;
+    if (frame === "artifact")
+      return `/images/card-template/vertical/artifact.png`;
+    return `/images/card-template/vertical/land.png`;
+  }, [color, frame]);
+
+  return <img className="CardSheet_BG" src={bg} />;
 }
 
 function CardSheetName({ face }: { face: CardFace }) {
