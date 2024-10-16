@@ -18,7 +18,7 @@ import {
 } from "../hooks/use-cards-quiz";
 import useStore from "../hooks/use-store";
 import { CardsQuiz } from "../models/cards-quiz";
-import "./home-page.css";
+import "./cards-page.css";
 
 const presetNames = [
   "Generic",
@@ -46,7 +46,7 @@ const categoryNames = ["Favorites", "Recent", ...presetNames] as const;
 const CategoryNameScheme = z.enum(categoryNames);
 type CategoryName = z.infer<typeof CategoryNameScheme>;
 
-export default function HomePage() {
+export default function CardsPage() {
   const [selectedCategoryName, setSelectedCategoryName] =
     useStore<CategoryName>(
       "cards-quiz-category-name",
@@ -97,7 +97,7 @@ export default function HomePage() {
   );
 
   return (
-    <div className="HomePage">
+    <div className="CardsPage">
       <div>
         <h2>New Cards Quiz</h2>
         <QuizCreationForm
@@ -120,7 +120,7 @@ export default function HomePage() {
 
       <div>
         <h2>Cards Quizzes</h2>
-        <div className="HomePage_Presets">
+        <div className="CardsPage_Presets">
           {favoriteQuizzes.length > 0 && (
             <>
               <Tab name="Favorites" />|

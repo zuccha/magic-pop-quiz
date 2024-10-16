@@ -1,16 +1,12 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import CardSheet from "../../components/card-sheet";
-import { useCheckboxValueStore } from "../../hooks/use-checkbox-value";
-import useInputValue, { useInputValueStore } from "../../hooks/use-input-value";
+import CardSheet from "../components/card-sheet";
+import { useCheckboxValueStore } from "../hooks/use-checkbox-value";
+import useInputValue, { useInputValueStore } from "../hooks/use-input-value";
 import useResourceScryfall, {
   scryfallUrl,
-} from "../../hooks/use-resource-scryfall";
-import {
-  blankCard,
-  blankCardFace,
-  cardFromScryfallCard,
-} from "../../models/card";
-import { sanitize, validateListWithAtLeastOneItem } from "../../utils";
+} from "../hooks/use-resource-scryfall";
+import { blankCard, blankCardFace, cardFromScryfallCard } from "../models/card";
+import { sanitize, validateListWithAtLeastOneItem } from "../utils";
 import "./random-card-page.css";
 
 export default function RandomCardPage() {

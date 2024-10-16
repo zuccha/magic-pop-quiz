@@ -5,12 +5,12 @@ import CatalogPage from "./pages/catalog-page";
 import DocsPageCardsQuiz from "./pages/docs/docs-page-cards-quiz";
 import DocsPageOverview from "./pages/docs/docs-page-overview";
 import DocsPageSettings from "./pages/docs/docs-page-settings";
-import HomePage from "./pages/home-page";
+import HomePage from "./pages/cards-page";
 import CardsQuizPage from "./pages/quiz/cards-quiz-page";
 import CatalogQuizPage from "./pages/quiz/catalog-quiz-page";
 import NotFoundPage from "./pages/not-found-page";
 import "./app.css";
-import RandomCardPage from "./pages/quiz/random-card-page";
+import RandomCardPage from "./pages/random-card-page";
 
 const pages: Record<string, () => JSX.Element> = {
   "/": RandomCardPage,
