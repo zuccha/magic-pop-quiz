@@ -21,8 +21,6 @@
   aspect-ratio: 0.714;
   position: relative;
   overflow: hidden;
-  background-repeat: none;
-  background-size: contain;
 }
 
 .CardSheet_Face.W {
@@ -103,11 +101,13 @@
 }
 
 .CardSheet_Name span {
+  font-family: "Beleren";
   font-size: 0.8em;
   font-weight: bold;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  transform: translateY(0.125em);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -126,11 +126,13 @@
 }
 
 .CardSheet_Type span {
+  font-family: "Beleren";
   font-size: 0.75em;
   font-weight: bold;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  transform: translateY(0.125em);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -157,12 +159,16 @@
   height: 8.1em;
   overflow-y: auto;
   padding: 0.25em;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2em;
 }
 
 .CardSheet_Oracle p {
   margin: 0;
-  font-size: 0.8em;
-  line-height: 1.2em;
+  font-family: Garamond;
+  font-size: 0.9em;
+  line-height: 1.1em;
 }
 
 .CardSheet_Oracle p .plain {
@@ -190,11 +196,13 @@
 }
 
 .CardSheet_Stats span {
+  font-family: "Beleren";
   font-size: 0.9em;
   font-weight: bold;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  transform: translateY(0.125em);
 }
 
 .CardSheet_Face.vehicle .CardSheet_Stats span {

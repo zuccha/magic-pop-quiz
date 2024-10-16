@@ -15,6 +15,7 @@ import "./random-card-page.css";
 
 export default function RandomCardPage() {
   const guessInputRef = useRef<HTMLInputElement>(null);
+  const queryInputRef = useRef<HTMLInputElement>(null);
 
   const [query, , handleQueryChange] = useInputValueStore(
     "setting/random-card/query",
@@ -129,6 +130,10 @@ export default function RandomCardPage() {
     if (randomCard.status === "success") guessInputRef.current?.focus();
   }, [randomCard.status]);
 
+  useEffect(() => {
+    if (guessed) queryInputRef.current?.focus();
+  }, [guessed]);
+
   return (
     <div className="RandomCardPage">
       <div className="RandomCardPage_Card">
@@ -139,7 +144,7 @@ export default function RandomCardPage() {
         {guessed ? (
           <>
             <h3>
-              {gaveUp ? "" : "Correct! "}
+              {gaveUp ? "Too bad... " : "Correct! "}
               The card is{" "}
               <a href={card.scryfallUrl} target="_blank">
                 <b>{card.name}</b>
@@ -153,6 +158,7 @@ export default function RandomCardPage() {
                 onChange={handleQueryChange}
                 onKeyDown={submitFetchNextRandomCard}
                 placeholder="Scryfall query"
+                ref={queryInputRef}
                 value={query}
               />
               <button
