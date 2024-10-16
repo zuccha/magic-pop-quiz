@@ -294,12 +294,13 @@ p.CardSheet_OracleDivider {
 /* -------------------------------------------------------------------------- */
 
 .CardSheet_Artist {
-  top: 26.2em;
+  top: 26.4em;
   left: 1.3em;
-  right: 5em;
+  right: 1.3em;
   height: 1.5em;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 0.5em;
 }
 

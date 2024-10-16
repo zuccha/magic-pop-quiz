@@ -43,9 +43,11 @@ export default function RandomCardPage() {
   const [showStats, _setShowStatsChange, handleShowStatsChange] =
     useCheckboxValueStore("setting/random-card/show-stats", false);
   const [showSet, _setShowSetChange, handleShowSetChange] =
-    useCheckboxValueStore("setting/random-card/show-set", false);
+    useCheckboxValueStore("setting/random-card/show-set", true);
   const [showArtist, _setShowArtistChange, handleShowArtistChange] =
-    useCheckboxValueStore("setting/random-card/show-artist", false);
+    useCheckboxValueStore("setting/random-card/show-artist", true);
+  const [showYear, _setShowYearChange, handleShowYearChange] =
+    useCheckboxValueStore("setting/random-card/show-year", true);
 
   const url = useMemo(() => {
     // const url = scryfallUrl("/cards/named");
@@ -101,6 +103,7 @@ export default function RandomCardPage() {
         blankCardFace,
       ),
       rarity: showRarity ? randomCard.data.rarity : "",
+      releaseYear: showYear ? randomCard.data.releaseYear : "",
     };
   }, [
     guessed,
@@ -115,6 +118,7 @@ export default function RandomCardPage() {
     showSet,
     showStats,
     showType,
+    showYear,
   ]);
 
   const fetchNextRandomCard = useCallback(() => {
@@ -199,7 +203,7 @@ export default function RandomCardPage() {
         )}
 
         <small>
-          <i>{query || "\u00A0"}</i>
+          <i>{guessed ? "\u00A0" : query || "\u00A0"}</i>
         </small>
 
         <div className="RandomCardPage_Hints">
@@ -236,38 +240,6 @@ export default function RandomCardPage() {
           />
 
           <Checkbox
-            checked={showRarity}
-            disabled={loading}
-            id="show-rarity"
-            label="Rarity"
-            onChange={handleShowRarityChange}
-          />
-
-          <Checkbox
-            checked={showStats}
-            disabled={loading}
-            id="show-stats"
-            label="Stats"
-            onChange={handleShowStatsChange}
-          />
-
-          <Checkbox
-            checked={showSet}
-            disabled={loading}
-            id="show-set"
-            label="Set"
-            onChange={handleShowSetChange}
-          />
-
-          <Checkbox
-            checked={showArtist}
-            disabled={loading}
-            id="show-artist"
-            label="Artist"
-            onChange={handleShowArtistChange}
-          />
-
-          <Checkbox
             checked={showOracle}
             disabled={loading}
             id="show-oracle"
@@ -289,6 +261,46 @@ export default function RandomCardPage() {
             id="show-flavor"
             label="Flavor"
             onChange={handleShowFlavorChange}
+          />
+
+          <Checkbox
+            checked={showStats}
+            disabled={loading}
+            id="show-stats"
+            label="Stats"
+            onChange={handleShowStatsChange}
+          />
+
+          <Checkbox
+            checked={showRarity}
+            disabled={loading}
+            id="show-rarity"
+            label="Rarity"
+            onChange={handleShowRarityChange}
+          />
+
+          <Checkbox
+            checked={showSet}
+            disabled={loading}
+            id="show-set"
+            label="Set"
+            onChange={handleShowSetChange}
+          />
+
+          <Checkbox
+            checked={showArtist}
+            disabled={loading}
+            id="show-artist"
+            label="Artist"
+            onChange={handleShowArtistChange}
+          />
+
+          <Checkbox
+            checked={showYear}
+            disabled={loading}
+            id="show-year"
+            label="Year"
+            onChange={handleShowYearChange}
           />
         </div>
       </div>

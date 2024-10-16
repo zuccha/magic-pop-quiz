@@ -75,7 +75,7 @@ export default function CardSheet({
             <CardSheetType face={face} rarity={card.rarity} />
             <CardSheetOracle face={face} showReminder={showReminder} />
             <CardSheetStats face={face} />
-            <CardSheetArtist face={face} />
+            <CardSheetArtist card={card} face={face} />
           </div>
         );
       })}
@@ -183,7 +183,7 @@ function CardSheetVerticalLayout({
 function CardSheetName({ face }: { face: CardFace }) {
   return (
     <div className="CardSheet_Name">
-      <span>{face.name || "\u00A0"}</span>
+      <span>{face.name}</span>
       <CardCostsIndicator costs={[face.cost]} />
     </div>
   );
@@ -219,7 +219,7 @@ function CardSheetArt({ card, face }: { card: Card; face: CardFace }) {
 function CardSheetType({ face, rarity }: { face: CardFace; rarity: string }) {
   return (
     <div className="CardSheet_Type">
-      <span>{face.typeLine || "\u00A0"}</span>
+      <span>{face.typeLine}</span>
       <div className={`CardSheet_Rarity ${rarity}`} />
     </div>
   );
@@ -274,7 +274,7 @@ function CardSheetSet({ face }: { face: CardFace }) {
   return <abbr title={face.set.name}>{face.set.code.toUpperCase()}</abbr>;
 }
 
-function CardSheetArtist({ face }: { face: CardFace }) {
+function CardSheetArtist({ card, face }: { card: Card; face: CardFace }) {
   return (
     <span className="CardSheet_Artist">
       <span>
@@ -286,12 +286,12 @@ function CardSheetArtist({ face }: { face: CardFace }) {
           </>
         ) : face.set.code ? (
           <CardSheetSet face={face} />
-        ) : face.artist ? (
-          face.artist
         ) : (
-          "\u00A0"
+          face.artist && face.artist
         )}
       </span>
+
+      <span>©{card.releaseYear && ` ${card.releaseYear}`} WotC</span>
     </span>
   );
 }

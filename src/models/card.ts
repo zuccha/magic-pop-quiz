@@ -35,6 +35,7 @@ export type Card = {
   nameSanitizedShort: string;
   price: { eur: string; tix: string; usd: string };
   rarity: string;
+  releaseYear: string;
   scryfallUrl: string;
 };
 
@@ -93,6 +94,7 @@ export function cardFromScryfallCard(card: ScryfallCard.Any): Card {
         nameSanitizedShort: sanitize(card.name.split(",")[0]),
         price: parsePrice(card.prices),
         rarity: card.rarity,
+        releaseYear: `${new Date(card.released_at).getFullYear()}`,
         scryfallUrl: card.uri,
       }
     : {
@@ -127,6 +129,7 @@ export function cardFromScryfallCard(card: ScryfallCard.Any): Card {
         nameSanitizedShort: sanitize(card.name.split(",")[0]),
         price: parsePrice(card.prices),
         rarity: card.rarity,
+        releaseYear: `${new Date(card.released_at).getFullYear()}`,
         scryfallUrl: card.uri,
       };
 }
@@ -163,6 +166,7 @@ export const blankCard: Card = {
   nameSanitizedShort: "",
   price: { eur: "", tix: "", usd: "" },
   rarity: "",
+  releaseYear: `${new Date().getFullYear()}`,
   scryfallUrl: "",
 };
 
