@@ -4,6 +4,7 @@ import { cardSymbolInfosRef } from "../data-hooks/use-card-symbol-infos";
 import { sanitize, validateListWithAtLeastOneItem } from "../utils";
 
 export type CardFace = {
+  artCrop: string;
   artist: string;
   colors: string[];
   cost: string[];
@@ -26,6 +27,7 @@ export type Card = {
   id: string;
   identity: string[];
   imageUrl: string;
+  keywords: string[];
   name: string;
   nameSanitized: string;
   nameSanitizedShort: string;
@@ -43,6 +45,12 @@ export function cardFromScryfallCard(card: ScryfallCard.Any): Card {
         ),
         faces: validateListWithAtLeastOneItem(
           card.card_faces.map((face) => ({
+            artCrop:
+              "image_uris" in card
+                ? (card.image_uris?.art_crop ?? "")
+                : "image_uris" in card.card_faces[0]
+                  ? (card.card_faces[0].image_uris?.art_crop ?? "")
+                  : "",
             artist: face.artist ?? "",
             colors: parseColors(
               "colors" in face
@@ -72,6 +80,7 @@ export function cardFromScryfallCard(card: ScryfallCard.Any): Card {
             : "image_uris" in card.card_faces[0]
               ? (card.card_faces[0].image_uris?.normal ?? "")
               : "",
+        keywords: card.keywords,
         name: card.name,
         nameSanitized: sanitize(card.name),
         nameSanitizedShort: sanitize(card.name.split(",")[0]),
@@ -82,6 +91,7 @@ export function cardFromScryfallCard(card: ScryfallCard.Any): Card {
         colors: parseColors(card.colors),
         faces: [
           {
+            artCrop: card.image_uris?.art_crop ?? "",
             artist: card.artist ?? "",
             colors: parseColors(card.colors),
             cost: parseCost(card.mana_cost),
@@ -101,6 +111,7 @@ export function cardFromScryfallCard(card: ScryfallCard.Any): Card {
         id: card.id,
         identity: parseColors(card.color_identity),
         imageUrl: card.image_uris?.normal ?? "",
+        keywords: card.keywords,
         name: card.name,
         nameSanitized: sanitize(card.name),
         nameSanitizedShort: sanitize(card.name.split(",")[0]),
@@ -110,6 +121,7 @@ export function cardFromScryfallCard(card: ScryfallCard.Any): Card {
 }
 
 export const blankCardFace: CardFace = {
+  artCrop: "",
   artist: "",
   colors: [],
   cost: [],
@@ -132,6 +144,7 @@ export const blankCard: Card = {
   id: "",
   identity: [],
   imageUrl: "",
+  keywords: [],
   name: "",
   nameSanitized: "",
   nameSanitizedShort: "",

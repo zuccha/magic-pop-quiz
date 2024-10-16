@@ -5,8 +5,12 @@ import useInputValue, { useInputValueStore } from "../../hooks/use-input-value";
 import useResourceScryfall, {
   scryfallUrl,
 } from "../../hooks/use-resource-scryfall";
-import { blankCard, cardFromScryfallCard } from "../../models/card";
-import { sanitize } from "../../utils";
+import {
+  blankCard,
+  blankCardFace,
+  cardFromScryfallCard,
+} from "../../models/card";
+import { sanitize, validateListWithAtLeastOneItem } from "../../utils";
 import "./random-card-page.css";
 
 export default function RandomCardPage() {
@@ -72,20 +76,23 @@ export default function RandomCardPage() {
 
     return {
       ...randomCard.data,
-      faces: randomCard.data.faces.map((face) => ({
-        ...face,
-        artist: showArtist ? face.artist : "",
-        colors: showColors ? face.colors : [],
-        cost: showCost ? face.cost : [],
-        flavor: showFlavor ? face.flavor : undefined,
-        name: "",
-        oracle: showOracle
-          ? face.oracle.replace(new RegExp(face.name, "g"), "~")
-          : "",
-        set: showSet ? face.set : { code: "", name: "" },
-        stats: showStats ? face.stats : undefined,
-        typeLine: showType ? face.typeLine : "",
-      })),
+      faces: validateListWithAtLeastOneItem(
+        randomCard.data.faces.map((face) => ({
+          ...face,
+          artist: showArtist ? face.artist : "",
+          colors: showColors ? face.colors : [],
+          cost: showCost ? face.cost : [],
+          flavor: showFlavor ? face.flavor : undefined,
+          name: "",
+          oracle: showOracle
+            ? face.oracle.replace(new RegExp(face.name, "g"), "~")
+            : "",
+          set: showSet ? face.set : { code: "", name: "" },
+          stats: showStats ? face.stats : face.stats ? " " : undefined,
+          typeLine: showType ? face.typeLine : "",
+        })),
+        blankCardFace,
+      ),
     };
   }, [
     guessed,
@@ -125,7 +132,7 @@ export default function RandomCardPage() {
   return (
     <div className="RandomCardPage">
       <div className="RandomCardPage_Card">
-        <CardSheet faces={card.faces} scale={1} showReminder={showReminder} />
+        <CardSheet card={card} scale={1} showReminder={showReminder} />
       </div>
 
       <div className="RandomCardPage_Form">
