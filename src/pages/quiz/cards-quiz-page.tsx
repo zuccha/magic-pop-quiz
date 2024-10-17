@@ -16,6 +16,8 @@ import { formatCardsQuizHints } from "../../models/cards-quiz-hints";
 import "./cards-quiz-page.css";
 
 export default function CardsQuizPage() {
+  document.title = "Cards Quiz • Magic Pop Quiz";
+
   const [error, setError] = useState("");
   const [cards, setCards] = useState<Card[] | undefined>(undefined);
 

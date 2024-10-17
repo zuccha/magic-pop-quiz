@@ -11,6 +11,8 @@ const openQuiz = (quiz: CatalogQuiz) => {
 };
 
 export default function CatalogPage() {
+  document.title = "Catalog Quizzes • Magic Pop Quiz";
+
   return (
     <div className="CatalogPage">
       <div>

@@ -1,6 +1,8 @@
 import DocsPage from "./docs-page";
 
 export default function DocsPageOverview() {
+  document.title = "Documentation • Magic Pop Quiz";
+
   return (
     <DocsPage>
       <h1>Overview</h1>

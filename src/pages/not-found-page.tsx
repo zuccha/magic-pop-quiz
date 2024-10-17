@@ -1,6 +1,8 @@
 import "./not-found-page.css";
 
 export default function NotFoundPage() {
+  document.title = "Not Found • Magic Pop Quiz";
+
   return (
     <div className="NotFoundPage">
       <h1>Page Not Found</h1>

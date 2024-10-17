@@ -12,6 +12,8 @@ import { sanitize } from "../../utils";
 import "./catalog-quiz-page.css";
 
 export default function CatalogQuizPage() {
+  document.title = "Catalog Quiz • Magic Pop Quiz";
+
   const [error, setError] = useState("");
   const [entries, setEntries] = useState<CatalogEntry[] | undefined>(undefined);
 

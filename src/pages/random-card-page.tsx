@@ -10,6 +10,8 @@ import { sanitize, validateListWithAtLeastOneItem } from "../utils";
 import "./random-card-page.css";
 
 export default function RandomCardPage() {
+  document.title = "Guess a Random Card! • Magic Pop Quiz";
+
   const guessInputRef = useRef<HTMLInputElement>(null);
   const queryInputRef = useRef<HTMLInputElement>(null);
 

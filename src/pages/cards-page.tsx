@@ -47,6 +47,8 @@ const CategoryNameScheme = z.enum(categoryNames);
 type CategoryName = z.infer<typeof CategoryNameScheme>;
 
 export default function CardsPage() {
+  document.title = "Cards Quizzes • Magic Pop Quiz";
+
   const [selectedCategoryName, setSelectedCategoryName] =
     useStore<CategoryName>(
       "cards-quiz-category-name",
