@@ -111,14 +111,18 @@ export default function CardsQuizPage() {
           cards={cards}
           duration={quiz.time}
           onDone={setPB}
+          showArtist={quiz.hints.showArtist}
           showColors={quiz.hints.showColors}
           showCost={quiz.hints.showCost}
           showIdentity={quiz.hints.showIdentity}
           showPriceEur={quiz.hints.showPriceEur}
           showPriceTix={quiz.hints.showPriceTix}
           showPriceUsd={quiz.hints.showPriceUsd}
+          showRarity={quiz.hints.showRarity}
+          showSet={quiz.hints.showSet}
           showStats={quiz.hints.showStats}
           showTypes={quiz.hints.showTypes}
+          showYear={quiz.hints.showYear}
         />
       ) : error ? (
         <div className="CardsQuizPage_Message">

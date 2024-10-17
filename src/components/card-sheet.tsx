@@ -5,6 +5,7 @@ import { isListWithAtLeastOneItem } from "../utils";
 import CardCostsIndicator from "./card-costs-indicator";
 import CardSymbol from "./card-symbol";
 import "./card-sheet.css";
+import CardRarityIndicator from "./card-rarity-indicator";
 
 export type CardSheetProps = {
   card: Card;
@@ -220,7 +221,7 @@ function CardSheetType({ face, rarity }: { face: CardFace; rarity: string }) {
   return (
     <div className="CardSheet_Type">
       <span>{face.typeLine}</span>
-      <div className={`CardSheet_Rarity ${rarity}`} />
+      <CardRarityIndicator rarity={rarity} />
     </div>
   );
 }
@@ -270,22 +271,22 @@ function CardSheetStats({ face }: { face: CardFace }) {
   );
 }
 
-function CardSheetSet({ face }: { face: CardFace }) {
-  return <abbr title={face.set.name}>{face.set.code.toUpperCase()}</abbr>;
+function CardSheetSet({ card }: { card: Card }) {
+  return <abbr title={card.set.name}>{card.set.code.toUpperCase()}</abbr>;
 }
 
 function CardSheetArtist({ card, face }: { card: Card; face: CardFace }) {
   return (
     <span className="CardSheet_Artist">
       <span>
-        {face.set.code && face.artist ? (
+        {card.set.code && face.artist ? (
           <>
-            <CardSheetSet face={face} />
+            <CardSheetSet card={card} />
             {" — "}
             {face.artist}
           </>
-        ) : face.set.code ? (
-          <CardSheetSet face={face} />
+        ) : card.set.code ? (
+          <CardSheetSet card={card} />
         ) : (
           face.artist && face.artist
         )}

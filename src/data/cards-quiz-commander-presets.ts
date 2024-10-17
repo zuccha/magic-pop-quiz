@@ -11,6 +11,7 @@ const bannedCards = (): CardsQuiz =>
     direction: "asc",
     quantity: 0,
     time: 15 * minutes,
+    mode: "free-typing",
     hints: { showCost: true },
   });
 
@@ -24,6 +25,7 @@ const edhrecTop100Cards = (description: string, condition: string): CardsQuiz =>
     direction: "asc",
     quantity: 100,
     time: 20 * minutes,
+    mode: "free-typing",
     hints: { showCost: true },
   });
 

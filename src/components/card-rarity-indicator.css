@@ -1,0 +1,33 @@
+.CardRarityIndicator {
+  height: 0.675em;
+  width: 0.675em;
+  margin-top: -0.1em;
+  border: 0.1em solid transparent;
+  border-radius: 100%;
+}
+
+.CardRarityIndicator.common {
+  border-color: white;
+  background-color: black;
+}
+
+.CardRarityIndicator.uncommon {
+  border-color: black;
+  background-color: #ccd8e9;
+}
+
+.CardRarityIndicator.rare {
+  border-color: black;
+  background-color: #bfb285;
+}
+
+.CardRarityIndicator.mythic,
+.CardRarityIndicator.bonus {
+  border-color: black;
+  background-color: #e0732f;
+}
+
+.CardRarityIndicator.special {
+  border-color: black;
+  background-color: #a37ba0;
+}

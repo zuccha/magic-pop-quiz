@@ -9,6 +9,7 @@ const top30ExpensiveCards = (currency: "eur" | "usd"): CardsQuiz =>
     direction: "desc",
     quantity: 30,
     time: 10 * minutes,
+    mode: "free-typing",
     hints: {
       showPriceEur: currency === "eur",
       showPriceUsd: currency === "usd",
@@ -23,6 +24,7 @@ const bannedCards = (): CardsQuiz =>
     direction: "asc",
     quantity: 0,
     time: 15 * minutes,
+    mode: "free-typing",
     hints: { showCost: true },
   });
 

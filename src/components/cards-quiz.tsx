@@ -7,8 +7,9 @@ import { sanitize } from "../utils";
 import CardColorsIndicator from "./card-colors-indicator";
 import CardCostsIndicator from "./card-costs-indicator";
 import { updateCardPreview } from "./card-preview";
-import CardPriceIndicator from "./card-price-indicator";
-import CardStatsIndicator from "./card-stats-indicator";
+import CardRarityIndicator from "./card-rarity-indicator";
+import CardSetIndicator from "./card-set-indicator";
+import CardTextIndicator from "./card-text-indicator";
 import CardTypesIndicator from "./card-types-indicator";
 import QuizProgress from "./quiz-progress";
 import "./cards-quiz.css";
@@ -17,28 +18,36 @@ export type CardsQuizProps = {
   cards: Card[];
   duration: number;
   onDone: (pb: QuizRecord) => void;
+  showArtist?: boolean;
   showColors?: boolean;
   showCost?: boolean;
   showIdentity?: boolean;
   showPriceEur?: boolean;
   showPriceTix?: boolean;
   showPriceUsd?: boolean;
+  showRarity?: boolean;
+  showSet?: boolean;
   showStats?: boolean;
   showTypes?: boolean;
+  showYear?: boolean;
 };
 
 export default function CardsQuiz({
   cards,
   duration,
   onDone,
+  showArtist = false,
   showColors = false,
   showCost = false,
   showIdentity = false,
   showPriceEur = false,
   showPriceTix = false,
   showPriceUsd = false,
+  showRarity = false,
+  showSet = false,
   showStats = false,
   showTypes = false,
+  showYear = false,
 }: CardsQuizProps) {
   const [guessed, setGuessed] = useState<Set<string>>(new Set());
   const inputRef = useRef<HTMLInputElement>(null);
@@ -95,6 +104,11 @@ export default function CardsQuiz({
 
   const maxStatsLength = useMemo(
     () => Math.max(...cards.map((card) => card.faces[0].stats?.length ?? 0)),
+    [cards],
+  );
+
+  const maxArtistLength = useMemo(
+    () => Math.max(...cards.map((card) => card.faces[0].artist.length ?? 0)),
     [cards],
   );
 
@@ -193,29 +207,52 @@ export default function CardsQuiz({
             <div key={card.id}>
               {showPriceUsd && (
                 <div className="CardsQuiz_Answer_Text">
-                  <CardPriceIndicator
-                    currency="$"
-                    price={card.price.usd}
+                  <CardTextIndicator
+                    padding="right"
                     size={maxUsdLength}
+                    text={`$${card.price.usd}`}
                   />
                 </div>
               )}
               {showPriceEur && (
                 <div className="CardsQuiz_Answer_Text">
-                  <CardPriceIndicator
-                    currency="€"
-                    price={card.price.eur}
+                  <CardTextIndicator
+                    padding="right"
                     size={maxEurLength}
+                    text={`$${card.price.eur}`}
                   />
                 </div>
               )}
               {showPriceTix && (
                 <div className="CardsQuiz_Answer_Text">
-                  <CardPriceIndicator
-                    currency=""
-                    price={card.price.tix}
+                  <CardTextIndicator
+                    padding="right"
                     size={maxTixLength}
+                    text={`$${card.price.tix}`}
                   />
+                </div>
+              )}
+              {showSet && (
+                <div className="CardsQuiz_Answer_Text">
+                  <CardSetIndicator set={card.set} />
+                </div>
+              )}
+              {showArtist && (
+                <div className="CardsQuiz_Answer_Text">
+                  <CardTextIndicator
+                    size={maxArtistLength}
+                    text={card.faces[0].artist}
+                  />
+                </div>
+              )}
+              {showYear && (
+                <div className="CardsQuiz_Answer_Text">
+                  <CardTextIndicator text={card.releaseYear} />
+                </div>
+              )}
+              {showRarity && (
+                <div className="CardsQuiz_Answer_Text">
+                  <CardRarityIndicator rarity={card.rarity} />
                 </div>
               )}
               {showCost && (
@@ -252,9 +289,10 @@ export default function CardsQuiz({
               )}
               {showStats && (
                 <div className="CardsQuiz_Answer_Text">
-                  <CardStatsIndicator
-                    stats={card.faces[0].stats ?? ""}
+                  <CardTextIndicator
+                    padding="right"
                     size={maxStatsLength}
+                    text={card.faces[0].stats ?? ""}
                   />
                 </div>
               )}

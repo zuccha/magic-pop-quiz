@@ -92,7 +92,6 @@ export default function RandomCardPage() {
           oracle: showOracle
             ? face.oracle.replace(new RegExp(face.name, "g"), "~")
             : "",
-          set: showSet ? face.set : { code: "", name: "" },
           stats: showStats ? face.stats : face.stats ? " " : undefined,
           typeLine: showType ? face.typeLine : "",
         })),
@@ -100,6 +99,7 @@ export default function RandomCardPage() {
       ),
       rarity: showRarity ? randomCard.data.rarity : "",
       releaseYear: showYear ? randomCard.data.releaseYear : "",
+      set: showSet ? randomCard.data.set : { code: "", name: "" },
     };
   }, [
     guessed,

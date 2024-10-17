@@ -107,6 +107,7 @@ export default function CardsPage() {
           defaultDirection={quiz.direction}
           defaultQuantity={quiz.quantity}
           defaultTime={quiz.time}
+          defaultMode={quiz.mode}
           defaultShowCost={quiz.hints.showCost}
           defaultShowColors={quiz.hints.showColors}
           defaultShowIdentity={quiz.hints.showIdentity}

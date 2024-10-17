@@ -9,6 +9,7 @@ const lands = (title: string, type: string): CardsQuiz =>
     direction: "asc",
     quantity: 0,
     time: 5 * minutes,
+    mode: "free-typing",
     hints: {},
   });
 
@@ -20,6 +21,7 @@ const colorShifted = (): CardsQuiz =>
     direction: "asc",
     quantity: 0,
     time: 10 * minutes,
+    mode: "free-typing",
     hints: {},
   });
 
@@ -31,6 +33,7 @@ const moxes = (): CardsQuiz =>
     direction: "asc",
     quantity: 0,
     time: 5 * minutes,
+    mode: "free-typing",
     hints: {},
   });
 
@@ -42,6 +45,7 @@ const fatties = (): CardsQuiz =>
     direction: "asc",
     quantity: 0,
     time: 15 * minutes,
+    mode: "free-typing",
     hints: { showStats: true },
   });
 

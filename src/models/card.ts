@@ -15,7 +15,6 @@ export type CardFace = {
   nameSanitized: string;
   nameSanitizedShort: string;
   oracle: string;
-  set: { name: string; code: string };
   stats?: string;
   subtypes: string[];
   typeLine: string;
@@ -37,6 +36,7 @@ export type Card = {
   rarity: string;
   releaseYear: string;
   scryfallUrl: string;
+  set: { name: string; code: string };
 };
 
 export function cardFromScryfallCard(card: ScryfallCard.Any): Card {
@@ -71,7 +71,6 @@ export function cardFromScryfallCard(card: ScryfallCard.Any): Card {
             nameSanitized: sanitize(face.name),
             nameSanitizedShort: sanitize(face.name.split(",")[0]),
             oracle: face.oracle_text,
-            set: { code: card.set, name: card.set_name },
             stats: parseStats(face),
             subtypes: parseSubtypes(face.type_line),
             typeLine: face.type_line,
@@ -96,6 +95,7 @@ export function cardFromScryfallCard(card: ScryfallCard.Any): Card {
         rarity: card.rarity,
         releaseYear: `${new Date(card.released_at).getFullYear()}`,
         scryfallUrl: card.uri,
+        set: { code: card.set, name: card.set_name },
       }
     : {
         colors: parseColors(card.colors),
@@ -112,7 +112,6 @@ export function cardFromScryfallCard(card: ScryfallCard.Any): Card {
             nameSanitized: sanitize(card.name),
             nameSanitizedShort: sanitize(card.name.split(",")[0]),
             oracle: card.oracle_text,
-            set: { code: card.set, name: card.set_name },
             stats: parseStats(card),
             subtypes: parseSubtypes(card.type_line),
             typeLine: card.type_line,
@@ -131,6 +130,7 @@ export function cardFromScryfallCard(card: ScryfallCard.Any): Card {
         rarity: card.rarity,
         releaseYear: `${new Date(card.released_at).getFullYear()}`,
         scryfallUrl: card.uri,
+        set: { code: card.set, name: card.set_name },
       };
 }
 
@@ -146,7 +146,6 @@ export const blankCardFace: CardFace = {
   nameSanitized: "",
   nameSanitizedShort: "",
   oracle: "",
-  set: { code: "", name: "" },
   stats: undefined,
   subtypes: [],
   typeLine: "",
@@ -168,6 +167,7 @@ export const blankCard: Card = {
   rarity: "",
   releaseYear: `${new Date().getFullYear()}`,
   scryfallUrl: "",
+  set: { code: "", name: "" },
 };
 
 const colorSorting: Record<string, number> = { W: 5, U: 4, B: 3, R: 2, G: 1 };
