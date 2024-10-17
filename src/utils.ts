@@ -2,6 +2,13 @@ export function clamp(value: number, min: number, max: number): number {
   return Math.max(Math.min(value, max), min);
 }
 
+export function classNames(options: [string, boolean][]): string {
+  return options
+    .filter((option) => option[1])
+    .map((option) => option[0])
+    .join(" ");
+}
+
 export function delayAsyncFn<T>(
   asyncFn: () => Promise<T>,
   delay: number,
@@ -20,6 +27,10 @@ export function validateListWithAtLeastOneItem<T>(
   defaultItem: T,
 ): [T, ...T[]] {
   return isListWithAtLeastOneItem(items) ? items : [defaultItem];
+}
+
+export function mod(n: number, m: number): number {
+  return ((n % m) + m) % m;
 }
 
 export function padL(text: string, size: number, fill = " "): string {

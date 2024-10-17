@@ -9,7 +9,7 @@ import {
 import { CardsQuiz } from "../models/cards-quiz";
 import { QuizRecord } from "../models/quiz-record";
 import { seconds } from "../models/time";
-import { validateListWithAtLeastOneItem } from "../utils";
+import { classNames, mod, validateListWithAtLeastOneItem } from "../utils";
 import CardSheet from "./card-sheet";
 import QuizProgress from "./quiz-progress";
 import "./cards-quiz-slideshow.css";
@@ -32,6 +32,7 @@ export default function CardsQuizFreeTyping({
   const selectedCard = cards[selectedCardIndex] ?? blankCard;
 
   const inputRef = useRef<HTMLInputElement>(null);
+  const sliderRef = useRef<HTMLDivElement>(null);
 
   const timer = useTimer(quiz.time);
 
@@ -40,7 +41,17 @@ export default function CardsQuizFreeTyping({
     setGuessed(new Set());
   }, [timer.reset]);
 
+  const select = useCallback((index: number) => {
+    inputRef.current?.focus();
+    setSelectedCardIndex(index);
+  }, []);
+
   const selectPrev = useCallback(() => {
+    if (timer.status === TimerStatus.Stopped)
+      return setSelectedCardIndex((prevIndex) =>
+        mod(prevIndex - 1, cards.length),
+      );
+
     inputRef.current?.focus();
     if (inputRef.current) inputRef.current.value = "";
 
@@ -49,9 +60,14 @@ export default function CardsQuizFreeTyping({
 
     for (let i = cards.length - 1; i > selectedCardIndex; --i)
       if (!guessed.has(cards[i].id)) return setSelectedCardIndex(i);
-  }, [cards, guessed, selectedCardIndex]);
+  }, [cards, guessed, selectedCardIndex, timer.status]);
 
   const selectNext = useCallback(() => {
+    if (timer.status === TimerStatus.Stopped)
+      return setSelectedCardIndex((prevIndex) =>
+        mod(prevIndex + 1, cards.length),
+      );
+
     inputRef.current?.focus();
     if (inputRef.current) inputRef.current.value = "";
 
@@ -60,7 +76,7 @@ export default function CardsQuizFreeTyping({
 
     for (let i = 0; i < selectedCardIndex; ++i)
       if (!guessed.has(cards[i].id)) return setSelectedCardIndex(i);
-  }, [cards, guessed, selectedCardIndex]);
+  }, [cards, guessed, selectedCardIndex, timer.status]);
 
   const checkGuess = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -81,7 +97,15 @@ export default function CardsQuizFreeTyping({
     [cards, selectNext, selectedCard, timer.stop],
   );
 
-  const card = useMemo(() => {
+  const maskedCard = useMemo(() => {
+    if (
+      timer.status === TimerStatus.Ready ||
+      timer.status === TimerStatus.Paused
+    )
+      return { ...blankCard, id: selectedCard.id };
+
+    if (timer.status === TimerStatus.Stopped) return selectedCard;
+
     return guessed.has(selectedCard.id)
       ? selectedCard
       : {
@@ -111,7 +135,14 @@ export default function CardsQuizFreeTyping({
           releaseYear: quiz.hints.showYear ? selectedCard.releaseYear : "",
           set: quiz.hints.showSet ? selectedCard.set : { code: "", name: "" },
         };
-  }, [guessed, quiz, selectedCard]);
+  }, [guessed, quiz, selectedCard, timer.status]);
+
+  useEffect(() => {
+    if (!sliderRef.current) return;
+    const em = parseFloat(window.getComputedStyle(sliderRef.current).fontSize);
+    const left = 3.5 * em * selectedCardIndex;
+    sliderRef.current?.scrollTo({ left, behavior: "smooth" });
+  }, [selectedCardIndex]);
 
   useEffect(() => {
     if (timer.status === TimerStatus.Stopped) {
@@ -182,24 +213,63 @@ export default function CardsQuizFreeTyping({
         />
       </div>
 
-      {timer.status === TimerStatus.Paused ? (
-        <i>Quiz paused</i>
-      ) : (
-        <div className="CardsQuizSlideshow_Card">
-          <CardSheet card={card} showReminder={quiz.hints.showReminder} />
+      <div className="CardsQuizSlideshow_Card">
+        <CardSheet card={maskedCard} showReminder={quiz.hints.showReminder} />
+
+        {(quiz.hints.showPriceUsd ||
+          quiz.hints.showPriceEur ||
+          quiz.hints.showPriceTix) && (
           <div className="CardsQuizSlideshow_Prices">
             {quiz.hints.showPriceUsd && (
-              <CardTextIndicator text={`$${card.price.usd}`} />
+              <CardTextIndicator text={`$${maskedCard.price.usd}`} />
             )}
             {quiz.hints.showPriceEur && (
-              <CardTextIndicator text={`€${card.price.eur}`} />
+              <CardTextIndicator text={`€${maskedCard.price.eur}`} />
             )}
             {quiz.hints.showPriceTix && (
-              <CardTextIndicator text={`${card.price.tix}`} />
+              <CardTextIndicator text={`${maskedCard.price.tix}`} />
             )}
           </div>
+        )}
+
+        <div className="CardsQuizSlideshow_Slider">
+          <button className="solid" onClick={selectPrev}>
+            <i className="fa-solid fa-chevron-left" />
+          </button>
+
+          <div className="CardsQuizSlideshow_Slider_Items" ref={sliderRef}>
+            <div>
+              {cards.map((card, i) => {
+                const className = classNames([
+                  ["CardsQuizSlideshow_Slider_Item", true],
+                  ["solid", selectedCardIndex === i],
+                  ["guessed", guessed.has(card.id)],
+                  [
+                    "missed",
+                    timer.status === TimerStatus.Stopped &&
+                      !guessed.has(card.id),
+                  ],
+                ]);
+
+                return (
+                  <button
+                    className={className}
+                    key={card.id}
+                    onClick={() => select(i)}
+                  >
+                    {i + 1}
+                    {selectedCardIndex === i && <div className="arrow" />}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          <button className="solid" onClick={selectNext}>
+            <i className="fa-solid fa-chevron-right" />
+          </button>
         </div>
-      )}
+      </div>
     </div>
   );
 }

@@ -1,6 +1,11 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import useTimer, { TimerStatus } from "../hooks/use-timer";
-import { Card, guessMatchesCard } from "../models/card";
+import {
+  blankCard,
+  blankCardFace,
+  Card,
+  guessMatchesCard,
+} from "../models/card";
 import { CardsQuiz } from "../models/cards-quiz";
 import { QuizRecord } from "../models/quiz-record";
 import { seconds } from "../models/time";
@@ -13,6 +18,7 @@ import CardTextIndicator from "./card-text-indicator";
 import CardTypesIndicator from "./card-types-indicator";
 import QuizProgress from "./quiz-progress";
 import "./cards-quiz-free-typing.css";
+import { validateListWithAtLeastOneItem } from "../utils";
 
 export type CardsQuizFreeTypingProps = {
   cards: Card[];
@@ -87,6 +93,48 @@ export default function CardsQuizFreeTyping({
     () => Math.max(...cards.map((card) => card.faces[0].artist.length ?? 0)),
     [cards],
   );
+
+  const maskedCards = useMemo(() => {
+    return cards.map((card) => {
+      if (
+        timer.status === TimerStatus.Ready ||
+        timer.status === TimerStatus.Paused
+      )
+        return { ...blankCard, id: card.id };
+
+      if (timer.status === TimerStatus.Stopped) return card;
+
+      return guessed.has(card.id)
+        ? card
+        : {
+            ...card,
+            faces: validateListWithAtLeastOneItem(
+              card.faces.map((face) => ({
+                ...face,
+                art: quiz.hints.showImage ? face.art : "",
+                artist: quiz.hints.showArtist ? face.artist : "",
+                colors: quiz.hints.showColors ? face.colors : [],
+                cost: quiz.hints.showCost ? face.cost : [],
+                flavor: quiz.hints.showFlavor ? face.flavor : undefined,
+                name: "",
+                oracle: quiz.hints.showOracle
+                  ? face.oracle.replace(new RegExp(face.name, "g"), "~")
+                  : "",
+                stats: quiz.hints.showStats
+                  ? face.stats
+                  : face.stats
+                    ? " "
+                    : undefined,
+                typeLine: quiz.hints.showTypes ? face.typeLine : "",
+              })),
+              blankCardFace,
+            ),
+            rarity: quiz.hints.showRarity ? card.rarity : "",
+            releaseYear: quiz.hints.showYear ? card.releaseYear : "",
+            set: quiz.hints.showSet ? card.set : { code: "", name: "" },
+          };
+    });
+  }, [cards, guessed, quiz, timer.status]);
 
   const checkGuess = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -170,132 +218,128 @@ export default function CardsQuizFreeTyping({
         />
       </div>
 
-      {timer.status === TimerStatus.Paused ? (
-        <i>Quiz paused</i>
-      ) : (
-        <div className="CardsQuizFreeTyping_Answers">
-          {cards.map((card) => (
-            <div key={card.id}>
-              {quiz.hints.showPriceUsd && (
-                <div className="CardsQuizFreeTyping_Answer_Text">
-                  <CardTextIndicator
-                    padding="right"
-                    size={maxUsdLength}
-                    text={`$${card.price.usd}`}
-                  />
-                </div>
-              )}
-              {quiz.hints.showPriceEur && (
-                <div className="CardsQuizFreeTyping_Answer_Text">
-                  <CardTextIndicator
-                    padding="right"
-                    size={maxEurLength}
-                    text={`€${card.price.eur}`}
-                  />
-                </div>
-              )}
-              {quiz.hints.showPriceTix && (
-                <div className="CardsQuizFreeTyping_Answer_Text">
-                  <CardTextIndicator
-                    padding="right"
-                    size={maxTixLength}
-                    text={`${card.price.tix}`}
-                  />
-                </div>
-              )}
-              {quiz.hints.showSet && (
-                <div className="CardsQuizFreeTyping_Answer_Text">
-                  <CardSetIndicator set={card.set} />
-                </div>
-              )}
-              {quiz.hints.showArtist && (
-                <div className="CardsQuizFreeTyping_Answer_Text">
-                  <CardTextIndicator
-                    size={maxArtistLength}
-                    text={card.faces[0].artist}
-                  />
-                </div>
-              )}
-              {quiz.hints.showYear && (
-                <div className="CardsQuizFreeTyping_Answer_Text">
-                  <CardTextIndicator text={card.releaseYear} />
-                </div>
-              )}
-              {quiz.hints.showRarity && (
-                <div className="CardsQuizFreeTyping_Answer_Text">
-                  <CardRarityIndicator rarity={card.rarity} />
-                </div>
-              )}
-              {quiz.hints.showCost && (
-                <div className="CardsQuizFreeTyping_Answer_Text">
-                  <CardCostsIndicator
-                    costs={card.faces.map((face) => face.cost)}
-                    size={maxCostLength}
-                  />
-                </div>
-              )}
-              {quiz.hints.showColors && (
-                <div className="CardsQuizFreeTyping_Answer_Box">
-                  <CardColorsIndicator
-                    colors={card.colors}
-                    size={maxColorsLength}
-                  />
-                </div>
-              )}
-              {quiz.hints.showIdentity && (
-                <div className="CardsQuizFreeTyping_Answer_Box">
-                  <CardColorsIndicator
-                    colors={card.identity}
-                    size={maxIdentityLength}
-                  />
-                </div>
-              )}
-              {quiz.hints.showTypes && (
-                <div className="CardsQuizFreeTyping_Answer_Text">
-                  <CardTypesIndicator
-                    types={card.faces[0].types}
-                    size={maxTypesLength}
-                  />
-                </div>
-              )}
-              {quiz.hints.showStats && (
-                <div className="CardsQuizFreeTyping_Answer_Text">
-                  <CardTextIndicator
-                    padding="right"
-                    size={maxStatsLength}
-                    text={card.faces[0].stats ?? ""}
-                  />
-                </div>
-              )}
+      <div className="CardsQuizFreeTyping_Answers">
+        {maskedCards.map((card) => (
+          <div key={card.id}>
+            {quiz.hints.showPriceUsd && (
+              <div className="CardsQuizFreeTyping_Answer_Text">
+                <CardTextIndicator
+                  padding="right"
+                  size={maxUsdLength}
+                  text={`$${card.price.usd}`}
+                />
+              </div>
+            )}
+            {quiz.hints.showPriceEur && (
+              <div className="CardsQuizFreeTyping_Answer_Text">
+                <CardTextIndicator
+                  padding="right"
+                  size={maxEurLength}
+                  text={`€${card.price.eur}`}
+                />
+              </div>
+            )}
+            {quiz.hints.showPriceTix && (
+              <div className="CardsQuizFreeTyping_Answer_Text">
+                <CardTextIndicator
+                  padding="right"
+                  size={maxTixLength}
+                  text={`${card.price.tix}`}
+                />
+              </div>
+            )}
+            {quiz.hints.showSet && (
+              <div className="CardsQuizFreeTyping_Answer_Text">
+                <CardSetIndicator set={card.set} />
+              </div>
+            )}
+            {quiz.hints.showArtist && (
+              <div className="CardsQuizFreeTyping_Answer_Text">
+                <CardTextIndicator
+                  size={maxArtistLength}
+                  text={card.faces[0].artist}
+                />
+              </div>
+            )}
+            {quiz.hints.showYear && (
+              <div className="CardsQuizFreeTyping_Answer_Text">
+                <CardTextIndicator text={card.releaseYear} />
+              </div>
+            )}
+            {quiz.hints.showRarity && (
+              <div className="CardsQuizFreeTyping_Answer_Text">
+                <CardRarityIndicator rarity={card.rarity} />
+              </div>
+            )}
+            {quiz.hints.showCost && (
+              <div className="CardsQuizFreeTyping_Answer_Text">
+                <CardCostsIndicator
+                  costs={card.faces.map((face) => face.cost)}
+                  size={maxCostLength}
+                />
+              </div>
+            )}
+            {quiz.hints.showColors && (
+              <div className="CardsQuizFreeTyping_Answer_Box">
+                <CardColorsIndicator
+                  colors={card.colors}
+                  size={maxColorsLength}
+                />
+              </div>
+            )}
+            {quiz.hints.showIdentity && (
+              <div className="CardsQuizFreeTyping_Answer_Box">
+                <CardColorsIndicator
+                  colors={card.identity}
+                  size={maxIdentityLength}
+                />
+              </div>
+            )}
+            {quiz.hints.showTypes && (
+              <div className="CardsQuizFreeTyping_Answer_Text">
+                <CardTypesIndicator
+                  types={card.faces[0].types}
+                  size={maxTypesLength}
+                />
+              </div>
+            )}
+            {quiz.hints.showStats && (
+              <div className="CardsQuizFreeTyping_Answer_Text">
+                <CardTextIndicator
+                  padding="right"
+                  size={maxStatsLength}
+                  text={card.faces[0].stats ?? ""}
+                />
+              </div>
+            )}
 
-              {guessed.has(card.id) ? (
-                <span className="CardsQuizFreeTyping_Answer_Name success">
-                  <a
-                    {...updateCardPreview(card.imageUrl)}
-                    href={card.scryfallUrl}
-                    target="_blank"
-                  >
-                    {card.name}
-                  </a>
-                </span>
-              ) : timer.status === TimerStatus.Stopped ? (
-                <span className="CardsQuizFreeTyping_Answer_Name failure">
-                  <a
-                    {...updateCardPreview(card.imageUrl)}
-                    className="error"
-                    href={card.scryfallUrl}
-                    target="_blank"
-                  >
-                    {card.name}
-                  </a>
-                </span>
-              ) : (
-                <span className="CardsQuizFreeTyping_Answer_Name">&nbsp;</span>
-              )}
-            </div>
-          ))}
-        </div>
-      )}
+            {guessed.has(card.id) ? (
+              <span className="CardsQuizFreeTyping_Answer_Name success">
+                <a
+                  {...updateCardPreview(card.imageUrl)}
+                  href={card.scryfallUrl}
+                  target="_blank"
+                >
+                  {card.name}
+                </a>
+              </span>
+            ) : timer.status === TimerStatus.Stopped ? (
+              <span className="CardsQuizFreeTyping_Answer_Name failure">
+                <a
+                  {...updateCardPreview(card.imageUrl)}
+                  className="error"
+                  href={card.scryfallUrl}
+                  target="_blank"
+                >
+                  {card.name}
+                </a>
+              </span>
+            ) : (
+              <span className="CardsQuizFreeTyping_Answer_Name">&nbsp;</span>
+            )}
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

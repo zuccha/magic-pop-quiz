@@ -156,6 +156,7 @@ a.button.solid:focus,
 a.button.solid:hover,
 button.solid:focus,
 button.solid:hover {
+  border-color: var(--color-primary-1);
   background-color: var(--color-primary-1);
 }
 

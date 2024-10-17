@@ -50,5 +50,110 @@
 .CardsQuizSlideshow_Prices {
   display: flex;
   gap: 1em;
-  min-height: 1.5em;
+}
+
+.CardsQuizSlideshow_Slider {
+  height: 3.5em;
+  width: 100%;
+  max-width: 40em;
+  padding: 0.3em;
+  display: flex;
+}
+
+.CardsQuizSlideshow_Slider_Items {
+  flex: 1;
+  overflow-x: auto;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  background-color: var(--color-neutral-4);
+}
+
+.CardsQuizSlideshow_Slider_Items::-webkit-scrollbar {
+  display: none;
+}
+
+.CardsQuizSlideshow_Slider_Items > div {
+  width: max-content;
+  height: 100%;
+  padding: 0 calc(50% - 1.5em);
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+}
+
+.CardsQuizSlideshow_Slider_Item {
+  --color-slider-item-guessed-1: #408140;
+  --color-slider-item-guessed-2: #49934a;
+  --color-slider-item-missed-1: #c20000;
+  --color-slider-item-missed-2: #e40002;
+}
+
+.CardsQuizSlideshow_Slider_Item {
+  height: 2em;
+  min-width: 3em;
+  position: relative;
+  padding: 0.25em 0;
+  font-size: 1em;
+}
+
+.CardsQuizSlideshow_Slider_Item.guessed {
+  background-color: var(--color-slider-item-guessed-1);
+  border-color: var(--color-slider-item-guessed-1);
+  color: white;
+}
+
+.CardsQuizSlideshow_Slider_Item.guessed:focus,
+.CardsQuizSlideshow_Slider_Item.guessed:hover {
+  background-color: var(--color-slider-item-guessed-2);
+  border-color: var(--color-slider-item-guessed-2);
+}
+
+.CardsQuizSlideshow_Slider_Item.missed {
+  background-color: var(--color-slider-item-missed-1);
+  border-color: var(--color-slider-item-missed-1);
+  color: white;
+}
+
+.CardsQuizSlideshow_Slider_Item.missed:focus,
+.CardsQuizSlideshow_Slider_Item.missed:hover {
+  background-color: var(--color-slider-item-missed-2);
+  border-color: var(--color-slider-item-missed-2);
+}
+
+.CardsQuizSlideshow_Slider_Item > .arrow {
+  width: 0;
+  height: 0;
+  border-left: 0.4em solid transparent;
+  border-right: 0.4em solid transparent;
+  border-bottom: 0.4em solid black;
+  position: absolute;
+  left: calc(50% - 0.4em);
+  top: -0.35em;
+}
+
+.CardsQuizSlideshow_Slider_Item.solid > .arrow {
+  border-bottom-color: var(--color-primary-2);
+}
+
+.CardsQuizSlideshow_Slider_Item.solid:focus > .arrow,
+.CardsQuizSlideshow_Slider_Item.solid:hover > .arrow {
+  border-bottom-color: var(--color-primary-1);
+}
+
+.CardsQuizSlideshow_Slider_Item.guessed > .arrow {
+  border-bottom-color: var(--color-slider-item-guessed-1);
+}
+
+.CardsQuizSlideshow_Slider_Item.guessed:focus > .arrow,
+.CardsQuizSlideshow_Slider_Item.guessed:hover > .arrow {
+  border-bottom-color: var(--color-slider-item-guessed-2);
+}
+
+.CardsQuizSlideshow_Slider_Item.missed > .arrow {
+  border-bottom-color: var(--color-slider-item-missed-1);
+}
+
+.CardsQuizSlideshow_Slider_Item.missed:focus > .arrow,
+.CardsQuizSlideshow_Slider_Item.missed:hover > .arrow {
+  border-bottom-color: var(--color-slider-item-missed-2);
 }
