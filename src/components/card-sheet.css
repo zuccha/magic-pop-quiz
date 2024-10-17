@@ -59,11 +59,19 @@
 
 .CardSheet_Name span {
   font-family: "Beleren";
-  font-size: 0.8em;
+  font-size: 1em;
   font-weight: bold;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.CardSheet_Name.medium span {
+  font-size: 0.9em;
+}
+
+.CardSheet_Name.long span {
+  font-size: 0.8em;
 }
 
 /* -------------------------------------------------------------------------- */
@@ -74,7 +82,7 @@
   top: 15.85em;
   left: 1.6em;
   right: 1.6em;
-  height: 1.5em;
+  height: 1.4em;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -82,12 +90,21 @@
 }
 
 .CardSheet_Type span {
+  margin-top: 0.1em;
   font-family: "Beleren";
-  font-size: 0.75em;
+  font-size: 0.9em;
   font-weight: bold;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.CardSheet_Type.medium span {
+  font-size: 0.8em;
+}
+
+.CardSheet_Type.long span {
+  font-size: 0.75em;
 }
 
 .CardSheet_Face.vertical .CardSheet_Type {

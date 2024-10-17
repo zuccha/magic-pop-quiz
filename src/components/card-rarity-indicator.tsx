@@ -7,5 +7,9 @@ export type CardRarityIndicatorProps = {
 export default function CardRarityIndicator({
   rarity,
 }: CardRarityIndicatorProps) {
-  return <div className={`CardRarityIndicator ${rarity}`} />;
+  return (
+    <div className={`CardRarityIndicator ${rarity}`}>
+      <div />
+    </div>
+  );
 }

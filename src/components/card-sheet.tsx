@@ -182,8 +182,10 @@ function CardSheetVerticalLayout({
 }
 
 function CardSheetName({ face }: { face: CardFace }) {
+  const length =
+    face.name.length < 20 ? "short" : face.name.length < 25 ? "medium" : "long";
   return (
-    <div className="CardSheet_Name">
+    <div className={`CardSheet_Name ${length}`}>
       <span>{face.name}</span>
       <CardCostsIndicator costs={[face.cost]} />
     </div>
@@ -218,8 +220,14 @@ function CardSheetArt({ card, face }: { card: Card; face: CardFace }) {
 }
 
 function CardSheetType({ face, rarity }: { face: CardFace; rarity: string }) {
+  const length =
+    face.typeLine.length < 20
+      ? "short"
+      : face.typeLine.length < 25
+        ? "medium"
+        : "long";
   return (
-    <div className="CardSheet_Type">
+    <div className={`CardSheet_Type ${length}`}>
       <span>{face.typeLine}</span>
       <CardRarityIndicator rarity={rarity} />
     </div>

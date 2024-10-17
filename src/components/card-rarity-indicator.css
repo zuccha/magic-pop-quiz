@@ -1,33 +1,40 @@
 .CardRarityIndicator {
-  height: 0.675em;
-  width: 0.675em;
-  margin-top: -0.1em;
-  border: 0.1em solid transparent;
-  border-radius: 100%;
+  height: 0.7em;
+  width: 0.7em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.CardRarityIndicator.common {
+.CardRarityIndicator > div {
+  height: 80%;
+  width: 80%;
+  border: 0.1em solid transparent;
+  transform: rotate(45deg);
+}
+
+.CardRarityIndicator.common > div {
   border-color: white;
   background-color: black;
 }
 
-.CardRarityIndicator.uncommon {
+.CardRarityIndicator.uncommon > div {
   border-color: black;
   background-color: #ccd8e9;
 }
 
-.CardRarityIndicator.rare {
+.CardRarityIndicator.rare > div {
   border-color: black;
   background-color: #bfb285;
 }
 
-.CardRarityIndicator.mythic,
-.CardRarityIndicator.bonus {
+.CardRarityIndicator.mythic > div,
+.CardRarityIndicator.bonus > div {
   border-color: black;
   background-color: #e0732f;
 }
 
-.CardRarityIndicator.special {
+.CardRarityIndicator.special > div {
   border-color: black;
   background-color: #a37ba0;
 }

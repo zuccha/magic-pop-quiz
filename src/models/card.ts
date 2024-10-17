@@ -129,7 +129,7 @@ export function cardFromScryfallCard(card: ScryfallCard.Any): Card {
         price: parsePrice(card.prices),
         rarity: card.rarity,
         releaseYear: `${new Date(card.released_at).getFullYear()}`,
-        scryfallUrl: card.uri,
+        scryfallUrl: card.scryfall_uri,
         set: { code: card.set, name: card.set_name },
       };
 }
