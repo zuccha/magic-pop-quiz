@@ -110,44 +110,47 @@ export default forwardRef<QuizCreationFormRefObject, QuizCreationFormProps>(
       configureQuiz: (quiz: CardsQuiz) => {
         setMode(quiz.mode);
 
-        if (directionRef.current) directionRef.current.value = quiz.direction;
-        if (nameRef.current) nameRef.current.value = quiz.name;
-        if (orderRef.current) orderRef.current.value = quiz.order;
-        if (quantityRef.current) quantityRef.current.value = `${quiz.quantity}`;
-        if (queryRef.current) queryRef.current.value = quiz.query;
-        if (showArtistRef.current)
-          showArtistRef.current.checked = Boolean(quiz.hints.showArtist);
-        if (showColorsRef.current)
-          showColorsRef.current.checked = Boolean(quiz.hints.showColors);
-        if (showCostRef.current)
-          showCostRef.current.checked = Boolean(quiz.hints.showCost);
-        if (showEurRef.current)
-          showEurRef.current.checked = Boolean(quiz.hints.showPriceEur);
-        if (showFlavorRef.current)
-          showFlavorRef.current.checked = Boolean(quiz.hints.showFlavor);
-        if (showIdentityRef.current)
-          showIdentityRef.current.checked = Boolean(quiz.hints.showIdentity);
-        if (showImageRef.current)
-          showImageRef.current.checked = Boolean(quiz.hints.showImage);
-        if (showOracleRef.current)
-          showOracleRef.current.checked = Boolean(quiz.hints.showOracle);
-        if (showRarityRef.current)
-          showRarityRef.current.checked = Boolean(quiz.hints.showRarity);
-        if (showReminderRef.current)
-          showReminderRef.current.checked = Boolean(quiz.hints.showReminder);
-        if (showSetRef.current)
-          showSetRef.current.checked = Boolean(quiz.hints.showSet);
-        if (showStatsRef.current)
-          showStatsRef.current.checked = Boolean(quiz.hints.showStats);
-        if (showTixRef.current)
-          showTixRef.current.checked = Boolean(quiz.hints.showPriceTix);
-        if (showTypesRef.current)
-          showTypesRef.current.checked = Boolean(quiz.hints.showTypes);
-        if (showUsdRef.current)
-          showUsdRef.current.checked = Boolean(quiz.hints.showPriceUsd);
-        if (showYearRef.current)
-          showYearRef.current.checked = Boolean(quiz.hints.showYear);
-        if (timeRef.current) timeRef.current.value = msToTime(quiz.time);
+        setTimeout(() => {
+          if (directionRef.current) directionRef.current.value = quiz.direction;
+          if (nameRef.current) nameRef.current.value = quiz.name;
+          if (orderRef.current) orderRef.current.value = quiz.order;
+          if (quantityRef.current)
+            quantityRef.current.value = `${quiz.quantity}`;
+          if (queryRef.current) queryRef.current.value = quiz.query;
+          if (showArtistRef.current)
+            showArtistRef.current.checked = Boolean(quiz.hints.showArtist);
+          if (showColorsRef.current)
+            showColorsRef.current.checked = Boolean(quiz.hints.showColors);
+          if (showCostRef.current)
+            showCostRef.current.checked = Boolean(quiz.hints.showCost);
+          if (showEurRef.current)
+            showEurRef.current.checked = Boolean(quiz.hints.showPriceEur);
+          if (showFlavorRef.current)
+            showFlavorRef.current.checked = Boolean(quiz.hints.showFlavor);
+          if (showIdentityRef.current)
+            showIdentityRef.current.checked = Boolean(quiz.hints.showIdentity);
+          if (showImageRef.current)
+            showImageRef.current.checked = Boolean(quiz.hints.showImage);
+          if (showOracleRef.current)
+            showOracleRef.current.checked = Boolean(quiz.hints.showOracle);
+          if (showRarityRef.current)
+            showRarityRef.current.checked = Boolean(quiz.hints.showRarity);
+          if (showReminderRef.current)
+            showReminderRef.current.checked = Boolean(quiz.hints.showReminder);
+          if (showSetRef.current)
+            showSetRef.current.checked = Boolean(quiz.hints.showSet);
+          if (showStatsRef.current)
+            showStatsRef.current.checked = Boolean(quiz.hints.showStats);
+          if (showTixRef.current)
+            showTixRef.current.checked = Boolean(quiz.hints.showPriceTix);
+          if (showTypesRef.current)
+            showTypesRef.current.checked = Boolean(quiz.hints.showTypes);
+          if (showUsdRef.current)
+            showUsdRef.current.checked = Boolean(quiz.hints.showPriceUsd);
+          if (showYearRef.current)
+            showYearRef.current.checked = Boolean(quiz.hints.showYear);
+          if (timeRef.current) timeRef.current.value = msToTime(quiz.time);
+        }, 0);
       },
       createQuiz: () => formRef.current?.submit(),
     }));

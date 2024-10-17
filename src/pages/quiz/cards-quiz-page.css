@@ -11,6 +11,7 @@
 .CardsQuizPage_Header {
   display: flex;
   justify-content: space-between;
+  gap: 1em;
 }
 
 .CardsQuizPage_Header h1 {

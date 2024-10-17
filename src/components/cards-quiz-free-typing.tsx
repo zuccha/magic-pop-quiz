@@ -1,10 +1,9 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import useTimer, { TimerStatus } from "../hooks/use-timer";
-import { Card } from "../models/card";
+import { Card, guessMatchesCard } from "../models/card";
 import { CardsQuiz } from "../models/cards-quiz";
 import { QuizRecord } from "../models/quiz-record";
 import { seconds } from "../models/time";
-import { sanitize } from "../utils";
 import CardColorsIndicator from "./card-colors-indicator";
 import CardCostsIndicator from "./card-costs-indicator";
 import { updateCardPreview } from "./card-preview";
@@ -91,22 +90,17 @@ export default function CardsQuizFreeTyping({
 
   const checkGuess = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      const guess = sanitize(e.currentTarget.value);
+      const guess = e.currentTarget.value;
       setGuessed((prevGuessed) => {
         const newGuessedAnswers = cards.filter(
-          (card) =>
-            !prevGuessed.has(card.id) &&
-            (card.nameSanitized === guess ||
-              card.nameSanitizedShort === guess ||
-              card.faces.some((face) => face.nameSanitized === guess) ||
-              card.faces.some((face) => face.nameSanitizedShort === guess)),
+          (card) => !prevGuessed.has(card.id) && guessMatchesCard(card, guess),
         );
         if (newGuessedAnswers.length === 0) return prevGuessed;
         if (inputRef.current) inputRef.current.value = "";
-        const newGuessed = new Set(prevGuessed);
-        newGuessedAnswers.forEach((answer) => newGuessed.add(answer.id));
-        if (newGuessed.size === cards.length) timer.stop();
-        return newGuessed;
+        const nextGuessed = new Set(prevGuessed);
+        newGuessedAnswers.forEach((card) => nextGuessed.add(card.id));
+        if (nextGuessed.size === cards.length) timer.stop();
+        return nextGuessed;
       });
     },
     [cards, timer.stop],
@@ -196,7 +190,7 @@ export default function CardsQuizFreeTyping({
                   <CardTextIndicator
                     padding="right"
                     size={maxEurLength}
-                    text={`$${card.price.eur}`}
+                    text={`€${card.price.eur}`}
                   />
                 </div>
               )}
@@ -205,7 +199,7 @@ export default function CardsQuizFreeTyping({
                   <CardTextIndicator
                     padding="right"
                     size={maxTixLength}
-                    text={`$${card.price.tix}`}
+                    text={`${card.price.tix}`}
                   />
                 </div>
               )}

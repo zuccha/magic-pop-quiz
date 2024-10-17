@@ -17,7 +17,7 @@ import {
   useRecentCardsQuizzes,
 } from "../hooks/use-cards-quiz";
 import useStore from "../hooks/use-store";
-import { CardsQuiz } from "../models/cards-quiz";
+import { CardsQuiz, saveCardsQuizToParams } from "../models/cards-quiz";
 import "./cards-page.css";
 
 const presetNames = [
@@ -46,6 +46,13 @@ const categoryNames = ["Favorites", "Recent", ...presetNames] as const;
 const CategoryNameScheme = z.enum(categoryNames);
 type CategoryName = z.infer<typeof CategoryNameScheme>;
 
+const openQuiz = (quiz: CardsQuiz) => {
+  const url = new URL(document.location.origin);
+  url.pathname = "/cards/quiz";
+  url.search = saveCardsQuizToParams(quiz).toString();
+  document.location.href = url.href;
+};
+
 export default function CardsPage() {
   document.title = "Cards Quizzes • Magic Pop Quiz";
 
@@ -64,11 +71,6 @@ export default function CardsPage() {
     (quiz: CardsQuiz) => quizCreationFormRef.current?.configureQuiz(quiz),
     [],
   );
-
-  const openQuiz = useCallback((quiz: CardsQuiz) => {
-    quizCreationFormRef.current?.configureQuiz(quiz);
-    quizCreationFormRef.current?.createQuiz();
-  }, []);
 
   const favoriteQuizzes = useFavoriteCardsQuizzes();
   const recentQuizzes = useRecentCardsQuizzes(10);

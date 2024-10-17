@@ -39,6 +39,16 @@ export type Card = {
   set: { name: string; code: string };
 };
 
+export function guessMatchesCard(card: Card, guess: string): boolean {
+  guess = sanitize(guess);
+  return (
+    card.nameSanitized === guess ||
+    card.nameSanitizedShort === guess ||
+    card.faces.some((face) => face.nameSanitized === guess) ||
+    card.faces.some((face) => face.nameSanitizedShort === guess)
+  );
+}
+
 export function cardFromScryfallCard(card: ScryfallCard.Any): Card {
   return "card_faces" in card
     ? {

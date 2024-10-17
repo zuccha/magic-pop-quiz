@@ -1,6 +1,6 @@
 import { useCardsQuizPB } from "../hooks/use-cards-quiz";
 import { CardsQuiz } from "../models/cards-quiz";
-import { formatCardsQuizHints } from "../models/cards-quiz-hints";
+import { formattedCardsQuizMode } from "../models/cards-quiz-mode";
 import { msToTime } from "../models/time";
 import "./cards-quiz-list.css";
 
@@ -27,8 +27,8 @@ export default function CardsQuizList({
         <tr>
           <th>Name</th>
           <th>Query</th>
+          <th className="narrow">Mode</th>
           <th className="narrow">Time</th>
-          <th className="narrow">Hints</th>
           <th className="narrow right">Score</th>
           {actions.length > 0 && <th className="narrow"></th>}
         </tr>
@@ -61,9 +61,11 @@ function QuizEntry({ actions, onSelectQuiz, quiz }: QuizEntryProps) {
       <td>
         <b>{quiz.name}</b>
       </td>
-      <td>{quiz.query}</td>
+      <td>
+        <small>{quiz.query}</small>
+      </td>
+      <td className="narrow">{formattedCardsQuizMode[quiz.mode]}</td>
       <td className="narrow">{msToTime(quiz.time)}</td>
-      <td className="narrow">{formatCardsQuizHints(quiz.hints)}</td>
       <td className="narrow right">
         {pb
           ? `${Math.floor((100 * pb.answersGuessed) / pb.answersTotal)}%`

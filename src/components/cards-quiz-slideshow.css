@@ -1,0 +1,54 @@
+.CardsQuizSlideshow {
+  display: flex;
+  flex-direction: column;
+  gap: 2em;
+}
+
+.CardsQuizSlideshow_Info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  column-gap: 2em;
+  row-gap: 0.5em;
+}
+
+.CardsQuizSlideshow_Info .QuizProgress {
+  font-size: 2em;
+}
+
+.CardsQuizSlideshow_Info_Ready,
+.CardsQuizSlideshow_Info_Running,
+.CardsQuizSlideshow_Info_Paused,
+.CardsQuizSlideshow_Info_Stopped {
+  flex: 1;
+  display: flex;
+  gap: 0.5em;
+}
+
+.CardsQuizSlideshow_Info_Ready > button,
+.CardsQuizSlideshow_Info_Paused > button,
+.CardsQuizSlideshow_Info_Stopped > button {
+  min-width: 10em;
+}
+
+.CardsQuizSlideshow_Info_Running > input {
+  flex: 1;
+}
+
+.CardsQuizSlideshow_Info_Divider {
+  border-left: 1px solid var(--color-neutral-7);
+}
+
+.CardsQuizSlideshow_Card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1em;
+}
+
+.CardsQuizSlideshow_Prices {
+  display: flex;
+  gap: 1em;
+  min-height: 1.5em;
+}

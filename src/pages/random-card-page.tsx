@@ -5,8 +5,13 @@ import useInputValue, { useInputValueStore } from "../hooks/use-input-value";
 import useResourceScryfall, {
   scryfallUrl,
 } from "../hooks/use-resource-scryfall";
-import { blankCard, blankCardFace, cardFromScryfallCard } from "../models/card";
-import { sanitize, validateListWithAtLeastOneItem } from "../utils";
+import {
+  blankCard,
+  blankCardFace,
+  cardFromScryfallCard,
+  guessMatchesCard,
+} from "../models/card";
+import { validateListWithAtLeastOneItem } from "../utils";
 import "./random-card-page.css";
 
 export default function RandomCardPage() {
@@ -62,15 +67,7 @@ export default function RandomCardPage() {
 
   const guessed = useMemo(() => {
     if (randomCard.status !== "success") return false;
-
-    const sanitizedGuess = sanitize(guess);
-    const card = randomCard.data;
-    return (
-      card.nameSanitized === sanitizedGuess ||
-      card.nameSanitizedShort === sanitizedGuess ||
-      card.faces.some((f) => f.nameSanitized === sanitizedGuess) ||
-      card.faces.some((f) => f.nameSanitizedShort === sanitizedGuess)
-    );
+    return guessMatchesCard(randomCard.data, guess);
   }, [guess, randomCard]);
 
   const loading =

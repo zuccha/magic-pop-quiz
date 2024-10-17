@@ -10,7 +10,7 @@ import CardRarityIndicator from "./card-rarity-indicator";
 export type CardSheetProps = {
   card: Card;
   scale?: number;
-  showReminder: boolean;
+  showReminder?: boolean;
 };
 
 const oracleWithReminderPatterns = [
@@ -239,7 +239,7 @@ function CardSheetOracle({
   showReminder,
 }: {
   face: CardFace;
-  showReminder: boolean;
+  showReminder?: boolean;
 }) {
   return (
     <div className="CardSheet_Oracle">

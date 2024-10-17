@@ -1,6 +1,7 @@
 import { ScryfallCard } from "@scryfall/api-types";
 import { useCallback, useLayoutEffect, useState } from "react";
 import CardsQuizFreeTyping from "../../components/cards-quiz-free-typing";
+import CardsQuizSlideshow from "../../components/cards-quiz-slideshow";
 import QuizProgress from "../../components/quiz-progress";
 import {
   useCardsQuizFromParams,
@@ -109,7 +110,11 @@ export default function CardsQuizPage() {
       </div>
 
       {cards ? (
-        <CardsQuizFreeTyping cards={cards} onDone={setPB} quiz={quiz} />
+        quiz.mode === "slideshow" ? (
+          <CardsQuizSlideshow cards={cards} onDone={setPB} quiz={quiz} />
+        ) : (
+          <CardsQuizFreeTyping cards={cards} onDone={setPB} quiz={quiz} />
+        )
       ) : error ? (
         <div className="CardsQuizPage_Message">
           <h2>{error}</h2>

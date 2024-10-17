@@ -115,7 +115,8 @@ export function cardsQuizFromValues(quiz: Omit<CardsQuiz, "id">): CardsQuiz {
 export function cardsQuizFromId(id: string, name: string): CardsQuiz {
   const order = id.slice(6, 8) as CardsQuizOrderEncoding;
   const dir = id.slice(8, 9) as CardsQuizDirectionEncoding;
-  const mode = id.slice(4, 2) as CardsQuizModeEncoding;
+  const mode = id.slice(4, 6) as CardsQuizModeEncoding;
+
   return {
     id,
     name,
