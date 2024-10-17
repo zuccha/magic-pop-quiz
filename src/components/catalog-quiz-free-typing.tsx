@@ -2,32 +2,28 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import useTimer, { TimerStatus } from "../hooks/use-timer";
 import { QuizRecord } from "../models/quiz-record";
 import { CatalogEntry } from "../models/catalog-entry";
-import {
-  CatalogQuizType,
-  formattedCatalogQuizType,
-} from "../models/catalog-quiz-type";
+import { CatalogQuiz } from "../models/catalog-quiz";
+import { formattedCatalogQuizType } from "../models/catalog-quiz-type";
 import { sanitize } from "../utils";
 import CatalogTypeIndicator from "./catalog-type-indicator";
 import QuizProgress from "./quiz-progress";
-import "./catalog-quiz.css";
+import "./catalog-quiz-free-typing.css";
 
-export type CatalogQuizProps = {
+export type CatalogQuizFreeTypingProps = {
   entries: CatalogEntry[];
-  duration: number;
   onDone: (pb: QuizRecord) => void;
-  types: CatalogQuizType[];
+  quiz: CatalogQuiz;
 };
 
-export default function CatalogQuiz({
+export default function CatalogQuizFreeTyping({
   entries,
-  duration,
   onDone,
-  types,
-}: CatalogQuizProps) {
+  quiz,
+}: CatalogQuizFreeTypingProps) {
   const [guessed, setGuessed] = useState<Set<string>>(new Set());
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const timer = useTimer(duration);
+  const timer = useTimer(quiz.time);
 
   const reset = useCallback(() => {
     timer.reset();
@@ -72,10 +68,10 @@ export default function CatalogQuiz({
   }, [entries.length, guessed.size, timer.remaining, timer.status, timer.stop]);
 
   return (
-    <div className="CatalogQuiz">
-      <div className="CatalogQuiz_Info">
+    <div className="CatalogQuizFreeTyping">
+      <div className="CatalogQuizFreeTyping_Info">
         {timer.status === TimerStatus.Ready && (
-          <div className="CatalogQuiz_Info_Ready">
+          <div className="CatalogQuizFreeTyping_Info_Ready">
             <button className="solid" onClick={timer.start}>
               Start
             </button>
@@ -83,7 +79,7 @@ export default function CatalogQuiz({
         )}
 
         {timer.status === TimerStatus.Running && (
-          <div className="CatalogQuiz_Info_Running">
+          <div className="CatalogQuizFreeTyping_Info_Running">
             <input
               autoFocus
               name="q"
@@ -100,7 +96,7 @@ export default function CatalogQuiz({
         )}
 
         {timer.status === TimerStatus.Paused && (
-          <div className="CatalogQuiz_Info_Paused">
+          <div className="CatalogQuizFreeTyping_Info_Paused">
             <button onClick={timer.resume}>Resume</button>
             <button onClick={timer.stop} className="danger">
               Give Up
@@ -109,7 +105,7 @@ export default function CatalogQuiz({
         )}
 
         {timer.status === TimerStatus.Stopped && (
-          <div className="CatalogQuiz_Info_Stopped">
+          <div className="CatalogQuizFreeTyping_Info_Stopped">
             <button className="solid" onClick={reset}>
               Reset
             </button>
@@ -129,15 +125,15 @@ export default function CatalogQuiz({
       ) : (
         <div
           className={
-            types.length === 1
-              ? "CatalogQuiz_Answers compact"
-              : "CatalogQuiz_Answers"
+            quiz.types.length === 1
+              ? "CatalogQuizFreeTyping_Answers compact"
+              : "CatalogQuizFreeTyping_Answers"
           }
         >
           {entries.map((entry) => (
             <div key={entry.name}>
-              {types.length > 1 && (
-                <div className="CatalogQuiz_Answer_Text">
+              {quiz.types.length > 1 && (
+                <div className="CatalogQuizFreeTyping_Answer_Text">
                   <CatalogTypeIndicator
                     type={entry.type}
                     size={maxTypeLength}
@@ -146,15 +142,17 @@ export default function CatalogQuiz({
               )}
 
               {guessed.has(entry.name) ? (
-                <span className="CatalogQuiz_Answer_Name success">
+                <span className="CatalogQuizFreeTyping_Answer_Name success">
                   {entry.name}
                 </span>
               ) : timer.status === TimerStatus.Stopped ? (
-                <span className="CatalogQuiz_Answer_Name failure">
+                <span className="CatalogQuizFreeTyping_Answer_Name failure">
                   {entry.name}
                 </span>
               ) : (
-                <span className="CatalogQuiz_Answer_Name">&nbsp;</span>
+                <span className="CatalogQuizFreeTyping_Answer_Name">
+                  &nbsp;
+                </span>
               )}
             </div>
           ))}

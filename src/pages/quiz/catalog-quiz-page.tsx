@@ -1,5 +1,5 @@
 import { useLayoutEffect, useState } from "react";
-import CatalogQuiz from "../../components/catalog-quiz";
+import CatalogQuizFreeTyping from "../../components/catalog-quiz-free-typing";
 import QuizProgress from "../../components/quiz-progress";
 import {
   useCatalogQuizFromParams,
@@ -80,12 +80,7 @@ export default function CatalogQuizPage() {
       </div>
 
       {entries ? (
-        <CatalogQuiz
-          duration={quiz.time}
-          entries={entries}
-          onDone={setPB}
-          types={quiz.types}
-        />
+        <CatalogQuizFreeTyping entries={entries} onDone={setPB} quiz={quiz} />
       ) : error ? (
         <div className="CatalogQuizPage_Message">
           <h2>{error}</h2>

@@ -1,10 +1,10 @@
-.CardsQuiz {
+.CatalogQuizFreeTyping {
   display: flex;
   flex-direction: column;
   gap: 2em;
 }
 
-.CardsQuiz_Info {
+.CatalogQuizFreeTyping_Info {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -13,66 +13,70 @@
   row-gap: 0.5em;
 }
 
-.CardsQuiz_Info_Ready,
-.CardsQuiz_Info_Running,
-.CardsQuiz_Info_Paused,
-.CardsQuiz_Info_Stopped {
+.CatalogQuizFreeTyping_Info_Ready,
+.CatalogQuizFreeTyping_Info_Running,
+.CatalogQuizFreeTyping_Info_Paused,
+.CatalogQuizFreeTyping_Info_Stopped {
   flex: 1;
   display: flex;
   gap: 0.5em;
 }
 
-.CardsQuiz_Info_Ready > button,
-.CardsQuiz_Info_Paused > button,
-.CardsQuiz_Info_Stopped > button {
+.CatalogQuizFreeTyping_Info_Ready > button,
+.CatalogQuizFreeTyping_Info_Paused > button,
+.CatalogQuizFreeTyping_Info_Stopped > button {
   min-width: 10em;
 }
 
-.CardsQuiz_Info_Running > *:first-child {
+.CatalogQuizFreeTyping_Info_Running > *:first-child {
   flex: 1;
 }
 
-.CardsQuiz_Info .QuizProgress {
+.CatalogQuizFreeTyping_Info .QuizProgress {
   font-size: 2em;
 }
 
-.CardsQuiz_Answers {
-  columns: auto 20em;
+.CatalogQuizFreeTyping_Answers {
+  columns: auto 15em;
   column-gap: 0.5em;
   font-size: 0.9em;
 }
 
-.CardsQuiz_Answers > div {
+.CatalogQuizFreeTyping_Answers.compact {
+  columns: auto 10em;
+}
+
+.CatalogQuizFreeTyping_Answers > div {
   display: flex;
   align-items: stretch;
   border: 1px solid var(--color-neutral-6);
   break-inside: avoid;
 }
 
-.CardsQuiz_Answers > div:not(:first-child) {
+.CatalogQuizFreeTyping_Answers > div:not(:first-child) {
   margin-top: -1px;
 }
 
-.CardsQuiz_Answer_Name,
-.CardsQuiz_Answer_Text {
+.CatalogQuizFreeTyping_Answer_Name,
+.CatalogQuizFreeTyping_Answer_Text {
   padding: 0.1em 0.5em;
 }
 
-.CardsQuiz_Answer_Name {
+.CatalogQuizFreeTyping_Answer_Name {
   flex: 1;
   word-break: break-word;
 }
 
-.CardsQuiz_Answer_Name.success {
+.CatalogQuizFreeTyping_Answer_Name.success {
   animation: successTransition 1s ease-out forwards;
 }
 
-.CardsQuiz_Answer_Name.failure {
+.CatalogQuizFreeTyping_Answer_Name.failure {
   background-color: var(--color-danger-2);
 }
 
-.CardsQuiz_Answer_Box,
-.CardsQuiz_Answer_Text {
+.CatalogQuizFreeTyping_Answer_Box,
+.CatalogQuizFreeTyping_Answer_Text {
   display: flex;
   align-items: center;
   justify-content: flex-end;
@@ -80,7 +84,7 @@
   background-color: var(--color-neutral-3);
 }
 
-.CardsQuiz_Answer_Box > * {
+.CatalogQuizFreeTyping_Answer_Box > * {
   height: 100%;
 }
 
