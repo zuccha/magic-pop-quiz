@@ -24,31 +24,23 @@ const catalogQuizTypes = [
 ] as const;
 
 export const CatalogQuizTypeSchema = z.enum(catalogQuizTypes);
-
 export type CatalogQuizType = z.infer<typeof CatalogQuizTypeSchema>;
 
-export function isCatalogQuizType(
-  maybeCatalogQuizType: unknown,
-): maybeCatalogQuizType is CatalogQuizType {
-  return catalogQuizTypes.includes(maybeCatalogQuizType as CatalogQuizType);
-}
-
 export function validateCatalogQuizType(
-  maybeCatalogQuizType: unknown,
-  defaultCatalogQuizType: CatalogQuizType,
+  maybeType: unknown,
+  defaultType: CatalogQuizType,
 ): CatalogQuizType;
 
 export function validateCatalogQuizType(
-  maybeCatalogQuizType: unknown,
+  maybeType: unknown,
 ): CatalogQuizType | undefined;
 
 export function validateCatalogQuizType(
-  maybeCatalogQuizType: unknown,
-  defaultCatalogQuizType?: CatalogQuizType,
+  maybeType: unknown,
+  defaultType?: CatalogQuizType,
 ): CatalogQuizType | undefined {
-  return isCatalogQuizType(maybeCatalogQuizType)
-    ? maybeCatalogQuizType
-    : defaultCatalogQuizType;
+  const result = CatalogQuizTypeSchema.safeParse(maybeType);
+  return result.success ? result.data : defaultType;
 }
 
 export const formattedCatalogQuizType: Record<CatalogQuizType, string> = {

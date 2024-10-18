@@ -1,3 +1,5 @@
+import { padL } from "../utils";
+
 export type CardsQuizHints = {
   showArtist?: boolean;
   showColors?: boolean;
@@ -38,46 +40,36 @@ export function formatCardsQuizHints(hints: CardsQuizHints): string {
   return formattedHints.length > 0 ? formattedHints.join(", ") : "None";
 }
 
+const orderedHints: (keyof CardsQuizHints)[] = [
+  "showArtist",
+  "showColors",
+  "showCost",
+  "showFlavor",
+  "showIdentity",
+  "showImage",
+  "showOracle",
+  "showPriceEur",
+  "showPriceTix",
+  "showPriceUsd",
+  "showRarity",
+  "showReminder",
+  "showSet",
+  "showStats",
+  "showTypes",
+  "showYear",
+] as const;
+
 export function encodeCardsQuizHints(hints: CardsQuizHints): string {
-  return [
-    hints.showColors,
-    hints.showCost,
-    hints.showIdentity,
-    hints.showPriceEur,
-    hints.showPriceTix,
-    hints.showPriceUsd,
-    hints.showStats,
-    hints.showTypes,
-    hints.showRarity,
-    hints.showArtist,
-    hints.showSet,
-    hints.showYear,
-    hints.showImage,
-    hints.showOracle,
-    hints.showReminder,
-    hints.showFlavor,
-  ]
-    .map((hint) => (hint ? "t" : "f"))
-    .join("");
+  let value = 0;
+  for (let i = 0; i < orderedHints.length; ++i)
+    value |= Number(hints[orderedHints[i]]) << i;
+  return padL(value.toString(26), 4, "0");
 }
 
 export function decodeCardsQuizHints(encoded: string): CardsQuizHints {
   const hints: CardsQuizHints = {};
-  if (encoded.charAt(0) === "t") hints.showColors = true;
-  if (encoded.charAt(1) === "t") hints.showCost = true;
-  if (encoded.charAt(2) === "t") hints.showIdentity = true;
-  if (encoded.charAt(3) === "t") hints.showPriceEur = true;
-  if (encoded.charAt(4) === "t") hints.showPriceTix = true;
-  if (encoded.charAt(5) === "t") hints.showPriceUsd = true;
-  if (encoded.charAt(6) === "t") hints.showStats = true;
-  if (encoded.charAt(7) === "t") hints.showTypes = true;
-  if (encoded.charAt(8) === "t") hints.showRarity = true;
-  if (encoded.charAt(9) === "t") hints.showArtist = true;
-  if (encoded.charAt(10) === "t") hints.showSet = true;
-  if (encoded.charAt(11) === "t") hints.showYear = true;
-  if (encoded.charAt(12) === "t") hints.showImage = true;
-  if (encoded.charAt(13) === "t") hints.showOracle = true;
-  if (encoded.charAt(14) === "t") hints.showReminder = true;
-  if (encoded.charAt(15) === "t") hints.showFlavor = true;
+  const value = parseInt(encoded, 26) || 0;
+  for (let i = 0; i < orderedHints.length; ++i)
+    if (value & (1 << i)) hints[orderedHints[i]] = true;
   return hints;
 }

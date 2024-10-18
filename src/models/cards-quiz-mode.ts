@@ -23,13 +23,13 @@ export const formattedCardsQuizMode: Record<CardsQuizMode, string> = {
 };
 
 export const cardsQuizModeEncodings = {
-  "free-typing": "00",
-  "slideshow": "01",
+  "free-typing": "0",
+  "slideshow": "1",
 } as const;
 
 export const cardsQuizModeDecodings = {
-  "00": "free-typing",
-  "01": "slideshow",
+  "0": "free-typing",
+  "1": "slideshow",
 } as const;
 
 export type CardsQuizModeEncoding = keyof typeof cardsQuizModeDecodings;

@@ -1,7 +1,13 @@
 import { useMemo } from "react";
 import { CatalogQuiz, loadCatalogQuizFromParams } from "../models/catalog-quiz";
 import { QuizRecord } from "../models/quiz-record";
-import useQuizPB from "./use-quiz-pb";
+import { createUseQuizPB } from "./use-quiz-pb";
+
+const type = "ks/";
+const pbPrefix = `${type}pb/`;
+const namePrefix = `${type}name/`;
+
+const useQuizPB = createUseQuizPB(pbPrefix, namePrefix);
 
 export function useCatalogQuizFromParams(): CatalogQuiz {
   return useMemo(

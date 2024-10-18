@@ -1,3 +1,7 @@
+import {
+  compressToEncodedURIComponent,
+  decompressFromEncodedURIComponent,
+} from "lz-string";
 import { clamp, padL } from "../utils";
 import {
   CardsQuizDirection,
@@ -53,22 +57,22 @@ export function loadCardsQuizFromParams(params: URLSearchParams): CardsQuiz {
     ),
     mode: validateCardsQuizMode(params.get("mode")),
     hints: {
-      showArtist: params.has("show-artist") ?? false,
-      showColors: params.has("show-colors") ?? false,
-      showCost: params.has("show-cost") ?? false,
-      showFlavor: params.has("show-flavor") ?? false,
-      showIdentity: params.has("show-identity") ?? false,
-      showImage: params.has("show-image") ?? false,
-      showOracle: params.has("show-oracle") ?? false,
-      showPriceEur: params.has("show-price-eur") ?? false,
-      showPriceTix: params.has("show-price-tix") ?? false,
-      showPriceUsd: params.has("show-price-usd") ?? false,
-      showRarity: params.has("show-rarity") ?? false,
-      showReminder: params.has("show-reminder") ?? false,
-      showSet: params.has("show-set") ?? false,
-      showStats: params.has("show-stats") ?? false,
-      showTypes: params.has("show-types") ?? false,
-      showYear: params.has("show-year") ?? false,
+      showArtist: params.has("show-artist"),
+      showColors: params.has("show-colors"),
+      showCost: params.has("show-cost"),
+      showFlavor: params.has("show-flavor"),
+      showIdentity: params.has("show-identity"),
+      showImage: params.has("show-image"),
+      showOracle: params.has("show-oracle"),
+      showPriceEur: params.has("show-price-eur"),
+      showPriceTix: params.has("show-price-tix"),
+      showPriceUsd: params.has("show-price-usd"),
+      showRarity: params.has("show-rarity"),
+      showReminder: params.has("show-reminder"),
+      showSet: params.has("show-set"),
+      showStats: params.has("show-stats"),
+      showTypes: params.has("show-types"),
+      showYear: params.has("show-year"),
     },
   });
 }
@@ -105,27 +109,27 @@ export function cardsQuizFromValues(quiz: Omit<CardsQuiz, "id">): CardsQuiz {
   const order = cardsQuizOrderEncodings[quiz.order];
   const direction = cardsQuizDirectionEncodings[quiz.direction];
   const quantity = padL(`${quiz.quantity}`, 3, "0");
-  const time = msToTime(quiz.time);
+  const time = msToTime(quiz.time).replace(":", "");
   const mode = cardsQuizModeEncodings[quiz.mode];
   const hints = encodeCardsQuizHints(quiz.hints);
-  const id = `cs00${mode}${order}${direction}${quantity}${time}${hints}${quiz.query}`;
+  const query = compressToEncodedURIComponent(quiz.query);
+  const id = `${mode}${order}${direction}${quantity}${time}${hints}${query}`;
   return { ...quiz, id };
 }
 
 export function cardsQuizFromId(id: string, name: string): CardsQuiz {
-  const order = id.slice(6, 8) as CardsQuizOrderEncoding;
-  const dir = id.slice(8, 9) as CardsQuizDirectionEncoding;
-  const mode = id.slice(4, 6) as CardsQuizModeEncoding;
-
+  const mode = id.slice(0, 1) as CardsQuizModeEncoding;
+  const order = id.slice(1, 2) as CardsQuizOrderEncoding;
+  const dir = id.slice(2, 3) as CardsQuizDirectionEncoding;
   return {
     id,
     name,
     order: cardsQuizOrderDecodings[order] ?? "name",
     direction: cardsQuizDirectionDecodings[dir] ?? "auto",
-    quantity: parseInt(id.slice(9, 12)) || 0,
-    time: timeToMs(id.slice(12, 17)),
+    quantity: parseInt(id.slice(3, 6)) || 0,
+    time: timeToMs(`${id.slice(6, 8)}:${id.slice(8, 10)}`),
     mode: cardsQuizModeDecodings[mode] ?? "free-typing",
-    hints: decodeCardsQuizHints(id.slice(17, 33)),
-    query: id.slice(33),
+    hints: decodeCardsQuizHints(id.slice(10, 14)),
+    query: decompressFromEncodedURIComponent(id.slice(14)),
   };
 }

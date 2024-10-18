@@ -5,8 +5,8 @@ import CardsQuizSlideshow from "../../components/cards-quiz-slideshow";
 import QuizProgress from "../../components/quiz-progress";
 import {
   useCardsQuizFromParams,
-  useCardsQuizIsFavorite,
-  useCardsQuizPB,
+  useCardsQuizFavorite,
+  useCardsQuizRecord,
 } from "../../hooks/use-cards-quiz";
 import { fetchScryfall, scryfallUrl } from "../../hooks/use-resource-scryfall";
 import { saveCardsQuizToParams } from "../../models/cards-quiz";
@@ -23,8 +23,8 @@ export default function CardsQuizPage() {
   const [cards, setCards] = useState<Card[] | undefined>(undefined);
 
   const quiz = useCardsQuizFromParams();
-  const [pb, setPB] = useCardsQuizPB(quiz);
-  const [isFavorite, toggleIsFavorite] = useCardsQuizIsFavorite(quiz);
+  const [{ pb }, setRecord] = useCardsQuizRecord(quiz);
+  const [isFavorite, toggleIsFavorite] = useCardsQuizFavorite(quiz);
 
   const formattedOrder = formattedCardsQuizOrder[quiz.order];
   const formattedDirection = formattedCardsQuizDirection[quiz.direction];
@@ -111,9 +111,9 @@ export default function CardsQuizPage() {
 
       {cards ? (
         quiz.mode === "slideshow" ? (
-          <CardsQuizSlideshow cards={cards} onDone={setPB} quiz={quiz} />
+          <CardsQuizSlideshow cards={cards} onDone={setRecord} quiz={quiz} />
         ) : (
-          <CardsQuizFreeTyping cards={cards} onDone={setPB} quiz={quiz} />
+          <CardsQuizFreeTyping cards={cards} onDone={setRecord} quiz={quiz} />
         )
       ) : error ? (
         <div className="CardsQuizPage_Message">

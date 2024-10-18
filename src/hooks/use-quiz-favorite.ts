@@ -1,23 +1,19 @@
 import { useCallback } from "react";
 import { useStoreBoolean, useStoreString } from "./use-store";
 
-const favPrefix = "fav/";
-const namePrefix = "name/";
+export function createUseQuizFavorite(favPrefix: string, namePrefix: string) {
+  return function useQuizFavorite(
+    id: string,
+    name: string,
+  ): [boolean, () => void] {
+    const [, setName] = useStoreString(`${namePrefix}${id}`, name);
+    const [favorite, setFavorite] = useStoreBoolean(`${favPrefix}${id}`, false);
 
-const favId = (id: string) => `${favPrefix}${id}`;
-const nameId = (id: string) => `${namePrefix}${id}`;
+    const toggleIsFavorite = useCallback(() => {
+      setName(name);
+      setFavorite((prev) => !prev);
+    }, [name, setFavorite]);
 
-export default function useQuizPB(
-  id: string,
-  name: string,
-): [boolean, () => void] {
-  const [, setName] = useStoreString(nameId(id), name);
-  const [isFavorite, setIsFavorite] = useStoreBoolean(favId(id), false);
-
-  const toggleIsFavorite = useCallback(() => {
-    setName(name);
-    setIsFavorite((prev) => !prev);
-  }, [name, setIsFavorite]);
-
-  return [isFavorite, toggleIsFavorite];
+    return [favorite, toggleIsFavorite];
+  };
 }

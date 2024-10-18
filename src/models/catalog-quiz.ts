@@ -46,8 +46,8 @@ export function catalogQuizFromValues(
   quiz: Omit<CatalogQuiz, "id">,
 ): CatalogQuiz {
   const types = quiz.types.map((t) => catalogQuizTypeEncodings[t]).join("");
-  const time = msToTime(quiz.time);
-  const id = `ks00${time}${types}`;
+  const time = msToTime(quiz.time).replace(":", "");
+  const id = `k0${time}${types}`;
   return { ...quiz, id };
 }
 
@@ -55,9 +55,9 @@ export function catalogQuizFromId(id: string, name: string): CatalogQuiz {
   return {
     id,
     name,
-    time: timeToMs(id.slice(4, 9)),
+    time: timeToMs(`${id.slice(2, 4)}:${id.slice(4, 6)}`),
     types: id
-      .slice(9)
+      .slice(6)
       .split("")
       .map((t) => catalogQuizTypeDecodings[t as QuizTypeEncoding])
       .filter((type) => type !== undefined),

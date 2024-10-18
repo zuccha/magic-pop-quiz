@@ -6,21 +6,22 @@ import {
 } from "../models/cards-quiz";
 import { QuizRecord, QuizRecordSchema } from "../models/quiz-record";
 import Storage from "../store/storage";
-import {
-  parseBoolean,
-  parseString,
-  useStoreBoolean,
-  useStoreString,
-} from "./use-store";
-import useQuizPB from "./use-quiz-pb";
+import { parseBoolean, parseString } from "./use-store";
+import { createUseQuizPB } from "./use-quiz-pb";
+import { createUseQuizFavorite } from "./use-quiz-favorite";
+import { createUseQuizLast } from "./use-quiz-last";
 
-const pbPrefix = "pb/";
-const favPrefix = "fav/";
-const namePrefix = "name/";
+const type = "cs/";
+const pbPrefix = `${type}pb/`;
+const lastPrefix = `${type}last/`;
+const favPrefix = `${type}fav/`;
+const namePrefix = `${type}name/`;
 
-const pbId = (id: string) => `${pbPrefix}${id}`;
-const favId = (id: string) => `${favPrefix}${id}`;
 const nameId = (id: string) => `${namePrefix}${id}`;
+
+const useQuizPB = createUseQuizPB(pbPrefix, namePrefix);
+const useQuizLast = createUseQuizLast(lastPrefix, namePrefix);
+const useQuizFavorite = createUseQuizFavorite(favPrefix, namePrefix);
 
 export function useCardsQuizFromParams(): CardsQuiz {
   return useMemo(
@@ -33,10 +34,10 @@ export function useCardsQuizFromParams(): CardsQuiz {
 export function useFavoriteCardsQuizzes(): CardsQuiz[] {
   return useMemo(
     () =>
-      Storage.getIdsStartingWith(`${favPrefix}cs`)
-        .map((id) => id.substring(favPrefix.length))
-        .filter((id) => Storage.load(favId(id), false, parseBoolean))
+      Storage.getIdsStartingWith(favPrefix)
+        .filter((id) => Storage.load(id, false, parseBoolean))
         .map((id) => {
+          id = id.substring(favPrefix.length);
           const name = Storage.load(nameId(id), "Unnamed", parseString);
           return cardsQuizFromId(id, name);
         }),
@@ -47,16 +48,16 @@ export function useFavoriteCardsQuizzes(): CardsQuiz[] {
 export function useRecentCardsQuizzes(amount?: number): CardsQuiz[] {
   return useMemo(
     () =>
-      Storage.getIdsStartingWith(`${pbPrefix}cs`)
+      Storage.getIdsStartingWith(lastPrefix)
         .map((id) => {
-          id = id.substring(pbPrefix.length);
-          const pb = Storage.load(pbId(id), undefined, QuizRecordSchema.parse);
+          const pb = Storage.load(id, undefined, QuizRecordSchema.parse);
+          id = id.substring(lastPrefix.length);
           return { id, pb };
         })
         .filter(({ pb }) => pb)
         .sort(({ pb: pb1 }, { pb: pb2 }) => {
-          if (pb1!.date > pb2!.date) return 1;
-          if (pb1!.date < pb2!.date) return -1;
+          if (pb1!.date > pb2!.date) return -1;
+          if (pb1!.date < pb2!.date) return 1;
           return 0;
         })
         .slice(0, amount)
@@ -68,20 +69,29 @@ export function useRecentCardsQuizzes(amount?: number): CardsQuiz[] {
   );
 }
 
-export function useCardsQuizPB(
+export function useCardsQuizRecord(
   quiz: CardsQuiz,
-): [QuizRecord, (pb: QuizRecord) => void] {
-  return useQuizPB(quiz.id, quiz.name);
+): [{ last: QuizRecord; pb: QuizRecord }, (reocrd: QuizRecord) => void] {
+  const [pb, setPB] = useQuizPB(quiz.id, quiz.name);
+  const [last, setLast] = useQuizLast(quiz.id, quiz.name);
+
+  const setRecord = useCallback(
+    (record: QuizRecord) => {
+      setLast(record);
+      setPB(record);
+    },
+    [setLast, setPB],
+  );
+
+  return [{ last, pb }, setRecord];
 }
 
-export function useCardsQuizIsFavorite(quiz: CardsQuiz): [boolean, () => void] {
-  const [, setName] = useStoreString(nameId(quiz.id), quiz.name);
-  const [isFavorite, setIsFavorite] = useStoreBoolean(favId(quiz.id), false);
+export function useCardsQuizLast(
+  quiz: CardsQuiz,
+): [QuizRecord, (pb: QuizRecord) => void] {
+  return useQuizLast(quiz.id, quiz.name);
+}
 
-  const toggleIsFavorite = useCallback(() => {
-    setName(quiz.name);
-    setIsFavorite((prev) => !prev);
-  }, [quiz.name, setIsFavorite]);
-
-  return [isFavorite, toggleIsFavorite];
+export function useCardsQuizFavorite(quiz: CardsQuiz): [boolean, () => void] {
+  return useQuizFavorite(quiz.id, quiz.name);
 }

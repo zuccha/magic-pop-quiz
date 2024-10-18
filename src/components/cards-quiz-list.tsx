@@ -1,4 +1,4 @@
-import { useCardsQuizPB } from "../hooks/use-cards-quiz";
+import { useCardsQuizRecord } from "../hooks/use-cards-quiz";
 import { CardsQuiz } from "../models/cards-quiz";
 import { formattedCardsQuizMode } from "../models/cards-quiz-mode";
 import { msToTime } from "../models/time";
@@ -54,7 +54,7 @@ type QuizEntryProps = {
 };
 
 function QuizEntry({ actions, onSelectQuiz, quiz }: QuizEntryProps) {
-  const [pb] = useCardsQuizPB(quiz);
+  const [{ pb }] = useCardsQuizRecord(quiz);
 
   return (
     <tr onClick={() => onSelectQuiz(quiz)}>
