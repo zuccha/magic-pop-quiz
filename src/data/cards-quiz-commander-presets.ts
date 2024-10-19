@@ -65,7 +65,9 @@ const edhrecTop100CardsSlideshow = (
     name: description
       ? `EDHREC's Top 100 Cards - ${description}`
       : "EDHREC's Top 100 Cards",
-    query: condition ? `format:commander ${condition}` : "format:commander",
+    query: condition
+      ? `format:commander not:reprint ${condition}`
+      : "format:commander not:reprint",
     order: "edhrec",
     direction: "asc",
     quantity: 100,

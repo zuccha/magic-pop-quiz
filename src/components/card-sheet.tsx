@@ -3,9 +3,9 @@ import { Fragment } from "react/jsx-runtime";
 import { Card, CardFace } from "../models/card";
 import { isListWithAtLeastOneItem } from "../utils";
 import CardCostsIndicator from "./card-costs-indicator";
+import CardRarityIndicator from "./card-rarity-indicator";
 import CardSymbol from "./card-symbol";
 import "./card-sheet.css";
-import CardRarityIndicator from "./card-rarity-indicator";
 
 export type CardSheetProps = {
   card: Card;

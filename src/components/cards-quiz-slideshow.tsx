@@ -26,15 +26,18 @@ export default function CardsQuizFreeTyping({
   onDone,
   quiz,
 }: CardsQuizFreeTypingProps) {
+  const timer = useTimer(quiz.time);
+
   const [guessed, setGuessed] = useState<Set<string>>(new Set());
 
   const [selectedCardIndex, setSelectedCardIndex] = useState(0);
   const selectedCard = cards[selectedCardIndex] ?? blankCard;
 
+  const revealCard =
+    guessed.has(selectedCard.id) || timer.status === TimerStatus.Stopped;
+
   const inputRef = useRef<HTMLInputElement>(null);
   const sliderRef = useRef<HTMLDivElement>(null);
-
-  const timer = useTimer(quiz.time);
 
   const reset = useCallback(() => {
     timer.reset();
@@ -216,9 +219,16 @@ export default function CardsQuizFreeTyping({
       <div className="CardsQuizSlideshow_Card">
         <CardSheet card={maskedCard} showReminder={quiz.hints.showReminder} />
 
-        {(quiz.hints.showPriceUsd ||
-          quiz.hints.showPriceEur ||
-          quiz.hints.showPriceTix) && (
+        {timer.status === TimerStatus.Ready ||
+        timer.status === TimerStatus.Paused ? (
+          <div className="CardsQuizSlideshow_Prices" />
+        ) : revealCard ? (
+          <div className="CardsQuizSlideshow_Prices">
+            <CardTextIndicator text={`$${maskedCard.price.usd}`} />
+            <CardTextIndicator text={`€${maskedCard.price.eur}`} />
+            <CardTextIndicator text={`T${maskedCard.price.tix}`} />
+          </div>
+        ) : (
           <div className="CardsQuizSlideshow_Prices">
             {quiz.hints.showPriceUsd && (
               <CardTextIndicator text={`$${maskedCard.price.usd}`} />
@@ -227,7 +237,7 @@ export default function CardsQuizFreeTyping({
               <CardTextIndicator text={`€${maskedCard.price.eur}`} />
             )}
             {quiz.hints.showPriceTix && (
-              <CardTextIndicator text={`${maskedCard.price.tix}`} />
+              <CardTextIndicator text={`T${maskedCard.price.tix}`} />
             )}
           </div>
         )}

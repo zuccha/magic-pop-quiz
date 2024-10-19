@@ -39,7 +39,7 @@ const moxes = (): CardsQuiz =>
 
 const fatties = (): CardsQuiz =>
   cardsQuizFromValues({
-    name: "Fatties: Creatures with 2-digits Power or Toughness",
+    name: "Creatures with 2-digits Power or Toughness",
     query: `power>=10 OR toughness>=10`,
     order: "name",
     direction: "asc",
