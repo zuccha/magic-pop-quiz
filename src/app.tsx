@@ -3,14 +3,15 @@ import useCardSymbolInfos from "./data-hooks/use-card-symbol-infos";
 import AboutPage from "./pages/about-page";
 import CatalogPage from "./pages/catalog-page";
 import DocsPageCardsQuiz from "./pages/docs/docs-page-cards-quiz";
+import DocsPageCatalogQuiz from "./pages/docs/docs-page-catalog-quiz";
 import DocsPageOverview from "./pages/docs/docs-page-overview";
-import DocsPageSettings from "./pages/docs/docs-page-settings";
+import DocsPageRandomCard from "./pages/docs/docs-page-random-card";
 import HomePage from "./pages/cards-page";
+import NotFoundPage from "./pages/not-found-page";
 import CardsQuizPage from "./pages/quiz/cards-quiz-page";
 import CatalogQuizPage from "./pages/quiz/catalog-quiz-page";
-import NotFoundPage from "./pages/not-found-page";
-import "./app.css";
 import RandomCardPage from "./pages/random-card-page";
+import "./app.css";
 
 const pages: Record<string, () => JSX.Element> = {
   "/": RandomCardPage,
@@ -21,7 +22,8 @@ const pages: Record<string, () => JSX.Element> = {
   "/catalog/quiz": CatalogQuizPage,
   "/docs": DocsPageOverview,
   "/docs/cards-quiz": DocsPageCardsQuiz,
-  "/docs/settings": DocsPageSettings,
+  "/docs/catalog-quiz": DocsPageCatalogQuiz,
+  "/docs/random-card": DocsPageRandomCard,
 };
 
 export default function App() {
@@ -61,12 +63,6 @@ export default function App() {
             <a href="/docs">
               <i className="fa-solid fa-circle-question" />
               <b>Docs</b>
-            </a>
-
-            <div className="App_Header_Divider" />
-
-            <a href="/settings">
-              <i className="fa-solid fa-gear" />
             </a>
           </div>
         </div>

@@ -11,20 +11,25 @@ const sections = [
         icon: "star",
         route: "/docs",
       },
-      {
-        name: "Settings",
-        icon: "gear",
-        route: "/docs/settings",
-      },
     ],
   },
   {
     title: "Quizzes",
     items: [
       {
+        name: "Random",
+        icon: "shuffle",
+        route: "/docs/random-card",
+      },
+      {
         name: "Cards",
         icon: "layer-group",
         route: "/docs/cards-quiz",
+      },
+      {
+        name: "Catalog",
+        icon: "book",
+        route: "/docs/catalog-quiz",
       },
     ],
   },

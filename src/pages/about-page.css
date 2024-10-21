@@ -1,0 +1,33 @@
+.AboutPage {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: var(--page-width);
+  margin: 0 auto;
+  padding: 2em;
+}
+
+.AboutPage_Content {
+  display: flex;
+  /* flex-wrap: wrap; */
+  gap: 1em;
+}
+
+.AboutPage img,
+.AboutPage p {
+  margin: 1em 0 0 0;
+}
+
+.AboutPage img {
+  max-width: 20em;
+  margin-bottom: 0.5em;
+  align-self: center;
+  border: 0.2em solid black;
+}
+
+.AboutPage caption {
+  max-width: 20em;
+  align-self: center;
+  font-size: 0.9em;
+  font-style: italic;
+}

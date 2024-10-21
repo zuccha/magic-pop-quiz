@@ -7,13 +7,13 @@ export default function DocsPageCardsQuiz() {
     <DocsPage>
       <h1>Cards Quiz</h1>
       <p>
-        Quizzes are a way to test your knowledge about Magic cards. Given a pool
-        of cards, you'll have to guess all of them to complete the quiz.
+        Card quizzes are a way to test your knowledge about Magic cards. Given a
+        pool of cards, you'll have to guess all of them to complete the quiz.
       </p>
       <p>
         The platform comes with a variety of pre-configured quizzes, divided
-        into categories, that you can find in the home page. You can click on a
-        quiz to open its page, ready to be played.
+        into categories. You can click on a quiz to open its page, ready to be
+        played.
       </p>
       <p>
         If you want to alter a quiz (either the query, the duration, or anything
@@ -29,7 +29,7 @@ export default function DocsPageCardsQuiz() {
         configuration form in the home page.
       </p>
       <p>
-        The <b>name</b> of the quiz is merely a description and it has no impact
+        The <b>name</b> of the quiz is just a description and it has no impact
         on the quiz whatsoever. The <b>quantity</b> determines how many cards
         you'll have to guess to complete the quiz, up to a maximum of 175. If
         you set the value to 0, then all matching cards (up to 175) will be part
@@ -49,17 +49,30 @@ export default function DocsPageCardsQuiz() {
       <p>
         <b>Hints</b> will help you to identify cards as you solve the quiz.
         Hints will appear next to cards. Supported hints are: mana cost, card
-        colors, card color identity, card types, price (USD, EUR, or TIX), and
-        power/toughness. It's suggested you don't use too many hints, as they
-        take a considerable amount of horizontal space.
+        colors, card color identity, card types, stats(power/toughness for
+        creatures, loyalty for planeswalkers, and defense for battles), price
+        (USD, EUR, or TIX), rarity, set name, artist name, and release year. If
+        the quiz format is <i>Slideshow</i> (see section below) the following
+        hints are also available: card image, oracle text, reminder text (only
+        if oracle text is available), and flavor text.
       </p>
 
-      <h3>Quiz Modes</h3>
-      <p>
-        Currently, the only supported quiz mode is <b>Free Typing</b>. In this
-        mode you type the name of cards that match the quiz's query. The cards
-        will be revealed as your guesses match their names.
-      </p>
+      <h3>Quiz Formats</h3>
+      <p>Two quiz formats are currently available:</p>
+      <ul>
+        <li>
+          <b>Free Typing:</b> You guess cards all together. Cards are presented
+          as a table containing all guessed card names; as you guess cards
+          correctly the table will fill up. Hints selected during the quiz
+          creation will appear next to the card name.
+        </li>
+        <li>
+          <b>Slideshow:</b> You have to guess cards one-by-one. Cards are
+          presented individually as previews containing all elements specified
+          as hints while creating the quiz. You can select the next card in the
+          series if you are unable to name the current one.
+        </li>
+      </ul>
 
       <h3>Guessing</h3>
       <p>
@@ -98,8 +111,8 @@ export default function DocsPageCardsQuiz() {
 
       <h3>Quiz Uniqueness</h3>
       <p>
-        Quizzes are identified by their query, order, order direction, cards
-        quantity, duration, and hints.
+        Quizzes are identified by their query, order, order direction, format,
+        cards quantity, duration, and hints.
       </p>
       <p>
         Two quizzes that have different parameters will also have different
